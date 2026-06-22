@@ -1,0 +1,511 @@
+{% doc %}
+  @prompt
+    can we have a new arrivals section, showing a backl and next minimalistic text and icon, 4 products and when you hover on them they chanfge to the 2nd photo, name and price underneath the image, needs to work on desktop and mobile, can we change it to 3 products instead of 4
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-new-arrivals-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.padding_top }}px 20px {{ block.settings.padding_bottom }}px;
+  }
+
+  .ai-new-arrivals-container-{{ ai_gen_id }} {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .ai-new-arrivals-header-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+
+  .ai-new-arrivals-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    margin: 0;
+    color: {{ block.settings.heading_color }};
+  }
+
+  .ai-new-arrivals-nav-{{ ai_gen_id }} {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .ai-new-arrivals-nav-btn-{{ ai_gen_id }} {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: {{ block.settings.nav_text_size }}px;
+    color: {{ block.settings.nav_color }};
+    transition: opacity 0.3s ease;
+    padding: 0;
+  }
+
+  .ai-new-arrivals-nav-btn-{{ ai_gen_id }}:hover {
+    opacity: 0.7;
+  }
+
+  .ai-new-arrivals-nav-btn-{{ ai_gen_id }}:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .ai-new-arrivals-nav-btn-{{ ai_gen_id }} svg {
+    width: {{ block.settings.nav_icon_size }}px;
+    height: {{ block.settings.nav_icon_size }}px;
+  }
+
+  .ai-new-arrivals-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+    overflow: hidden;
+  }
+
+  .ai-new-arrivals-product-{{ ai_gen_id }} {
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .ai-new-arrivals-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    padding-bottom: 125%;
+    overflow: hidden;
+    background-color: #f5f5f5;
+    margin-bottom: 12px;
+  }
+
+  .ai-new-arrivals-image-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-new-arrivals-image-{{ ai_gen_id }}:first-child {
+    opacity: 1;
+  }
+
+  .ai-new-arrivals-image-{{ ai_gen_id }}:last-child {
+    opacity: 0;
+  }
+
+  .ai-new-arrivals-product-{{ ai_gen_id }}:hover .ai-new-arrivals-image-{{ ai_gen_id }}:first-child {
+    opacity: 0;
+  }
+
+  .ai-new-arrivals-product-{{ ai_gen_id }}:hover .ai-new-arrivals-image-{{ ai_gen_id }}:last-child {
+    opacity: 1;
+  }
+
+  .ai-new-arrivals-product-info-{{ ai_gen_id }} {
+    text-align: {{ block.settings.text_alignment }};
+  }
+
+  .ai-new-arrivals-product-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.product_title_size }}px;
+    margin: 0 0 6px;
+    color: {{ block.settings.product_title_color }};
+  }
+
+  .ai-new-arrivals-product-price-{{ ai_gen_id }} {
+    font-size: {{ block.settings.product_price_size }}px;
+    color: {{ block.settings.product_price_color }};
+  }
+
+  .ai-new-arrivals-empty-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    font-size: 14px;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-new-arrivals-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ai-new-arrivals-header-{{ ai_gen_id }} {
+      margin-bottom: 20px;
+    }
+
+    .ai-new-arrivals-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.heading_size }}px * 0.8);
+    }
+
+    .ai-new-arrivals-nav-btn-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.nav_text_size }}px * 0.9);
+    }
+
+    .ai-new-arrivals-nav-btn-{{ ai_gen_id }} svg {
+      width: calc({{ block.settings.nav_icon_size }}px * 0.9);
+      height: calc({{ block.settings.nav_icon_size }}px * 0.9);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-new-arrivals-{{ ai_gen_id }} {
+      padding: {{ block.settings.padding_top | times: 0.7 }}px 15px {{ block.settings.padding_bottom | times: 0.7 }}px;
+    }
+  }
+{% endstyle %}
+
+<new-arrivals-{{ ai_gen_id }} class="ai-new-arrivals-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-new-arrivals-container-{{ ai_gen_id }}">
+    <div class="ai-new-arrivals-header-{{ ai_gen_id }}">
+      <h2 class="ai-new-arrivals-title-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+      <div class="ai-new-arrivals-nav-{{ ai_gen_id }}">
+        <button class="ai-new-arrivals-nav-btn-{{ ai_gen_id }}" data-nav="prev" aria-label="Previous products">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          <span>{{ block.settings.prev_text }}</span>
+        </button>
+        <button class="ai-new-arrivals-nav-btn-{{ ai_gen_id }}" data-nav="next" aria-label="Next products">
+          <span>{{ block.settings.next_text }}</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    {% if block.settings.collection != blank %}
+      <div class="ai-new-arrivals-grid-{{ ai_gen_id }}" data-grid>
+        {% for product in block.settings.collection.products limit: block.settings.products_to_show %}
+          <a href="{{ product.url }}" class="ai-new-arrivals-product-{{ ai_gen_id }}">
+            <div class="ai-new-arrivals-image-wrapper-{{ ai_gen_id }}">
+              {% if product.featured_image %}
+                <img
+                  src="{{ product.featured_image | image_url: width: 600 }}"
+                  alt="{{ product.featured_image.alt | escape }}"
+                  class="ai-new-arrivals-image-{{ ai_gen_id }}"
+                  loading="lazy"
+                  width="600"
+                  height="750"
+                >
+                {% if product.images[1] %}
+                  <img
+                    src="{{ product.images[1] | image_url: width: 600 }}"
+                    alt="{{ product.images[1].alt | escape }}"
+                    class="ai-new-arrivals-image-{{ ai_gen_id }}"
+                    loading="lazy"
+                    width="600"
+                    height="750"
+                  >
+                {% else %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 600 }}"
+                    alt="{{ product.featured_image.alt | escape }}"
+                    class="ai-new-arrivals-image-{{ ai_gen_id }}"
+                    loading="lazy"
+                    width="600"
+                    height="750"
+                  >
+                {% endif %}
+              {% else %}
+                <div class="ai-new-arrivals-image-placeholder-{{ ai_gen_id }}">
+                  {{ 'product-1' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="ai-new-arrivals-product-info-{{ ai_gen_id }}">
+              <h3 class="ai-new-arrivals-product-title-{{ ai_gen_id }}">{{ product.title }}</h3>
+              <div class="ai-new-arrivals-product-price-{{ ai_gen_id }}">{{ product.price | money }}</div>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="ai-new-arrivals-empty-{{ ai_gen_id }}">
+        Select a collection to display new arrivals
+      </div>
+    {% endif %}
+  </div>
+</new-arrivals-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class NewArrivals{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentPage = 0;
+        this.productsPerPage = window.innerWidth <= 989 ? 2 : 3;
+      }
+
+      connectedCallback() {
+        this.grid = this.querySelector('[data-grid]');
+        this.prevBtn = this.querySelector('[data-nav="prev"]');
+        this.nextBtn = this.querySelector('[data-nav="next"]');
+        
+        if (!this.grid) return;
+
+        this.products = Array.from(this.grid.children);
+        this.totalPages = Math.ceil(this.products.length / this.productsPerPage);
+
+        this.setupEventListeners();
+        this.updateView();
+        this.handleResize();
+      }
+
+      setupEventListeners() {
+        if (this.prevBtn) {
+          this.prevBtn.addEventListener('click', () => this.navigate(-1));
+        }
+        if (this.nextBtn) {
+          this.nextBtn.addEventListener('click', () => this.navigate(1));
+        }
+
+        window.addEventListener('resize', () => this.handleResize());
+      }
+
+      handleResize() {
+        const newProductsPerPage = window.innerWidth <= 989 ? 2 : 3;
+        if (newProductsPerPage !== this.productsPerPage) {
+          this.productsPerPage = newProductsPerPage;
+          this.totalPages = Math.ceil(this.products.length / this.productsPerPage);
+          this.currentPage = 0;
+          this.updateView();
+        }
+      }
+
+      navigate(direction) {
+        this.currentPage += direction;
+        if (this.currentPage < 0) this.currentPage = 0;
+        if (this.currentPage >= this.totalPages) this.currentPage = this.totalPages - 1;
+        this.updateView();
+      }
+
+      updateView() {
+        const start = this.currentPage * this.productsPerPage;
+        const end = start + this.productsPerPage;
+
+        this.products.forEach((product, index) => {
+          if (index >= start && index < end) {
+            product.style.display = 'block';
+          } else {
+            product.style.display = 'none';
+          }
+        });
+
+        if (this.prevBtn) {
+          this.prevBtn.disabled = this.currentPage === 0;
+        }
+        if (this.nextBtn) {
+          this.nextBtn.disabled = this.currentPage >= this.totalPages - 1;
+        }
+      }
+    }
+
+    customElements.define('new-arrivals-{{ ai_gen_id }}', NewArrivals{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "New arrivals",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 3,
+      "max": 24,
+      "step": 3,
+      "label": "Products to show",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "text",
+      "id": "prev_text",
+      "label": "Previous button text",
+      "default": "Back"
+    },
+    {
+      "type": "text",
+      "id": "next_text",
+      "label": "Next button text",
+      "default": "Next"
+    },
+    {
+      "type": "range",
+      "id": "nav_text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Navigation text size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "nav_icon_size",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Navigation icon size",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "nav_color",
+      "label": "Navigation color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Product display"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Grid gap",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 32
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Product title size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product title color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "product_price_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Product price size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "product_price_color",
+      "label": "Product price color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "New arrivals"
+    }
+  ]
+}
+{% endschema %}

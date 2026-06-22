@@ -1,0 +1,673 @@
+{% doc %}
+  @prompt
+    Create a SPLIT MEDIA section for a luxury women's fashion brand, inspired by
+    arakii.com — clean, minimal, editorial, generous whitespace.
+    
+    STRUCTURE
+    - Two equal panels side by side (50/50 width), with a small adjustable gap.
+    - Left panel: an image. Right panel: a video with an image fallback.
+    - Default each panel to a portrait ratio (about 4:5), adjustable in settings.
+    - Optional thin hairline border around each panel, toggle on/off, with a
+      border color setting.
+    
+    LEFT PANEL (IMAGE)
+    - Image picker for the main image.
+    - Optional overlay that can be EITHER an uploaded image/logo (image picker)
+      OR editor text. Overlay settings: size, color, vertical position
+      (top/center/bottom) and horizontal position (left/center/right).
+    - Optional link URL — clicking the panel opens it.
+    
+    RIGHT PANEL (VIDEO)
+    - Accept either an uploaded Shopify video OR an external video URL
+      (mp4/YouTube/Vimeo).
+    - Image-picker fallback shown when no video is set. If a video is set, it
+      takes priority over the fallback image.
+    - Video must autoplay, muted, loop, and play inline (playsinline) with no
+      visible controls, on both desktop and mobile.
+    - Same optional overlay (uploaded image/logo OR text, with size/color/position)
+      and optional link URL as the left panel.
+    
+    RESPONSIVE (mobile-first — 90% of shoppers are on mobile)
+    - Desktop and tablet: two panels side by side.
+    - Mobile: panels stack vertically, image on top, video below, each full width.
+    
+    STYLE
+    - Use the theme's existing fonts and colors. Minimal UI, no heavy shadows.
+    
+    EDITOR SETTINGS
+    - Per panel: media picker(s), overlay type (none/image/text), overlay text,
+      overlay size, overlay color, overlay vertical + horizontal position,
+      optional link URL.
+    - Video: source (upload or URL), fallback image, autoplay/loop/mute toggles.
+    - Layout: gap between panels, panel aspect ratio, hairline border on/off,
+      border color.
+    - Section: top padding, bottom padding, background color, and an optional
+      section heading above the panels (text, size, alignment, uppercase toggle),
+      off by default.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-split-media-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.section_bg_color }};
+    padding-top: {{ block.settings.padding_top }}px;
+    padding-bottom: {{ block.settings.padding_bottom }}px;
+  }
+
+  .ai-split-media-container-{{ ai_gen_id }} {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-split-media-heading-{{ ai_gen_id }} {
+    margin: 0 0 40px;
+    font-size: {{ block.settings.heading_size }}px;
+    text-align: {{ block.settings.heading_alignment }};
+    {% if block.settings.heading_uppercase %}
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    {% endif %}
+  }
+
+  .ai-split-media-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: {{ block.settings.panel_gap }}px;
+  }
+
+  .ai-split-media-panel-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    aspect-ratio: {{ block.settings.aspect_ratio_width }} / {{ block.settings.aspect_ratio_height }};
+    overflow: hidden;
+    {% if block.settings.show_border %}
+      border: 1px solid {{ block.settings.border_color }};
+    {% endif %}
+  }
+
+  .ai-split-media-panel-{{ ai_gen_id }} a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+  }
+
+  .ai-split-media-image-{{ ai_gen_id }},
+  .ai-split-media-video-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-split-media-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-split-media-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 200px;
+    max-height: 200px;
+  }
+
+  .ai-split-media-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .ai-split-media-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    display: flex;
+    align-items: {{ block.settings.overlay_vertical }};
+    justify-content: {{ block.settings.overlay_horizontal }};
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    padding: 40px;
+  }
+
+  .ai-split-media-overlay-image-{{ ai_gen_id }} {
+    max-width: {{ block.settings.overlay_size }}%;
+    height: auto;
+  }
+
+  .ai-split-media-overlay-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.overlay_size }}px;
+    color: {{ block.settings.overlay_color }};
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-split-media-grid-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+    }
+
+    .ai-split-media-overlay-{{ ai_gen_id }} {
+      padding: 20px;
+    }
+
+    .ai-split-media-heading-{{ ai_gen_id }} {
+      margin-bottom: 24px;
+      font-size: calc({{ block.settings.heading_size }}px * 0.8);
+    }
+  }
+{% endstyle %}
+
+<split-media-{{ ai_gen_id }} class="ai-split-media-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-split-media-container-{{ ai_gen_id }}">
+    {% if block.settings.section_heading != blank %}
+      <h2 class="ai-split-media-heading-{{ ai_gen_id }}">
+        {{ block.settings.section_heading }}
+      </h2>
+    {% endif %}
+
+    <div class="ai-split-media-grid-{{ ai_gen_id }}">
+      <div class="ai-split-media-panel-{{ ai_gen_id }} ai-split-media-panel-left-{{ ai_gen_id }}">
+        {% if block.settings.left_link != blank %}
+          <a href="{{ block.settings.left_link }}">
+        {% endif %}
+
+        {% if block.settings.left_image %}
+          <img
+            src="{{ block.settings.left_image | image_url: width: 2000 }}"
+            alt="{{ block.settings.left_image.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.left_image.width }}"
+            height="{{ block.settings.left_image.height }}"
+            class="ai-split-media-image-{{ ai_gen_id }}"
+          >
+        {% else %}
+          <div class="ai-split-media-placeholder-{{ ai_gen_id }}">
+            {{ 'image' | placeholder_svg_tag }}
+            <div class="ai-split-media-empty-state-{{ ai_gen_id }}">
+              Add an image for the left panel
+            </div>
+          </div>
+        {% endif %}
+
+        {% if block.settings.left_overlay_type != 'none' %}
+          <div class="ai-split-media-overlay-{{ ai_gen_id }}">
+            {% if block.settings.left_overlay_type == 'image' and block.settings.left_overlay_image %}
+              <img
+                src="{{ block.settings.left_overlay_image | image_url: width: 800 }}"
+                alt="{{ block.settings.left_overlay_image.alt | escape }}"
+                loading="lazy"
+                class="ai-split-media-overlay-image-{{ ai_gen_id }}"
+              >
+            {% elsif block.settings.left_overlay_type == 'text' and block.settings.left_overlay_text != blank %}
+              <div class="ai-split-media-overlay-text-{{ ai_gen_id }}">
+                {{ block.settings.left_overlay_text }}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if block.settings.left_link != blank %}
+          </a>
+        {% endif %}
+      </div>
+
+      <div class="ai-split-media-panel-{{ ai_gen_id }} ai-split-media-panel-right-{{ ai_gen_id }}">
+        {% if block.settings.right_link != blank %}
+          <a href="{{ block.settings.right_link }}">
+        {% endif %}
+
+        {% liquid
+          assign has_video = false
+          if block.settings.right_video_upload != blank
+            assign has_video = true
+            assign video_source = block.settings.right_video_upload
+          elsif block.settings.right_video_url != blank
+            assign has_video = true
+            assign video_source = block.settings.right_video_url
+          endif
+        %}
+
+        {% if has_video %}
+          {% if block.settings.right_video_upload != blank %}
+            <video
+              class="ai-split-media-video-{{ ai_gen_id }}"
+              {% if block.settings.video_autoplay %}autoplay{% endif %}
+              {% if block.settings.video_loop %}loop{% endif %}
+              {% if block.settings.video_muted %}muted{% endif %}
+              playsinline
+              preload="metadata"
+            >
+              {% for source in block.settings.right_video_upload.sources %}
+                <source src="{{ source.url }}" type="{{ source.mime_type }}">
+              {% endfor %}
+            </video>
+          {% elsif block.settings.right_video_url != blank %}
+            {% assign video_url = block.settings.right_video_url %}
+            {% if video_url contains 'youtube.com' or video_url contains 'youtu.be' %}
+              {% assign video_id = video_url | split: 'v=' | last | split: '/' | last | split: '&' | first %}
+              <iframe
+                class="ai-split-media-video-{{ ai_gen_id }}"
+                src="https://www.youtube.com/embed/{{ video_id }}?autoplay=1&mute=1&loop=1&playlist={{ video_id }}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+                frameborder="0"
+                allow="autoplay; encrypted-media"
+                allowfullscreen
+              ></iframe>
+            {% elsif video_url contains 'vimeo.com' %}
+              {% assign video_id = video_url | split: '/' | last %}
+              <iframe
+                class="ai-split-media-video-{{ ai_gen_id }}"
+                src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1&muted=1&loop=1&background=1&controls=0"
+                frameborder="0"
+                allow="autoplay; fullscreen"
+                allowfullscreen
+              ></iframe>
+            {% elsif video_url contains '.mp4' %}
+              <video
+                class="ai-split-media-video-{{ ai_gen_id }}"
+                {% if block.settings.video_autoplay %}autoplay{% endif %}
+                {% if block.settings.video_loop %}loop{% endif %}
+                {% if block.settings.video_muted %}muted{% endif %}
+                playsinline
+                preload="metadata"
+              >
+                <source src="{{ video_url }}" type="video/mp4">
+              </video>
+            {% endif %}
+          {% endif %}
+        {% else %}
+          {% if block.settings.right_fallback_image %}
+            <img
+              src="{{ block.settings.right_fallback_image | image_url: width: 2000 }}"
+              alt="{{ block.settings.right_fallback_image.alt | escape }}"
+              loading="lazy"
+              width="{{ block.settings.right_fallback_image.width }}"
+              height="{{ block.settings.right_fallback_image.height }}"
+              class="ai-split-media-image-{{ ai_gen_id }}"
+            >
+          {% else %}
+            <div class="ai-split-media-placeholder-{{ ai_gen_id }}">
+              {{ 'image' | placeholder_svg_tag }}
+              <div class="ai-split-media-empty-state-{{ ai_gen_id }}">
+                Add a video or fallback image for the right panel
+              </div>
+            </div>
+          {% endif %}
+        {% endif %}
+
+        {% if block.settings.right_overlay_type != 'none' %}
+          <div class="ai-split-media-overlay-{{ ai_gen_id }}">
+            {% if block.settings.right_overlay_type == 'image' and block.settings.right_overlay_image %}
+              <img
+                src="{{ block.settings.right_overlay_image | image_url: width: 800 }}"
+                alt="{{ block.settings.right_overlay_image.alt | escape }}"
+                loading="lazy"
+                class="ai-split-media-overlay-image-{{ ai_gen_id }}"
+              >
+            {% elsif block.settings.right_overlay_type == 'text' and block.settings.right_overlay_text != blank %}
+              <div class="ai-split-media-overlay-text-{{ ai_gen_id }}">
+                {{ block.settings.right_overlay_text }}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if block.settings.right_link != blank %}
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</split-media-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class SplitMedia{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.videos = this.querySelectorAll('.ai-split-media-video-{{ ai_gen_id }}');
+        this.setupVideoPlayback();
+      }
+
+      setupVideoPlayback() {
+        this.videos.forEach((video) => {
+          if (video.tagName === 'VIDEO') {
+            video.play().catch(() => {
+              video.muted = true;
+              video.play();
+            });
+          }
+        });
+      }
+    }
+
+    customElements.define('split-media-{{ ai_gen_id }}', SplitMedia{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Split media",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Heading"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_uppercase",
+      "label": "Uppercase heading",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "panel_gap",
+      "label": "Gap between panels",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "aspect_ratio_width",
+      "label": "Aspect ratio width",
+      "min": 1,
+      "max": 16,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "aspect_ratio_height",
+      "label": "Aspect ratio height",
+      "min": 1,
+      "max": 16,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border",
+      "label": "Show border",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "header",
+      "content": "Left panel"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "left_link",
+      "label": "Link"
+    },
+    {
+      "type": "select",
+      "id": "left_overlay_type",
+      "label": "Overlay type",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "text",
+          "label": "Text"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_overlay_image",
+      "label": "Overlay image"
+    },
+    {
+      "type": "text",
+      "id": "left_overlay_text",
+      "label": "Overlay text"
+    },
+    {
+      "type": "header",
+      "content": "Right panel"
+    },
+    {
+      "type": "video",
+      "id": "right_video_upload",
+      "label": "Video upload"
+    },
+    {
+      "type": "url",
+      "id": "right_video_url",
+      "label": "Video URL"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_fallback_image",
+      "label": "Fallback image"
+    },
+    {
+      "type": "url",
+      "id": "right_link",
+      "label": "Link"
+    },
+    {
+      "type": "select",
+      "id": "right_overlay_type",
+      "label": "Overlay type",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "text",
+          "label": "Text"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_overlay_image",
+      "label": "Overlay image"
+    },
+    {
+      "type": "text",
+      "id": "right_overlay_text",
+      "label": "Overlay text"
+    },
+    {
+      "type": "header",
+      "content": "Video settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_autoplay",
+      "label": "Autoplay",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_loop",
+      "label": "Loop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "video_muted",
+      "label": "Muted",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Overlay style"
+    },
+    {
+      "type": "range",
+      "id": "overlay_size",
+      "label": "Size",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "overlay_vertical",
+      "label": "Vertical position",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Bottom"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "overlay_horizontal",
+      "label": "Horizontal position",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Split media"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,886 @@
+{% doc %}
+  @prompt
+    Create a PRODUCT CAROUSEL section for a luxury high-end women's fashion brand,
+    inspired by arakii.com — clean, minimal, editorial, lots of whitespace.
+
+    PRODUCTS & DATA
+    - Let me add products via product pickers (around 8 product slots).
+    - Use real product data so each card automatically shows the product image, title,
+      price, and links to that product's page. Price shows in store currency (GBP).
+    - Per product, also give me an optional COVER IMAGE override (image picker) so the
+      card's first image can be ANY image — including ones not on the product. If no
+      override is set, fall back to the product's featured image.
+
+    CARD
+    - Layout: image on top, then product title, then price underneath.
+    - Default portrait 3:4 image ratio (adjustable).
+    - Clean typography using the theme's existing fonts and colors.
+    - IN-CARD IMAGE CLICK-THROUGH: each card lets the user browse that product's gallery
+      images without leaving the page — small left/right arrows and dots cycle through
+      them. Title and price stay visible. The cover image shows first, then the rest.
+
+    INTERACTION
+    - A single horizontal row. On mobile: smooth, momentum-based swipe scroll (like
+      arakii.com) with a sliver of the next card peeking in. On desktop: drag to scroll
+      with the mouse, plus small circular white prev/next arrows with a thin chevron.
+    - Clicking a card (image or title) goes to the product page. Make sure the in-card
+      image arrows don't accidentally trigger the product link.
+
+    LAYOUT / RESPONSIVE (mobile-first — 90% of shoppers are on mobile)
+    - About 3 cards on desktop, 2 on tablet, 1.5 on mobile. Generous gap between cards.
+
+    EXTRAS
+    - Optional section heading above the row (e.g. "New In") with size, alignment, and
+      uppercase controls.
+    - Editor settings: cards-per-view for desktop/tablet/mobile, card gap, image ratio,
+      corner radius, show price on/off, show title on/off, arrows on/off, in-card dots
+      on/off, section top & bottom padding, background color.
+
+    just to clairfy it must swipe on mobiel but also you should be able to click through the product images, from the home page aswell., its not showing the cover image and its also not letting us change theproduct iage to swipoe all product images and also swipe through all the product too , perfect now only change is when you click the image it takes you to the product page for that product
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-product-carousel-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding-top: {{ block.settings.padding_top }}px;
+    padding-bottom: {{ block.settings.padding_bottom }}px;
+  }
+
+  .ai-product-carousel-container-{{ ai_gen_id }} {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-product-carousel-heading-{{ ai_gen_id }} {
+    margin: 0 0 {{ block.settings.heading_margin_bottom }}px;
+    font-size: {{ block.settings.heading_size }}px;
+    text-align: {{ block.settings.heading_alignment }};
+    color: {{ block.settings.heading_color }};
+    {% if block.settings.heading_uppercase %}
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    {% endif %}
+  }
+
+  .ai-product-carousel-wrapper-{{ ai_gen_id }} {
+    position: relative;
+  }
+
+  .ai-product-carousel-track-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.card_gap }}px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: grab;
+  }
+
+  .ai-product-carousel-track-{{ ai_gen_id }}::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ai-product-carousel-track-{{ ai_gen_id }}.dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+    user-select: none;
+  }
+
+  .ai-product-carousel-card-{{ ai_gen_id }} {
+    flex: 0 0 calc((100% - ({{ block.settings.mobile_cards_per_view | minus: 1 }} * {{ block.settings.card_gap }}px)) / {{ block.settings.mobile_cards_per_view }});
+    min-width: 0;
+    position: relative;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-product-carousel-card-{{ ai_gen_id }} {
+      flex: 0 0 calc((100% - ({{ block.settings.tablet_cards_per_view | minus: 1 }} * {{ block.settings.card_gap }}px)) / {{ block.settings.tablet_cards_per_view }});
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .ai-product-carousel-card-{{ ai_gen_id }} {
+      flex: 0 0 calc((100% - ({{ block.settings.desktop_cards_per_view | minus: 1 }} * {{ block.settings.card_gap }}px)) / {{ block.settings.desktop_cards_per_view }});
+    }
+  }
+
+  .ai-product-carousel-card-inner-{{ ai_gen_id }} {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .ai-product-carousel-image-container-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    padding-bottom: {{ block.settings.image_ratio }}%;
+    overflow: hidden;
+    border-radius: {{ block.settings.image_radius }}px;
+    background-color: #f5f5f5;
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+
+  .ai-product-carousel-image-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-product-carousel-image-nav-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 8px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .ai-product-carousel-card-{{ ai_gen_id }}:hover .ai-product-carousel-image-nav-{{ ai_gen_id }} {
+    opacity: 1;
+  }
+
+  @media (hover: none) {
+    .ai-product-carousel-image-nav-{{ ai_gen_id }} {
+      opacity: 1;
+    }
+  }
+
+  /* Only the arrow buttons capture taps/clicks; the rest of the overlay lets
+     taps fall through to the image (product link) and lets swipes scroll. */
+  .ai-product-carousel-image-arrow-{{ ai_gen_id }} {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    z-index: 2;
+    flex-shrink: 0;
+    pointer-events: auto;
+  }
+
+  .ai-product-carousel-image-arrow-{{ ai_gen_id }}:hover {
+    background-color: rgba(255, 255, 255, 1);
+  }
+
+  .ai-product-carousel-image-arrow-{{ ai_gen_id }} svg {
+    width: 12px;
+    height: 12px;
+    stroke: #000;
+    stroke-width: 2;
+    pointer-events: none;
+  }
+
+  .ai-product-carousel-image-dots-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 6px;
+    z-index: 2;
+  }
+
+  .ai-product-carousel-image-dot-{{ ai_gen_id }} {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    pointer-events: auto;
+  }
+
+  .ai-product-carousel-image-dot-{{ ai_gen_id }}.active {
+    background-color: rgba(255, 255, 255, 1);
+  }
+
+  .ai-product-carousel-title-{{ ai_gen_id }} {
+    font-size: 14px;
+    margin: 0 0 6px;
+    color: {{ block.settings.text_color }};
+    line-height: 1.4;
+  }
+
+  .ai-product-carousel-price-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-product-carousel-nav-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    z-index: 3;
+  }
+
+  @media screen and (min-width: 990px) {
+    .ai-product-carousel-nav-{{ ai_gen_id }} {
+      display: flex;
+    }
+  }
+
+  .ai-product-carousel-nav-{{ ai_gen_id }}:hover {
+    background-color: rgba(255, 255, 255, 1);
+  }
+
+  .ai-product-carousel-nav-{{ ai_gen_id }} svg {
+    width: 16px;
+    height: 16px;
+    stroke: #000;
+    stroke-width: 2;
+  }
+
+  .ai-product-carousel-nav-prev-{{ ai_gen_id }} {
+    left: -20px;
+  }
+
+  .ai-product-carousel-nav-next-{{ ai_gen_id }} {
+    right: -20px;
+  }
+
+  .ai-product-carousel-empty-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+    font-size: 14px;
+  }
+{% endstyle %}
+
+<product-carousel-{{ ai_gen_id }} class="ai-product-carousel-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-product-carousel-container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-product-carousel-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+    {% endif %}
+
+    {% assign has_products = false %}
+    {% for i in (1..8) %}
+      {% assign product_key = 'product_' | append: i %}
+      {% if block.settings[product_key] != blank %}
+        {% assign has_products = true %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
+    {% if has_products %}
+      <div class="ai-product-carousel-wrapper-{{ ai_gen_id }}">
+        {% if block.settings.show_arrows %}
+          <button class="ai-product-carousel-nav-{{ ai_gen_id }} ai-product-carousel-nav-prev-{{ ai_gen_id }}" type="button" aria-label="Previous">
+            <svg viewBox="0 0 24 24" fill="none">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button class="ai-product-carousel-nav-{{ ai_gen_id }} ai-product-carousel-nav-next-{{ ai_gen_id }}" type="button" aria-label="Next">
+            <svg viewBox="0 0 24 24" fill="none">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        {% endif %}
+
+        <div class="ai-product-carousel-track-{{ ai_gen_id }}">
+          {% for i in (1..8) %}
+            {% assign product_key = 'product_' | append: i %}
+            {% assign cover_image_key = 'cover_image_' | append: i %}
+            {% assign product = block.settings[product_key] %}
+            {% assign cover_image = block.settings[cover_image_key] %}
+
+            {% if product != blank %}
+              <div class="ai-product-carousel-card-{{ ai_gen_id }}" data-product-id="{{ product.id }}" data-product-url="{{ product.url }}">
+                <div class="ai-product-carousel-image-container-{{ ai_gen_id }}">
+                  {% assign product_images = product.media | where: 'media_type', 'image' %}
+                  {% assign total_images = 0 %}
+
+                  {% if cover_image != blank %}
+                    {% assign total_images = total_images | plus: 1 %}
+                  {% endif %}
+                  {% assign total_images = total_images | plus: product_images.size %}
+
+                  {% if cover_image != blank %}
+                    <img
+                      src="{{ cover_image | image_url: width: 800 }}"
+                      alt="{{ cover_image.alt | default: product.title | escape }}"
+                      loading="lazy"
+                      width="800"
+                      height="{{ 800 | times: block.settings.image_ratio | divided_by: 100 }}"
+                      class="ai-product-carousel-image-{{ ai_gen_id }}"
+                      style="display: block;"
+                      data-image-index="0"
+                    >
+                  {% elsif product.featured_image %}
+                    <img
+                      src="{{ product.featured_image | image_url: width: 800 }}"
+                      alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                      loading="lazy"
+                      width="800"
+                      height="{{ 800 | times: block.settings.image_ratio | divided_by: 100 }}"
+                      class="ai-product-carousel-image-{{ ai_gen_id }}"
+                      style="display: block;"
+                      data-image-index="0"
+                    >
+                  {% endif %}
+
+                  {% for media in product_images %}
+                    {% if cover_image != blank or media.id != product.featured_image.id %}
+                      {% if cover_image != blank %}
+                        {% assign img_index = forloop.index %}
+                      {% else %}
+                        {% assign img_index = forloop.index0 %}
+                      {% endif %}
+                      <img
+                        src="{{ media | image_url: width: 800 }}"
+                        alt="{{ media.alt | default: product.title | escape }}"
+                        loading="lazy"
+                        width="800"
+                        height="{{ 800 | times: block.settings.image_ratio | divided_by: 100 }}"
+                        class="ai-product-carousel-image-{{ ai_gen_id }}"
+                        style="display: none;"
+                        data-image-index="{{ img_index }}"
+                      >
+                    {% endif %}
+                  {% endfor %}
+
+                  {% if total_images == 0 %}
+                    <div class="ai-product-carousel-image-{{ ai_gen_id }}">
+                      {{ 'product-1' | placeholder_svg_tag }}
+                    </div>
+                  {% endif %}
+
+                  {% if total_images > 1 %}
+                    <div class="ai-product-carousel-image-nav-{{ ai_gen_id }}">
+                      <button class="ai-product-carousel-image-arrow-{{ ai_gen_id }} ai-product-carousel-image-prev-{{ ai_gen_id }}" type="button" aria-label="Previous image">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                      </button>
+                      <button class="ai-product-carousel-image-arrow-{{ ai_gen_id }} ai-product-carousel-image-next-{{ ai_gen_id }}" type="button" aria-label="Next image">
+                        <svg viewBox="0 0 24 24" fill="none">
+                          <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                      </button>
+                    </div>
+
+                    {% if block.settings.show_image_dots %}
+                      <div class="ai-product-carousel-image-dots-{{ ai_gen_id }}">
+                        {% for j in (0..total_images) limit: total_images %}
+                          <button
+                            class="ai-product-carousel-image-dot-{{ ai_gen_id }} {% if j == 0 %}active{% endif %}"
+                            type="button"
+                            aria-label="Go to image {{ j | plus: 1 }}"
+                            data-dot-index="{{ j }}"
+                          ></button>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                  {% endif %}
+                </div>
+
+                <a href="{{ product.url }}" class="ai-product-carousel-card-inner-{{ ai_gen_id }}">
+                  {% if block.settings.show_title %}
+                    <h3 class="ai-product-carousel-title-{{ ai_gen_id }}">{{ product.title }}</h3>
+                  {% endif %}
+                  {% if block.settings.show_price %}
+                    <div class="ai-product-carousel-price-{{ ai_gen_id }}">
+                      {{ product.price | money }}
+                    </div>
+                  {% endif %}
+                </a>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% else %}
+      <div class="ai-product-carousel-empty-{{ ai_gen_id }}">
+        Add products to display in the carousel
+      </div>
+    {% endif %}
+  </div>
+</product-carousel-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class ProductCarousel{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.track = this.querySelector('.ai-product-carousel-track-{{ ai_gen_id }}');
+        this.prevBtn = this.querySelector('.ai-product-carousel-nav-prev-{{ ai_gen_id }}');
+        this.nextBtn = this.querySelector('.ai-product-carousel-nav-next-{{ ai_gen_id }}');
+        this.cards = this.querySelectorAll('.ai-product-carousel-card-{{ ai_gen_id }}');
+
+        this.isDragging = false;
+        this.startX = 0;
+        this.scrollLeft = 0;
+        this.velocity = 0;
+        this.lastX = 0;
+        this.lastTime = 0;
+        this.hasMoved = false;
+      }
+
+      connectedCallback() {
+        if (!this.track) return;
+        this.setupCarouselNavigation();
+        this.setupImageGalleries();
+        this.setupMouseDragScroll();
+      }
+
+      step() {
+        const cardWidth = this.cards[0] ? this.cards[0].offsetWidth : 0;
+        const gap = {{ block.settings.card_gap }};
+        return cardWidth + gap;
+      }
+
+      setupCarouselNavigation() {
+        if (this.prevBtn) {
+          this.prevBtn.addEventListener('click', () => {
+            this.track.scrollBy({ left: -this.step(), behavior: 'smooth' });
+          });
+        }
+        if (this.nextBtn) {
+          this.nextBtn.addEventListener('click', () => {
+            this.track.scrollBy({ left: this.step(), behavior: 'smooth' });
+          });
+        }
+      }
+
+      setupImageGalleries() {
+        this.cards.forEach((card) => {
+          const imageContainer = card.querySelector('.ai-product-carousel-image-container-{{ ai_gen_id }}');
+          const images = card.querySelectorAll('.ai-product-carousel-image-{{ ai_gen_id }}');
+          const prevBtn = card.querySelector('.ai-product-carousel-image-prev-{{ ai_gen_id }}');
+          const nextBtn = card.querySelector('.ai-product-carousel-image-next-{{ ai_gen_id }}');
+          const dots = card.querySelectorAll('.ai-product-carousel-image-dot-{{ ai_gen_id }}');
+          const productUrl = card.dataset.productUrl;
+
+          // Tapping / clicking the image (anywhere that's not an arrow or dot) opens
+          // the product page. On a mouse drag we suppress it via hasMoved; on touch a
+          // swipe doesn't fire a click, so native scrolling never triggers navigation.
+          if (imageContainer && productUrl) {
+            imageContainer.addEventListener('click', () => {
+              if (!this.hasMoved) {
+                window.location.href = productUrl;
+              }
+            });
+          }
+
+          if (images.length <= 1) return;
+
+          let currentIndex = 0;
+
+          const showImage = (index) => {
+            if (index < 0) index = images.length - 1;
+            if (index >= images.length) index = 0;
+            images.forEach((img, i) => {
+              img.style.display = i === index ? 'block' : 'none';
+            });
+            dots.forEach((dot, i) => {
+              dot.classList.toggle('active', i === index);
+            });
+            currentIndex = index;
+          };
+
+          // Drive arrows/dots off click. A tap fires a click on mobile too, so this
+          // works on touch without preventDefault() killing the tap. stopPropagation
+          // keeps it from bubbling up to the image -> product-page handler.
+          const wireArrow = (btn, dir) => {
+            if (!btn) return;
+            btn.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              showImage(currentIndex + dir);
+            });
+          };
+          wireArrow(prevBtn, -1);
+          wireArrow(nextBtn, 1);
+
+          dots.forEach((dot, index) => {
+            dot.addEventListener('click', (e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              showImage(index);
+            });
+          });
+        });
+      }
+
+      // Mouse-only drag-to-scroll for desktop. Touch devices use the browser's own
+      // native momentum scrolling — smoother, and it no longer fights our JS (which
+      // was the cause of the swipe snapping back to the first card on mobile).
+      setupMouseDragScroll() {
+        const startDrag = (e) => {
+          this.isDragging = true;
+          this.hasMoved = false;
+          this.track.classList.add('dragging');
+          this.startX = e.pageX;
+          this.scrollLeft = this.track.scrollLeft;
+          this.lastX = this.startX;
+          this.lastTime = Date.now();
+          this.velocity = 0;
+        };
+
+        const duringDrag = (e) => {
+          if (!this.isDragging) return;
+          const x = e.pageX;
+          if (Math.abs(x - this.startX) > 5) {
+            this.hasMoved = true;
+            e.preventDefault();
+          }
+          const walk = (x - this.startX) * 1.5;
+          this.track.scrollLeft = this.scrollLeft - walk;
+
+          const now = Date.now();
+          const dt = now - this.lastTime;
+          if (dt > 0) {
+            this.velocity = (x - this.lastX) / dt;
+          }
+          this.lastX = x;
+          this.lastTime = now;
+        };
+
+        const endDrag = () => {
+          if (!this.isDragging) return;
+          this.isDragging = false;
+          this.track.classList.remove('dragging');
+
+          if (this.hasMoved) {
+            const momentum = this.velocity * 300;
+            if (Math.abs(momentum) > 10) {
+              this.track.scrollBy({ left: -momentum, behavior: 'smooth' });
+            }
+          }
+
+          setTimeout(() => {
+            this.hasMoved = false;
+          }, 10);
+        };
+
+        this.track.addEventListener('mousedown', startDrag);
+        this.track.addEventListener('mousemove', duringDrag);
+        this.track.addEventListener('mouseup', endDrag);
+        this.track.addEventListener('mouseleave', endDrag);
+
+        // If a mouse drag happened, don't let the title/price link navigate.
+        const links = this.querySelectorAll('.ai-product-carousel-card-inner-{{ ai_gen_id }}');
+        links.forEach((link) => {
+          link.addEventListener('click', (e) => {
+            if (this.hasMoved) {
+              e.preventDefault();
+            }
+          });
+        });
+      }
+    }
+
+    customElements.define('product-carousel-{{ ai_gen_id }}', ProductCarousel{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product carousel",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "New In"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_uppercase",
+      "label": "Uppercase heading",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_bottom",
+      "label": "Heading bottom spacing",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "product",
+      "id": "product_1",
+      "label": "Product 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image_1",
+      "label": "Product 1 cover image"
+    },
+    {
+      "type": "product",
+      "id": "product_2",
+      "label": "Product 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image_2",
+      "label": "Product 2 cover image"
+    },
+    {
+      "type": "product",
+      "id": "product_3",
+      "label": "Product 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image_3",
+      "label": "Product 3 cover image"
+    },
+    {
+      "type": "product",
+      "id": "product_4",
+      "label": "Product 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image_4",
+      "label": "Product 4 cover image"
+    },
+    {
+      "type": "product",
+      "id": "product_5",
+      "label": "Product 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image_5",
+      "label": "Product 5 cover image"
+    },
+    {
+      "type": "product",
+      "id": "product_6",
+      "label": "Product 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image_6",
+      "label": "Product 6 cover image"
+    },
+    {
+      "type": "product",
+      "id": "product_7",
+      "label": "Product 7"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image_7",
+      "label": "Product 7 cover image"
+    },
+    {
+      "type": "product",
+      "id": "product_8",
+      "label": "Product 8"
+    },
+    {
+      "type": "image_picker",
+      "id": "cover_image_8",
+      "label": "Product 8 cover image"
+    },
+    {
+      "type": "header",
+      "content": "Card display"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show product title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show product price",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "image_ratio",
+      "label": "Image aspect ratio",
+      "min": 100,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "default": 135,
+      "info": "135% = 3:4 portrait ratio"
+    },
+    {
+      "type": "range",
+      "id": "image_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_cards_per_view",
+      "label": "Cards per view (desktop)",
+      "min": 2,
+      "max": 5,
+      "step": 0.5,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "tablet_cards_per_view",
+      "label": "Cards per view (tablet)",
+      "min": 1.5,
+      "max": 3,
+      "step": 0.5,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "mobile_cards_per_view",
+      "label": "Cards per view (mobile)",
+      "min": 1,
+      "max": 2,
+      "step": 0.5,
+      "default": 1.5
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Gap between cards",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows",
+      "label": "Show navigation arrows",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_dots",
+      "label": "Show image dots",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product carousel"
+    }
+  ]
+}
+{% endschema %}

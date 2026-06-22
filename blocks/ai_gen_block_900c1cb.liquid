@@ -1,0 +1,685 @@
+{% doc %}
+  @prompt
+    Create an editorial "mood board" image grid section for a luxury high-end women's
+    fashion brand, inspired by Self-Portrait's homepage.
+
+    LAYOUT: an asymmetric mosaic / masonry grid of images in mixed sizes — one large
+    feature tile alongside smaller tiles — that together create a curated, editorial
+    mood. Some tiles span 2 columns / 2 rows. Spacious, minimal, generous whitespace.
+
+    TILES: each tile is optionally clickable (product or collection), with an optional
+    caption and a subtle hover zoom/fade. One tile can be a VIDEO instead of an image:
+    the video autoplays muted, loops, and has no play/pause controls.
+
+    AESTHETIC: clean, minimal, luxury, neutral. Portrait (3:4) default, sharp corners
+    default (adjustable). Match the theme's fonts and colours.
+
+    HEADING: optional heading with size, alignment, uppercase controls.
+
+    RESPONSIVE / MOBILE-FIRST. Reflows into a clean stack on mobile.
+
+    EDITOR SETTINGS: up to 8 tiles; per tile image OR video, link, caption, feature
+    toggle; grid gap, corner radius, section top & bottom padding, heading, background.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-mood-grid-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding-top: {{ block.settings.padding_top }}px;
+    padding-bottom: {{ block.settings.padding_bottom }}px;
+  }
+
+  .ai-mood-grid-container-{{ ai_gen_id }} {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-mood-grid-heading-{{ ai_gen_id }} {
+    margin: 0 0 {{ block.settings.grid_gap }}px;
+    font-size: {{ block.settings.heading_size }}px;
+    text-align: {{ block.settings.heading_alignment }};
+    color: {{ block.settings.heading_color }};
+    letter-spacing: 0.05em;
+    {% if block.settings.heading_uppercase %}
+      text-transform: uppercase;
+    {% endif %}
+  }
+
+  .ai-mood-grid-wrapper-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+  }
+
+  .ai-mood-tile-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    border-radius: {{ block.settings.corner_radius }}px;
+    background-color: #f5f5f5;
+  }
+
+  .ai-mood-tile-{{ ai_gen_id }}.feature {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+
+  .ai-mood-tile-link-{{ ai_gen_id }} {
+    display: block;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .ai-mood-tile-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    padding-bottom: 133.33%;
+    overflow: hidden;
+  }
+
+  .ai-mood-tile-{{ ai_gen_id }}.feature .ai-mood-tile-image-wrapper-{{ ai_gen_id }} {
+    padding-bottom: 66.66%;
+  }
+
+  .ai-mood-tile-image-{{ ai_gen_id }},
+  .ai-mood-tile-video-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.6s ease;
+  }
+
+  .ai-mood-tile-link-{{ ai_gen_id }}:hover .ai-mood-tile-image-{{ ai_gen_id }},
+  .ai-mood-tile-link-{{ ai_gen_id }}:hover .ai-mood-tile-video-{{ ai_gen_id }} {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+
+  .ai-mood-tile-placeholder-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f5f5f5;
+  }
+
+  .ai-mood-tile-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-mood-tile-caption-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+    color: #ffffff;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 2;
+  }
+
+  .ai-mood-tile-link-{{ ai_gen_id }}:hover .ai-mood-tile-caption-{{ ai_gen_id }} {
+    opacity: 1;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-mood-grid-wrapper-{{ ai_gen_id }} {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ai-mood-tile-{{ ai_gen_id }}.feature {
+      grid-column: span 2;
+      grid-row: span 1;
+    }
+
+    .ai-mood-tile-{{ ai_gen_id }}.feature .ai-mood-tile-image-wrapper-{{ ai_gen_id }} {
+      padding-bottom: 100%;
+    }
+
+    .ai-mood-grid-heading-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.heading_size }}px * 0.8);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-mood-grid-wrapper-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: {{ block.settings.grid_gap | times: 0.75 }}px;
+    }
+
+    .ai-mood-tile-{{ ai_gen_id }}.feature {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+
+    .ai-mood-tile-{{ ai_gen_id }}.feature .ai-mood-tile-image-wrapper-{{ ai_gen_id }} {
+      padding-bottom: 133.33%;
+    }
+
+    .ai-mood-grid-container-{{ ai_gen_id }} {
+      padding: 0 16px;
+    }
+
+    .ai-mood-grid-heading-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.heading_size }}px * 0.7);
+      margin-bottom: {{ block.settings.grid_gap | times: 0.75 }}px;
+    }
+  }
+{% endstyle %}
+
+<mood-board-grid-{{ ai_gen_id }} class="ai-mood-grid-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-mood-grid-container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-mood-grid-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="ai-mood-grid-wrapper-{{ ai_gen_id }}">
+      {% for i in (1..8) %}
+        {% liquid
+          assign tile_enabled_key = 'tile_' | append: i | append: '_enabled'
+          assign tile_image_key = 'tile_' | append: i | append: '_image'
+          assign tile_video_key = 'tile_' | append: i | append: '_video'
+          assign tile_link_key = 'tile_' | append: i | append: '_link'
+          assign tile_caption_key = 'tile_' | append: i | append: '_caption'
+          assign tile_feature_key = 'tile_' | append: i | append: '_feature'
+
+          assign tile_enabled = block.settings[tile_enabled_key]
+          assign tile_image = block.settings[tile_image_key]
+          assign tile_video = block.settings[tile_video_key]
+          assign tile_link = block.settings[tile_link_key]
+          assign tile_caption = block.settings[tile_caption_key]
+          assign tile_feature = block.settings[tile_feature_key]
+        %}
+
+        {% if tile_enabled %}
+          <div class="ai-mood-tile-{{ ai_gen_id }} {% if tile_feature %}feature{% endif %}">
+            {% if tile_link != blank %}
+              <a href="{{ tile_link }}" class="ai-mood-tile-link-{{ ai_gen_id }}">
+            {% else %}
+              <div class="ai-mood-tile-link-{{ ai_gen_id }}">
+            {% endif %}
+              <div class="ai-mood-tile-image-wrapper-{{ ai_gen_id }}">
+                {% if tile_video != blank %}
+                  {% assign video_class = 'ai-mood-tile-video-' | append: ai_gen_id %}
+                  {{
+                    tile_video
+                    | video_tag:
+                      autoplay: true,
+                      loop: true,
+                      muted: true,
+                      controls: false,
+                      playsinline: true,
+                      class: video_class
+                  }}
+                {% elsif tile_image %}
+                  <img
+                    src="{{ tile_image | image_url: width: 1200 }}"
+                    alt="{{ tile_image.alt | escape }}"
+                    loading="lazy"
+                    width="{{ tile_image.width }}"
+                    height="{{ tile_image.height }}"
+                    class="ai-mood-tile-image-{{ ai_gen_id }}"
+                  >
+                {% else %}
+                  <div class="ai-mood-tile-placeholder-{{ ai_gen_id }}">
+                    {{ 'image' | placeholder_svg_tag }}
+                  </div>
+                {% endif %}
+              </div>
+
+              {% if tile_caption != blank %}
+                <div class="ai-mood-tile-caption-{{ ai_gen_id }}">
+                  {{ tile_caption }}
+                </div>
+              {% endif %}
+
+            {% if tile_link != blank %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</mood-board-grid-{{ ai_gen_id }}>
+
+{% schema %}
+{
+  "name": "Editorial mood board",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop The Edit"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_uppercase",
+      "label": "Uppercase heading",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Grid style"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap",
+      "min": 8,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Tile 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_1_enabled",
+      "label": "Enable tile 1",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_1_feature",
+      "label": "Feature tile",
+      "default": true,
+      "info": "Makes tile larger (2x2 grid)"
+    },
+    {
+      "type": "image_picker",
+      "id": "tile_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "tile_1_video",
+      "label": "Video (optional, replaces image)",
+      "info": "Autoplays muted and loops, no controls"
+    },
+    {
+      "type": "url",
+      "id": "tile_1_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "tile_1_caption",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Tile 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_2_enabled",
+      "label": "Enable tile 2",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_2_feature",
+      "label": "Feature tile",
+      "default": false,
+      "info": "Makes tile larger (2x2 grid)"
+    },
+    {
+      "type": "image_picker",
+      "id": "tile_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "tile_2_video",
+      "label": "Video (optional, replaces image)",
+      "info": "Autoplays muted and loops, no controls"
+    },
+    {
+      "type": "url",
+      "id": "tile_2_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "tile_2_caption",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Tile 3"
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_3_enabled",
+      "label": "Enable tile 3",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_3_feature",
+      "label": "Feature tile",
+      "default": false,
+      "info": "Makes tile larger (2x2 grid)"
+    },
+    {
+      "type": "image_picker",
+      "id": "tile_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "tile_3_video",
+      "label": "Video (optional, replaces image)",
+      "info": "Autoplays muted and loops, no controls"
+    },
+    {
+      "type": "url",
+      "id": "tile_3_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "tile_3_caption",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Tile 4"
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_4_enabled",
+      "label": "Enable tile 4",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_4_feature",
+      "label": "Feature tile",
+      "default": false,
+      "info": "Makes tile larger (2x2 grid)"
+    },
+    {
+      "type": "image_picker",
+      "id": "tile_4_image",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "tile_4_video",
+      "label": "Video (optional, replaces image)",
+      "info": "Autoplays muted and loops, no controls"
+    },
+    {
+      "type": "url",
+      "id": "tile_4_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "tile_4_caption",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Tile 5"
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_5_enabled",
+      "label": "Enable tile 5",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_5_feature",
+      "label": "Feature tile",
+      "default": false,
+      "info": "Makes tile larger (2x2 grid)"
+    },
+    {
+      "type": "image_picker",
+      "id": "tile_5_image",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "tile_5_video",
+      "label": "Video (optional, replaces image)",
+      "info": "Autoplays muted and loops, no controls"
+    },
+    {
+      "type": "url",
+      "id": "tile_5_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "tile_5_caption",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Tile 6"
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_6_enabled",
+      "label": "Enable tile 6",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_6_feature",
+      "label": "Feature tile",
+      "default": false,
+      "info": "Makes tile larger (2x2 grid)"
+    },
+    {
+      "type": "image_picker",
+      "id": "tile_6_image",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "tile_6_video",
+      "label": "Video (optional, replaces image)",
+      "info": "Autoplays muted and loops, no controls"
+    },
+    {
+      "type": "url",
+      "id": "tile_6_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "tile_6_caption",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Tile 7"
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_7_enabled",
+      "label": "Enable tile 7",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_7_feature",
+      "label": "Feature tile",
+      "default": false,
+      "info": "Makes tile larger (2x2 grid)"
+    },
+    {
+      "type": "image_picker",
+      "id": "tile_7_image",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "tile_7_video",
+      "label": "Video (optional, replaces image)",
+      "info": "Autoplays muted and loops, no controls"
+    },
+    {
+      "type": "url",
+      "id": "tile_7_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "tile_7_caption",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Tile 8"
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_8_enabled",
+      "label": "Enable tile 8",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "tile_8_feature",
+      "label": "Feature tile",
+      "default": false,
+      "info": "Makes tile larger (2x2 grid)"
+    },
+    {
+      "type": "image_picker",
+      "id": "tile_8_image",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "tile_8_video",
+      "label": "Video (optional, replaces image)",
+      "info": "Autoplays muted and loops, no controls"
+    },
+    {
+      "type": "url",
+      "id": "tile_8_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "tile_8_caption",
+      "label": "Caption"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Editorial mood board"
+    }
+  ]
+}
+{% endschema %}

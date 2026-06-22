@@ -1,0 +1,313 @@
+{% doc %}
+  @prompt
+    create an image banner that you can add a link to the product on, can we make it so we can only hacve it on mobile an not ahve it o desktop and also the option to add another image for desktop specifically
+{% enddoc %}
+{% liquid
+  assign link_url = block.settings.custom_link
+  if link_url == blank and block.settings.product_link != blank
+    assign link_url = block.settings.product_link.url
+  endif
+  assign target = ''
+  if block.settings.open_in_new_tab
+    assign target = '_blank'
+  endif
+%}
+
+<style>
+  .image-banner-wrapper-{{ block.id }} {
+    padding-left: {{ block.settings.side_spacing }}px;
+    padding-right: {{ block.settings.side_spacing }}px;
+  }
+
+  {% if block.settings.show_on_mobile == false %}
+  @media screen and (max-width: 749px) {
+    .image-banner-wrapper-{{ block.id }} {
+      display: none;
+    }
+  }
+  {% endif %}
+
+  {% if block.settings.show_on_desktop == false %}
+  @media screen and (min-width: 750px) {
+    .image-banner-wrapper-{{ block.id }} {
+      display: none;
+    }
+  }
+  {% endif %}
+
+  .image-banner-{{ block.id }} {
+    position: relative;
+    overflow: hidden;
+    border-radius: {{ block.settings.border_radius }}px;
+    display: block;
+    width: 100%;
+  }
+
+  .image-banner-{{ block.id }} .banner-image-wrapper {
+    position: relative;
+    height: {{ block.settings.image_height }}px;
+    overflow: hidden;
+  }
+
+  .image-banner-{{ block.id }} .banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: {{ block.settings.image_fit }};
+    transition: transform 0.3s ease;
+  }
+
+  .image-banner-{{ block.id }} .banner-image-mobile {
+    display: block;
+  }
+
+  .image-banner-{{ block.id }} .banner-image-desktop {
+    display: none;
+  }
+
+  @media screen and (min-width: 750px) {
+    .image-banner-{{ block.id }} .banner-image-mobile {
+      display: none;
+    }
+
+    .image-banner-{{ block.id }} .banner-image-desktop {
+      display: block;
+    }
+
+    .image-banner-{{ block.id }} .banner-image-wrapper {
+      height: {{ block.settings.desktop_image_height }}px;
+    }
+  }
+
+  {% if block.settings.show_overlay %}
+  .image-banner-{{ block.id }} .banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: {{ block.settings.overlay_color }};
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .image-banner-{{ block.id }}:hover .banner-overlay {
+    opacity: {{ block.settings.overlay_opacity | divided_by: 100.0 }};
+  }
+
+  .image-banner-{{ block.id }}:hover .banner-image {
+    transform: scale(1.05);
+  }
+  {% endif %}
+</style>
+
+<div class="image-banner-wrapper-{{ block.id }}">
+{% if link_url != blank %}
+  <a href="{{ link_url }}" class="image-banner-{{ block.id }}" {% if target != blank %}target="{{ target }}" rel="noopener noreferrer"{% endif %}>
+    <div class="banner-image-wrapper">
+      {%- comment -%} Mobile Image {%- endcomment -%}
+      <div class="banner-image-mobile">
+        {% if block.settings.image != blank %}
+          {{ block.settings.image | image_url: width: 1500 | image_tag: class: 'banner-image', loading: 'lazy', alt: block.settings.image.alt }}
+        {% else %}
+          {{ 'image' | placeholder_svg_tag: 'banner-image' }}
+        {% endif %}
+      </div>
+
+      {%- comment -%} Desktop Image {%- endcomment -%}
+      <div class="banner-image-desktop">
+        {% if block.settings.desktop_image != blank %}
+          {{ block.settings.desktop_image | image_url: width: 2000 | image_tag: class: 'banner-image', loading: 'lazy', alt: block.settings.desktop_image.alt }}
+        {% elsif block.settings.image != blank %}
+          {{ block.settings.image | image_url: width: 2000 | image_tag: class: 'banner-image', loading: 'lazy', alt: block.settings.image.alt }}
+        {% else %}
+          {{ 'image' | placeholder_svg_tag: 'banner-image' }}
+        {% endif %}
+      </div>
+
+      {% if block.settings.show_overlay %}
+        <div class="banner-overlay"></div>
+      {% endif %}
+    </div>
+  </a>
+{% else %}
+  <div class="image-banner-{{ block.id }}">
+    <div class="banner-image-wrapper">
+      {%- comment -%} Mobile Image {%- endcomment -%}
+      <div class="banner-image-mobile">
+        {% if block.settings.image != blank %}
+          {{ block.settings.image | image_url: width: 1500 | image_tag: class: 'banner-image', loading: 'lazy', alt: block.settings.image.alt }}
+        {% else %}
+          {{ 'image' | placeholder_svg_tag: 'banner-image' }}
+        {% endif %}
+      </div>
+
+      {%- comment -%} Desktop Image {%- endcomment -%}
+      <div class="banner-image-desktop">
+        {% if block.settings.desktop_image != blank %}
+          {{ block.settings.desktop_image | image_url: width: 2000 | image_tag: class: 'banner-image', loading: 'lazy', alt: block.settings.desktop_image.alt }}
+        {% elsif block.settings.image != blank %}
+          {{ block.settings.image | image_url: width: 2000 | image_tag: class: 'banner-image', loading: 'lazy', alt: block.settings.image.alt }}
+        {% else %}
+          {{ 'image' | placeholder_svg_tag: 'banner-image' }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Image Banner with Link",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Visibility Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_mobile",
+      "label": "Show on Mobile",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_desktop",
+      "label": "Show on Desktop",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Mobile Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Mobile Banner Image"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Mobile Image Height",
+      "default": 400
+    },
+    {
+      "type": "header",
+      "content": "Desktop Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop Banner Image",
+      "info": "Optional - if not set, mobile image will be used"
+    },
+    {
+      "type": "range",
+      "id": "desktop_image_height",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Desktop Image Height",
+      "default": 500
+    },
+    {
+      "type": "header",
+      "content": "Spacing Settings"
+    },
+    {
+      "type": "range",
+      "id": "side_spacing",
+      "min": 0,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Side Spacing",
+      "info": "Space on the left and right so the image doesn't touch the edges",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Link Settings"
+    },
+    {
+      "type": "product",
+      "id": "product_link",
+      "label": "Product Link"
+    },
+    {
+      "type": "url",
+      "id": "custom_link",
+      "label": "Custom Link (Optional)",
+      "info": "If set, this will override the product link"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_in_new_tab",
+      "label": "Open link in new tab",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Style Settings"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image Fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        }
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Corner Radius",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Overlay Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show Overlay on Hover",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay Opacity",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "#000000"
+    }
+  ]
+}
+{% endschema %}
+ 

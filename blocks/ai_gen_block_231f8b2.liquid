@@ -1,0 +1,696 @@
+{% doc %}
+  @prompt
+    Create a LUXURY PHOTO SLIDER section for a high-end women's fashion brand — clean, minimal, editorial, lots of whitespace.
+
+    IMAGES & LINKS
+    - Let me upload images manually (8 image slots).
+    - Each image has its own product link (URL field). The whole image is clickable and takes the shopper straight to that product page.
+
+    LAYOUT
+    - Desktop: up to 3 images per view.
+    - Tablet: 2 per view.
+    - Mobile: ONE large image per view, with a small peek of the next image so it's obviously swipeable. Never two small images on mobile.
+    - Rectangular images, SHARP corners (corner radius 0 by default, adjustable).
+    - Portrait 3:4 image ratio by default (adjustable).
+    - Generous gap between images and clear spacing above and below the section.
+
+    INTERACTION — THIS IS THE MOST IMPORTANT PART
+    - Mobile-first: 90% of shoppers are on a phone, so the mobile swipe must be flawless for real customers, not just inside the theme editor.
+    - On mobile, moving through the images must use the browser's own native, momentum-based horizontal scroll/swipe. Do NOT use JavaScript that intercepts, blocks, or overrides native touch scrolling, and do not call preventDefault on touch events — the slider must scroll smoothly and snap nicely to each image on a real phone.
+    - Desktop: allow click-and-drag to scroll with the mouse, PLUS small circular white prev/next arrows with a thin chevron.
+    - No arrows on mobile at all — swipe only.
+
+    STYLE
+    - Minimal, luxury, editorial. Use the theme's existing fonts and colours.
+    - Optional section heading above the slider (e.g. "Shop The Edit") with size, alignment, and uppercase on/off controls.
+
+    EDITOR SETTINGS I WANT
+    - Per slide: image + product link URL.
+    - Images per view for desktop / tablet, and mobile slide width (% so I can control the peek).
+    - Gap between images, image ratio, corner radius (default 0).
+    - Show arrows on desktop on/off, show arrows on tablet on/off (arrows always hidden on mobile).
+    - Optional autoplay on/off with speed.
+    - Section top & bottom padding, background colour.
+
+    Do NOT add any extra "click here to scroll" control or button beneath the images. No dots.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-luxury-slider-{{ ai_gen_id }} {
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding-top: {{ block.settings.padding_top }}px;
+    padding-bottom: {{ block.settings.padding_bottom }}px;
+    display: block;
+  }
+
+  .ai-luxury-slider-container-{{ ai_gen_id }} {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-luxury-slider-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    text-align: {{ block.settings.heading_alignment }};
+    margin: 0 0 {{ block.settings.heading_spacing }}px 0;
+    {% if block.settings.heading_uppercase %}
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    {% endif %}
+  }
+
+  .ai-luxury-slider-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+  }
+
+  .ai-luxury-slider-track-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.image_gap }}px;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: grab;
+  }
+
+  .ai-luxury-slider-track-{{ ai_gen_id }}::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ai-luxury-slider-track-{{ ai_gen_id }}.dragging {
+    cursor: grabbing;
+    scroll-behavior: auto;
+    scroll-snap-type: none;
+    user-select: none;
+  }
+
+  .ai-luxury-slider-slide-{{ ai_gen_id }} {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  .ai-luxury-slider-slide-link-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+  }
+
+  .ai-luxury-slider-slide-link-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: {{ block.settings.corner_radius }}px;
+    aspect-ratio: {{ block.settings.image_ratio }};
+  }
+
+  .ai-luxury-slider-slide-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    aspect-ratio: {{ block.settings.image_ratio }};
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: {{ block.settings.corner_radius }}px;
+  }
+
+  .ai-luxury-slider-slide-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-luxury-slider-arrow-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 0.3s ease;
+  }
+
+  .ai-luxury-slider-arrow-{{ ai_gen_id }}:hover {
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .ai-luxury-slider-arrow-{{ ai_gen_id }} svg {
+    width: 16px;
+    height: 16px;
+    stroke: #000;
+    stroke-width: 2;
+  }
+
+  .ai-luxury-slider-arrow-prev-{{ ai_gen_id }} {
+    left: 20px;
+  }
+
+  .ai-luxury-slider-arrow-next-{{ ai_gen_id }} {
+    right: 20px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-luxury-slider-slide-{{ ai_gen_id }} {
+      width: calc((100% - ({{ block.settings.images_per_view_tablet | minus: 1 }} * {{ block.settings.image_gap }}px)) / {{ block.settings.images_per_view_tablet }});
+    }
+
+    {% unless block.settings.show_arrows_tablet %}
+      .ai-luxury-slider-arrow-{{ ai_gen_id }} {
+        display: none;
+      }
+    {% endunless %}
+  }
+
+  @media screen and (min-width: 990px) {
+    .ai-luxury-slider-slide-{{ ai_gen_id }} {
+      width: calc((100% - ({{ block.settings.images_per_view_desktop | minus: 1 }} * {{ block.settings.image_gap }}px)) / {{ block.settings.images_per_view_desktop }});
+    }
+
+    {% unless block.settings.show_arrows_desktop %}
+      .ai-luxury-slider-arrow-{{ ai_gen_id }} {
+        display: none;
+      }
+    {% endunless %}
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-luxury-slider-slide-{{ ai_gen_id }} {
+      width: {{ block.settings.mobile_slide_width }}%;
+    }
+
+    .ai-luxury-slider-arrow-{{ ai_gen_id }} {
+      display: none;
+    }
+  }
+{% endstyle %}
+
+<luxury-photo-slider-{{ ai_gen_id }} class="ai-luxury-slider-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-luxury-slider-container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-luxury-slider-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="ai-luxury-slider-wrapper-{{ ai_gen_id }}">
+      <div class="ai-luxury-slider-track-{{ ai_gen_id }}" data-slider-track>
+        {% for i in (1..8) %}
+          {% liquid
+            assign image_key = 'image_' | append: i
+            assign link_key = 'link_' | append: i
+            assign image = block.settings[image_key]
+            assign link = block.settings[link_key]
+          %}
+
+          {% if image != blank %}
+            <div class="ai-luxury-slider-slide-{{ ai_gen_id }}">
+              {% if link != blank %}
+                <a href="{{ link }}" class="ai-luxury-slider-slide-link-{{ ai_gen_id }}">
+                  <img
+                    src="{{ image | image_url: width: 1200 }}"
+                    alt="{{ image.alt | escape }}"
+                    loading="lazy"
+                    width="{{ image.width }}"
+                    height="{{ image.height }}"
+                  >
+                </a>
+              {% else %}
+                <div class="ai-luxury-slider-slide-link-{{ ai_gen_id }}">
+                  <img
+                    src="{{ image | image_url: width: 1200 }}"
+                    alt="{{ image.alt | escape }}"
+                    loading="lazy"
+                    width="{{ image.width }}"
+                    height="{{ image.height }}"
+                  >
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+        {% assign has_images = false %}
+        {% for i in (1..8) %}
+          {% liquid
+            assign image_key = 'image_' | append: i
+            assign image = block.settings[image_key]
+          %}
+          {% if image != blank %}
+            {% assign has_images = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+
+        {% unless has_images %}
+          {% for i in (1..3) %}
+            <div class="ai-luxury-slider-slide-{{ ai_gen_id }}">
+              <div class="ai-luxury-slider-slide-placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            </div>
+          {% endfor %}
+        {% endunless %}
+      </div>
+
+      {% if block.settings.show_arrows_desktop or block.settings.show_arrows_tablet %}
+        <button class="ai-luxury-slider-arrow-{{ ai_gen_id }} ai-luxury-slider-arrow-prev-{{ ai_gen_id }}" data-arrow-prev type="button" aria-label="Previous slide">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+        <button class="ai-luxury-slider-arrow-{{ ai_gen_id }} ai-luxury-slider-arrow-next-{{ ai_gen_id }}" data-arrow-next type="button" aria-label="Next slide">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
+      {% endif %}
+    </div>
+  </div>
+</luxury-photo-slider-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class LuxuryPhotoSlider{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.track = this.querySelector('[data-slider-track]');
+        this.slides = this.querySelectorAll('.ai-luxury-slider-slide-{{ ai_gen_id }}');
+        this.prevButton = this.querySelector('[data-arrow-prev]');
+        this.nextButton = this.querySelector('[data-arrow-next]');
+        this.currentIndex = 0;
+        this.isDragging = false;
+        this.hasDragged = false;
+        this.startX = 0;
+        this.scrollStart = 0;
+        this.autoplayInterval = null;
+      }
+
+      connectedCallback() {
+        if (!this.track || this.slides.length === 0) return;
+
+        this.setupArrows();
+        this.setupMouseDragScroll();
+        this.setupScrollTracking();
+
+        {% if block.settings.enable_autoplay %}
+          this.startAutoplay();
+        {% endif %}
+      }
+
+      disconnectedCallback() {
+        this.stopAutoplay();
+      }
+
+      setupArrows() {
+        if (this.prevButton) {
+          this.prevButton.addEventListener('click', () => this.scrollToPrev());
+        }
+        if (this.nextButton) {
+          this.nextButton.addEventListener('click', () => this.scrollToNext());
+        }
+      }
+
+      // Mouse-only drag. Touch is left entirely to the browser's native momentum
+      // scroll + scroll-snap, so the swipe stays smooth on a phone.
+      setupMouseDragScroll() {
+        this.track.addEventListener('mousedown', (e) => {
+          this.isDragging = true;
+          this.hasDragged = false;
+          this.track.classList.add('dragging');
+          this.startX = e.pageX;
+          this.scrollStart = this.track.scrollLeft;
+          this.stopAutoplay();
+        });
+
+        const endMouseDrag = () => {
+          this.isDragging = false;
+          this.track.classList.remove('dragging');
+        };
+        this.track.addEventListener('mouseleave', endMouseDrag);
+        this.track.addEventListener('mouseup', endMouseDrag);
+
+        this.track.addEventListener('mousemove', (e) => {
+          if (!this.isDragging) return;
+          e.preventDefault();
+          const walk = (e.pageX - this.startX) * 2;
+          if (Math.abs(e.pageX - this.startX) > 3) {
+            this.hasDragged = true;
+          }
+          this.track.scrollLeft = this.scrollStart - walk;
+        });
+
+        // Only swallow the click when an actual mouse drag happened. On touch this
+        // flag is never set, so tapping an image always opens the product page.
+        this.track.addEventListener('click', (e) => {
+          if (this.hasDragged) {
+            e.preventDefault();
+            this.hasDragged = false;
+          }
+        }, true);
+      }
+
+      setupScrollTracking() {
+        let scrollTimeout;
+        this.track.addEventListener('scroll', () => {
+          clearTimeout(scrollTimeout);
+          scrollTimeout = setTimeout(() => this.updateCurrentIndex(), 100);
+        });
+      }
+
+      updateCurrentIndex() {
+        const slideWidth = this.slides[0].offsetWidth;
+        const gap = {{ block.settings.image_gap }};
+        const index = Math.round(this.track.scrollLeft / (slideWidth + gap));
+        this.currentIndex = Math.min(Math.max(index, 0), this.slides.length - 1);
+      }
+
+      scrollToSlide(index) {
+        const slideWidth = this.slides[0].offsetWidth;
+        const gap = {{ block.settings.image_gap }};
+        this.track.scrollTo({ left: index * (slideWidth + gap), behavior: 'smooth' });
+        this.currentIndex = index;
+        this.stopAutoplay();
+      }
+
+      scrollToPrev() {
+        if (this.currentIndex > 0) {
+          this.scrollToSlide(this.currentIndex - 1);
+        }
+      }
+
+      scrollToNext() {
+        if (this.currentIndex < this.slides.length - 1) {
+          this.scrollToSlide(this.currentIndex + 1);
+        } else {
+          this.scrollToSlide(0);
+        }
+      }
+
+      startAutoplay() {
+        {% if block.settings.enable_autoplay %}
+          this.autoplayInterval = setInterval(() => {
+            this.scrollToNext();
+          }, {{ block.settings.autoplay_speed }} * 1000);
+        {% endif %}
+      }
+
+      stopAutoplay() {
+        if (this.autoplayInterval) {
+          clearInterval(this.autoplayInterval);
+          this.autoplayInterval = null;
+        }
+      }
+    }
+
+    customElements.define('luxury-photo-slider-{{ ai_gen_id }}', LuxuryPhotoSlider{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Luxury photo slider",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_uppercase",
+      "label": "Uppercase heading",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Space below heading",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "url",
+      "id": "link_1",
+      "label": "Link 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "url",
+      "id": "link_2",
+      "label": "Link 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image 3"
+    },
+    {
+      "type": "url",
+      "id": "link_3",
+      "label": "Link 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Image 4"
+    },
+    {
+      "type": "url",
+      "id": "link_4",
+      "label": "Link 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_5",
+      "label": "Image 5"
+    },
+    {
+      "type": "url",
+      "id": "link_5",
+      "label": "Link 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_6",
+      "label": "Image 6"
+    },
+    {
+      "type": "url",
+      "id": "link_6",
+      "label": "Link 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_7",
+      "label": "Image 7"
+    },
+    {
+      "type": "url",
+      "id": "link_7",
+      "label": "Link 7"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_8",
+      "label": "Image 8"
+    },
+    {
+      "type": "url",
+      "id": "link_8",
+      "label": "Link 8"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "images_per_view_desktop",
+      "label": "Images per view (desktop)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "images_per_view_tablet",
+      "label": "Images per view (tablet)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "mobile_slide_width",
+      "label": "Mobile slide width",
+      "min": 70,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 85
+    },
+    {
+      "type": "range",
+      "id": "image_gap",
+      "label": "Gap between images",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "text",
+      "id": "image_ratio",
+      "label": "Image aspect ratio",
+      "default": "3 / 4"
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows_desktop",
+      "label": "Show arrows (desktop)",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrows_tablet",
+      "label": "Show arrows (tablet)",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Autoplay"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable autoplay",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Autoplay speed",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "Section spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury photo slider"
+    }
+  ]
+}
+{% endschema %}

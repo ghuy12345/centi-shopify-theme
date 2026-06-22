@@ -1,0 +1,634 @@
+{% doc %}
+  @prompt
+    can you create a photo image slider that is nice and simple and can go left and right, for a luxury high-end fashion brand, we want it so you can fit up to 3 images on the screen at a tie and also the arrow needs to look better and smaller like an actual arrow with white circle around it, not square., this is perfect can we add product links to each image, only can we add text on the middle image saying as seen on @coco_floflo, can we make the images taller please, can we make all images the same size? also can we change the as seen on @cocofloflo to just text wsith no border make the thext white with no blakc border please
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-luxury-slider-{{ ai_gen_id }} {
+    position: relative;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .ai-luxury-slider-container-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    padding: 0 60px;
+  }
+
+  .ai-luxury-slider-track-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.image_gap }}px;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ai-luxury-slider-slide-{{ ai_gen_id }} {
+    flex: 0 0 calc((100% - (2 * {{ block.settings.image_gap }}px)) / 3);
+    position: relative;
+    overflow: hidden;
+    border-radius: {{ block.settings.image_border_radius }}px;
+  }
+
+  .ai-luxury-slider-slide-{{ ai_gen_id }} a,
+  .ai-luxury-slider-slide-{{ ai_gen_id }} > div {
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .ai-luxury-slider-slide-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
+  }
+
+  .ai-luxury-slider-slide-{{ ai_gen_id }} a:hover img {
+    transform: scale(1.05);
+  }
+
+  .ai-luxury-slider-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    padding-bottom: 150%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-luxury-slider-placeholder-{{ ai_gen_id }} svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 40%;
+    opacity: 0.3;
+  }
+
+  .ai-luxury-slider-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .ai-luxury-slider-overlay-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.overlay_text_size }}px;
+    color: {{ block.settings.overlay_text_color }};
+    background-color: transparent;
+    padding: 0;
+    text-align: center;
+    font-weight: {{ block.settings.overlay_font_weight }};
+    letter-spacing: {{ block.settings.overlay_letter_spacing }}px;
+    text-transform: {{ block.settings.overlay_text_transform }};
+    white-space: nowrap;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .ai-luxury-slider-nav-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    background-color: {{ block.settings.arrow_bg_color }};
+    border: {{ block.settings.arrow_border_width }}px solid {{ block.settings.arrow_border_color }};
+    border-radius: 50%;
+    width: {{ block.settings.arrow_size }}px;
+    height: {{ block.settings.arrow_size }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0;
+  }
+
+  .ai-luxury-slider-nav-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.arrow_hover_bg_color }};
+    border-color: {{ block.settings.arrow_hover_border_color }};
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .ai-luxury-slider-nav-{{ ai_gen_id }}:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .ai-luxury-slider-nav-{{ ai_gen_id }}:disabled:hover {
+    transform: translateY(-50%) scale(1);
+  }
+
+  .ai-luxury-slider-nav-prev-{{ ai_gen_id }} {
+    left: 0;
+  }
+
+  .ai-luxury-slider-nav-next-{{ ai_gen_id }} {
+    right: 0;
+  }
+
+  .ai-luxury-slider-nav-{{ ai_gen_id }} svg {
+    width: {{ block.settings.arrow_icon_size }}px;
+    height: {{ block.settings.arrow_icon_size }}px;
+    stroke: {{ block.settings.arrow_color }};
+    stroke-width: 2;
+    fill: none;
+  }
+
+  .ai-luxury-slider-nav-{{ ai_gen_id }}:hover svg {
+    stroke: {{ block.settings.arrow_hover_color }};
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-luxury-slider-slide-{{ ai_gen_id }} {
+      flex: 0 0 calc((100% - {{ block.settings.image_gap }}px) / 2);
+    }
+
+    .ai-luxury-slider-container-{{ ai_gen_id }} {
+      padding: 0 50px;
+    }
+
+    .ai-luxury-slider-nav-{{ ai_gen_id }} {
+      width: {{ block.settings.arrow_size | times: 0.85 }}px;
+      height: {{ block.settings.arrow_size | times: 0.85 }}px;
+    }
+
+    .ai-luxury-slider-nav-{{ ai_gen_id }} svg {
+      width: {{ block.settings.arrow_icon_size | times: 0.85 }}px;
+      height: {{ block.settings.arrow_icon_size | times: 0.85 }}px;
+    }
+
+    .ai-luxury-slider-overlay-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.overlay_text_size | times: 0.85 }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-luxury-slider-slide-{{ ai_gen_id }} {
+      flex: 0 0 100%;
+    }
+
+    .ai-luxury-slider-container-{{ ai_gen_id }} {
+      padding: 0 45px;
+    }
+
+    .ai-luxury-slider-nav-{{ ai_gen_id }} {
+      width: {{ block.settings.arrow_size | times: 0.75 }}px;
+      height: {{ block.settings.arrow_size | times: 0.75 }}px;
+    }
+
+    .ai-luxury-slider-nav-{{ ai_gen_id }} svg {
+      width: {{ block.settings.arrow_icon_size | times: 0.75 }}px;
+      height: {{ block.settings.arrow_icon_size | times: 0.75 }}px;
+    }
+
+    .ai-luxury-slider-overlay-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.overlay_text_size | times: 0.75 }}px;
+    }
+  }
+{% endstyle %}
+
+<luxury-slider-{{ ai_gen_id }} class="ai-luxury-slider-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-luxury-slider-container-{{ ai_gen_id }}">
+    <div class="ai-luxury-slider-track-{{ ai_gen_id }}">
+      {% for i in (1..6) %}
+        {% liquid
+          assign image_key = 'image_' | append: i
+          assign url_key = 'product_link_' | append: i
+          assign image = block.settings[image_key]
+          assign url = block.settings[url_key]
+        %}
+
+        <div class="ai-luxury-slider-slide-{{ ai_gen_id }}" data-slide-index="{{ forloop.index0 }}">
+          {% if url != blank %}
+            <a href="{{ url }}">
+          {% else %}
+            <div>
+          {% endif %}
+            {% if image %}
+              <img
+                src="{{ image | image_url: width: 800 }}"
+                alt="{{ image.alt | escape }}"
+                loading="lazy"
+                width="{{ image.width }}"
+                height="{{ image.height }}"
+              >
+            {% else %}
+              <div class="ai-luxury-slider-placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+
+            {% if i == 2 and block.settings.show_overlay_text %}
+              <div class="ai-luxury-slider-overlay-{{ ai_gen_id }}">
+                <div class="ai-luxury-slider-overlay-text-{{ ai_gen_id }}">
+                  {{ block.settings.overlay_text }}
+                </div>
+              </div>
+            {% endif %}
+          {% if url != blank %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    <button
+      class="ai-luxury-slider-nav-{{ ai_gen_id }} ai-luxury-slider-nav-prev-{{ ai_gen_id }}"
+      aria-label="Previous slide"
+    >
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+
+    <button
+      class="ai-luxury-slider-nav-{{ ai_gen_id }} ai-luxury-slider-nav-next-{{ ai_gen_id }}"
+      aria-label="Next slide"
+    >
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
+  </div>
+</luxury-slider-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class LuxurySlider{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentIndex = 0;
+        this.slidesPerView = 3;
+        this.totalSlides = 6;
+      }
+
+      connectedCallback() {
+        this.track = this.querySelector('.ai-luxury-slider-track-{{ ai_gen_id }}');
+        this.prevButton = this.querySelector('.ai-luxury-slider-nav-prev-{{ ai_gen_id }}');
+        this.nextButton = this.querySelector('.ai-luxury-slider-nav-next-{{ ai_gen_id }}');
+
+        this.updateSlidesPerView();
+        this.updateButtons();
+
+        this.prevButton.addEventListener('click', () => this.prev());
+        this.nextButton.addEventListener('click', () => this.next());
+
+        window.addEventListener('resize', () => this.handleResize());
+      }
+
+      updateSlidesPerView() {
+        const width = window.innerWidth;
+        if (width <= 749) {
+          this.slidesPerView = 1;
+        } else if (width <= 989) {
+          this.slidesPerView = 2;
+        } else {
+          this.slidesPerView = 3;
+        }
+      }
+
+      handleResize() {
+        this.updateSlidesPerView();
+        this.updateSlider();
+        this.updateButtons();
+      }
+
+      prev() {
+        if (this.currentIndex > 0) {
+          this.currentIndex--;
+          this.updateSlider();
+          this.updateButtons();
+        }
+      }
+
+      next() {
+        const maxIndex = this.totalSlides - this.slidesPerView;
+        if (this.currentIndex < maxIndex) {
+          this.currentIndex++;
+          this.updateSlider();
+          this.updateButtons();
+        }
+      }
+
+      updateSlider() {
+        const slideWidth = 100 / this.slidesPerView;
+        const offset = -(this.currentIndex * slideWidth);
+        this.track.style.transform = `translateX(${offset}%)`;
+      }
+
+      updateButtons() {
+        const maxIndex = this.totalSlides - this.slidesPerView;
+        this.prevButton.disabled = this.currentIndex === 0;
+        this.nextButton.disabled = this.currentIndex >= maxIndex;
+      }
+    }
+
+    customElements.define('luxury-slider-{{ ai_gen_id }}', LuxurySlider{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Luxury photo slider",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "image_gap",
+      "label": "Space between images",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "product_link_1",
+      "label": "Product link"
+    },
+    {
+      "type": "header",
+      "content": "Image 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "product_link_2",
+      "label": "Product link"
+    },
+    {
+      "type": "header",
+      "content": "Image 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_3",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "product_link_3",
+      "label": "Product link"
+    },
+    {
+      "type": "header",
+      "content": "Image 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_4",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "product_link_4",
+      "label": "Product link"
+    },
+    {
+      "type": "header",
+      "content": "Image 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_5",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "product_link_5",
+      "label": "Product link"
+    },
+    {
+      "type": "header",
+      "content": "Image 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_6",
+      "label": "Image"
+    },
+    {
+      "type": "url",
+      "id": "product_link_6",
+      "label": "Product link"
+    },
+    {
+      "type": "header",
+      "content": "Middle image overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay_text",
+      "label": "Show overlay text",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "overlay_text",
+      "label": "Overlay text",
+      "default": "as seen on @coco_floflo"
+    },
+    {
+      "type": "range",
+      "id": "overlay_text_size",
+      "label": "Text size",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "overlay_text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "overlay_font_weight",
+      "label": "Font weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Regular"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "range",
+      "id": "overlay_letter_spacing",
+      "label": "Letter spacing",
+      "min": 0,
+      "max": 4,
+      "step": 0.5,
+      "unit": "px",
+      "default": 0.5
+    },
+    {
+      "type": "select",
+      "id": "overlay_text_transform",
+      "label": "Text transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "lowercase",
+          "label": "Lowercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "Navigation arrows"
+    },
+    {
+      "type": "range",
+      "id": "arrow_size",
+      "label": "Arrow button size",
+      "min": 30,
+      "max": 70,
+      "step": 2,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "arrow_icon_size",
+      "label": "Arrow icon size",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "arrow_bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_bg_color",
+      "label": "Hover background color",
+      "default": "#f4f4f4"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Arrow color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_color",
+      "label": "Hover arrow color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "arrow_border_color",
+      "label": "Border color",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_border_color",
+      "label": "Hover border color",
+      "default": "#cccccc"
+    },
+    {
+      "type": "range",
+      "id": "arrow_border_width",
+      "label": "Border width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury photo slider"
+    }
+  ]
+}
+{% endschema %}
