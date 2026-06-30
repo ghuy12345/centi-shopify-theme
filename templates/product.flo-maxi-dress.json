@@ -15,9 +15,7 @@
       "type" : "main-product",
       "blocks" : {
         "kiwi_size_chart_recommender_kiwi_sizing_wBgahk" : {
-          "type" : "shopify:\/\/apps\/kiwi-size-chart-"
-                     + "recommender\/blocks\/kiwiSizing\/b7369922-bf15-44ce-"
-                     + "a121-a22a8fcbc4b0",
+          "type" : "shopify:\/\/apps\/kiwi-size-chart-recommender\/blocks\/kiwiSizing\/b7369922-bf15-44ce-a121-a22a8fcbc4b0",
           "settings" : {
             "fallbackToBlockPosition" : false,
             "waitForElementSelector" : "",
@@ -119,8 +117,7 @@
             "image_ani" : "none",
             "text_size" : 10,
             "text_style" : "uppercase",
-            "text" : "Order in <strong>(timer)<\/strong> & Get Delivery By "
-                       + "<strong>(date).<\/strong>",
+            "text" : "Order in <strong>(timer)<\/strong> & Get Delivery By <strong>(date).<\/strong>",
             "date_locale" : "en-US",
             "ship_bg" : "#ffffff",
             "show_border" : false,
@@ -152,8 +149,7 @@
           "disabled" : true,
           "settings" : {
             "original" : "custom",
-            "payment_icon" : "visa, master, paypal, apple-pay, klarna, "
-                               + "bitcoin, shopify-pay,",
+            "payment_icon" : "visa, master, paypal, apple-pay, klarna, bitcoin, shopify-pay,",
             "payment_content_alignment" : "center",
             "custom_icon_1_width" : 34,
             "custom_icon_2_width" : 34,
@@ -228,12 +224,7 @@
             "small-hide" : false,
             "heading_1" : "DESCRIPTION",
             "description" : true,
-            "tab_content" :
-                "<p>Made to accentuate your natural figure whilst looking "
-                + "elegant & chic. <br\/><br\/>Structured shoulders with "
-                + "shoulder padding. Single breasted with contrasting buttons "
-                + "at centre front & cuff for a smart tailored look. Breast "
-                + "fake pocket with two functional jet pockets.<\/p>",
+            "tab_content" : "<p>Made to accentuate your natural figure whilst looking elegant & chic. <br\/><br\/>Structured shoulders with shoulder padding. Single breasted with contrasting buttons at centre front & cuff for a smart tailored look. Breast fake pocket with two functional jet pockets.<\/p>",
             "tab_2" : true,
             "large-hide-2" : false,
             "small-hide-2" : false,
@@ -244,10 +235,7 @@
             "large-hide-3" : false,
             "small-hide-3" : false,
             "heading_3" : "COMPOSITION",
-            "tab_content_3" :
-                "<p><strong>Shell:<\/strong> 41% Rayon 29% Cotton 20% Acrylic "
-                + "4% Spandex<br\/><br\/><strong>Mesh:<\/strong> 95% Nylon 5% "
-                + "Spandex<\/p>"
+            "tab_content_3" : "<p><strong>Shell:<\/strong> 41% Rayon 29% Cotton 20% Acrylic 4% Spandex<br\/><br\/><strong>Mesh:<\/strong> 95% Nylon 5% Spandex<\/p>"
           }
         },
         "collapsible_tab_AeQtTa" : {
@@ -256,9 +244,7 @@
             "open_first_collapsible_row" : false,
             "heading" : "SIZE & FIT",
             "icon" : "ruler",
-            "content" :
-                "<p>- True to size<br\/>- Suitable for Tall girls<br\/>- "
-                + "Elasticated Skirt bottom<br\/>- Versatile Tie Tail<\/p>",
+            "content" : "<p>- True to size<br\/>- Suitable for Tall girls<br\/>- Elasticated Skirt bottom<br\/>- Versatile Tie Tail<\/p>",
             "page" : ""
           }
         },
@@ -268,17 +254,7 @@
             "open_first_collapsible_row" : false,
             "heading" : "SHIPPING INFORMATION",
             "icon" : "box",
-            "content" :
-                "<p><strong>UK Shipping<br\/><br\/>Royal Mail 24 Tracked - "
-                + "<\/strong>Aim: 2–3 working days<br\/><br\/><strong>Royal "
-                + "Mail 48 Tracked<\/strong> – Aim: 3–4 working "
-                + "days<br\/><br\/><strong>International "
-                + "Shipping<br\/><br\/>DHL Express <\/strong>- Aim: 2-4 "
-                + "working days<br\/><br\/>Duties & Taxes are included in the "
-                + "price for international customers.<\/p><p>You’ll receive a "
-                + "tracking number as soon as your order has been dispatched. "
-                + "Please note: delivery times may vary slightly during busy "
-                + "periods.<\/p>",
+            "content" : "<p><strong>UK Shipping<br\/><br\/>Royal Mail 24 Tracked - <\/strong>Aim: 2–3 working days<br\/><br\/><strong>Royal Mail 48 Tracked<\/strong> – Aim: 3–4 working days<br\/><br\/><strong>International Shipping<br\/><br\/>DHL Express <\/strong>- Aim: 2-4 working days<br\/><br\/>Duties & Taxes are included in the price for international customers.<\/p><p>You'll receive a tracking number as soon as your order has been dispatched. Please note: delivery times may vary slightly during busy periods.<\/p>",
             "page" : ""
           }
         },
@@ -288,62 +264,14 @@
             "open_first_collapsible_row" : false,
             "heading" : "RETURNS & REFUNDS",
             "icon" : "return",
-            "content" :
-                "<p>We accept returns within 30 days of receiving your order. "
-                + "For some countries it is 14 days. Please check our returns "
-                + "policy.<br\/><br\/>Items must be returned in their original "
-                + "packaging within this time to be eligible for a "
-                + "refund.<\/p>",
+            "content" : "<p>We accept returns within 30 days of receiving your order. For some countries it is 14 days. Please check our returns policy.<br\/><br\/>Items must be returned in their original packaging within this time to be eligible for a refund.<\/p>",
             "page" : ""
           }
         },
         "custom_liquid_WLLDjK" : {
           "type" : "custom_liquid",
           "settings" : {
-            "custom_liquid" :
-                "<style>\n  .wiw { margin-top: 24px; padding-top: 20px; "
-                + "border-top: 1px solid #eee; }\n  .wiw__title { text-align: "
-                + "center; font-size: 14px; letter-spacing: .12em; "
-                + "text-transform: uppercase; margin: 0 0 16px; font-weight: "
-                + "500; }\n  .wiw__grid { display: grid; "
-                + "grid-template-columns: 1fr 1fr; gap: 14px; }\n  .wiw__card "
-                + "{ display: block; text-decoration: none; color: inherit; "
-                + "}\n  .wiw__imgwrap { width: 100%; aspect-ratio: 3\/4; "
-                + "overflow: hidden; background: #f5f5f5; }\n  .wiw__imgwrap "
-                + "img { width: 100%; height: 100%; object-fit: cover; "
-                + "display: block; }\n  .wiw__name { margin: 10px 0 4px; "
-                + "font-size: 12px; letter-spacing: .08em; text-transform: "
-                + "uppercase; }\n  .wiw__price { margin: 0; font-size: 12px; "
-                + "color: #777; }\n  .wiw[hidden] { display: none; "
-                + "}\n<\/style>\n<div class=\"wiw\" id=\"wiw-{{ product.id "
-                + "}}\" hidden>\n  <h2 class=\"wiw__title\">Wear It "
-                + "With<\/h2>\n  <div "
-                + "class=\"wiw__grid\"><\/div>\n<\/div>\n<script>\n(function "
-                + "() {\n  var root = document.getElementById('wiw-{{ "
-                + "product.id }}');\n  if (!root) return;\n  var grid = "
-                + "root.querySelector('.wiw__grid');\n  var pid = {{ "
-                + "product.id | json }};\n  var limit = 2;\n  var cur = "
-                + "(window.Shopify && Shopify.currency && "
-                + "Shopify.currency.active) || 'GBP';\n  var fmt = new "
-                + "Intl.NumberFormat(undefined, { style: 'currency', currency: "
-                + "cur });\n  "
-                + "fetch('\/recommendations\/products.json?product_id=' + pid "
-                + "+ '&intent=complementary&limit=' + limit)\n    "
-                + ".then(function (r) { return r.json(); })\n    "
-                + ".then(function (data) {\n      var items = (data && "
-                + "data.products) || [];\n      if (!items.length) return;\n   "
-                + "   items.forEach(function (p) {\n        var img = "
-                + "p.featured_image || (p.images && p.images[0]) || '';\n      "
-                + "  if (img) img += (img.indexOf('?') > -1 ? '&' : '?') + "
-                + "'width=400';\n        var price = fmt.format((p.price || 0) "
-                + "\/ 100);\n        var a = document.createElement('a');\n    "
-                + "    a.className = 'wiw__card';\n        a.href = p.url;\n   "
-                + "     a.innerHTML = '<div class=\"wiw__imgwrap\">' + (img ? "
-                + "'<img src=\"' + img + '\" alt=\"\" loading=\"lazy\">' : '') "
-                + "+ '<\/div><p class=\"wiw__name\">' + (p.title || '') + "
-                + "'<\/p><p class=\"wiw__price\">' + price + '<\/p>';\n        "
-                + "grid.appendChild(a);\n      });\n      root.hidden = "
-                + "false;\n    }).catch(function () {});\n})();\n<\/script>"
+            "custom_liquid" : "<style>\n  .wiw { margin-top: 24px; padding-top: 20px; border-top: 1px solid #eee; }\n  .wiw__title { text-align: center; font-size: 14px; letter-spacing: .12em; text-transform: uppercase; margin: 0 0 16px; font-weight: 500; }\n  .wiw__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }\n  .wiw__card { display: block; text-decoration: none; color: inherit; }\n  .wiw__imgwrap { width: 100%; aspect-ratio: 3\/4; overflow: hidden; background: #f5f5f5; }\n  .wiw__imgwrap img { width: 100%; height: 100%; object-fit: cover; display: block; }\n  .wiw__name { margin: 10px 0 4px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }\n  .wiw__price { margin: 0; font-size: 12px; color: #777; }\n  .wiw[hidden] { display: none; }\n<\/style>\n<div class=\"wiw\" id=\"wiw-{{ product.id }}\" hidden>\n  <h2 class=\"wiw__title\">Wear It With<\/h2>\n  <div class=\"wiw__grid\"><\/div>\n<\/div>\n<script>\n(function () {\n  var root = document.getElementById('wiw-{{ product.id }}');\n  if (!root) return;\n  var grid = root.querySelector('.wiw__grid');\n  var pid = {{ product.id | json }};\n  var limit = 2;\n  var cur = (window.Shopify && Shopify.currency && Shopify.currency.active) || 'GBP';\n  var fmt = new Intl.NumberFormat(undefined, { style: 'currency', currency: cur });\n  fetch('\/recommendations\/products.json?product_id=' + pid + '&intent=complementary&limit=' + limit)\n    .then(function (r) { return r.json(); })\n    .then(function (data) {\n      var items = (data && data.products) || [];\n      if (!items.length) return;\n      items.forEach(function (p) {\n        var img = p.featured_image || (p.images && p.images[0]) || '';\n        if (img) img += (img.indexOf('?') > -1 ? '&' : '?') + 'width=400';\n        var price = fmt.format((p.price || 0) \/ 100);\n        var a = document.createElement('a');\n        a.className = 'wiw__card';\n        a.href = p.url;\n        a.innerHTML = '<div class=\"wiw__imgwrap\">' + (img ? '<img src=\"' + img + '\" alt=\"\" loading=\"lazy\">' : '') + '<\/div><p class=\"wiw__name\">' + (p.title || '') + '<\/p><p class=\"wiw__price\">' + price + '<\/p>';\n        grid.appendChild(a);\n      });\n      root.hidden = false;\n    }).catch(function () {});\n})();\n<\/script>"
           }
         },
         "collapsible_tab_wiL7Kx" : {
@@ -435,9 +363,7 @@
       "type" : "apps",
       "blocks" : {
         "kiwi_size_chart_recommender_kiwi_sizing_tABf7K" : {
-          "type" : "shopify:\/\/apps\/kiwi-size-chart-"
-                     + "recommender\/blocks\/kiwiSizing\/b7369922-bf15-44ce-"
-                     + "a121-a22a8fcbc4b0",
+          "type" : "shopify:\/\/apps\/kiwi-size-chart-recommender\/blocks\/kiwiSizing\/b7369922-bf15-44ce-a121-a22a8fcbc4b0",
           "settings" : {
             "fallbackToBlockPosition" : false,
             "waitForElementSelector" : "",
