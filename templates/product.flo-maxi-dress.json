@@ -155,7 +155,7 @@
             "show_dynamic_checkout": false,
             "show_full_button": true,
             "cart_btn_height": 5,
-            "cart_btn_font": 14,
+            "cart_btn_font": 11,
             "lm_main_button": "#291c12",
             "lm_main_button_gr": "",
             "lm_main_text": "#dedacf",
