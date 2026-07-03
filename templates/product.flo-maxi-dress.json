@@ -403,6 +403,7 @@
       "block_order": [
         "kiwi_size_chart_recommender_kiwi_sizing_tABf7K"
       ],
+      "disabled": true,
       "settings": {
         "include_margins": true
       }
