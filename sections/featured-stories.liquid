@@ -1,0 +1,659 @@
+<style>
+  .fss-heading {
+    font-size: {{ section.settings.heading_font_size_desktop }}px;
+    color: {{ section.settings.heading_color }};
+    {% if section.settings.heading_text_shadow %}text-shadow: 0 2px 8px rgba(0,0,0,0.3);{% endif %}
+  }
+  .fss-subheading {
+    font-size: {{ section.settings.subheading_font_size_desktop }}px;
+    color: {{ section.settings.subheading_color }};
+    {% if section.settings.subheading_text_shadow %}text-shadow: 0 2px 8px rgba(0,0,0,0.3);{% endif %}
+  }
+  .fss-text {
+    font-size: {{ section.settings.text_font_size_desktop }}px;
+    color: {{ section.settings.text_color }};
+  }
+  @media screen and (max-width: 768px) {
+    .fss-heading {
+      font-size: {{ section.settings.heading_font_size_mobile }}px;
+    }
+    .fss-subheading {
+      font-size: {{ section.settings.subheading_font_size_mobile }}px;
+    }
+    .fss-text {
+      font-size: {{ section.settings.text_font_size_mobile }}px;
+    }
+    div#fss-controls {
+    display: none;
+}
+  }
+</style>
+
+<div
+  class="fss-wrapper"
+  data-section-id="{{ section.id }}"
+  data-section-type="featured-stories-slider"
+  data-slider-enabled="{{ section.settings.enable_slider }}"
+  data-slides-desktop="{{ section.settings.slides_per_view_desktop }}"
+  data-slides-mobile="{{ section.settings.slides_per_view_mobile }}"
+>
+  <div class="fss-grid">
+    <div class="fss-left">
+      <div class="custom-fss-all-top">
+        {% if section.settings.subheading != blank %}
+          <p class="fss-subheading">{{ section.settings.subheading }}</p>
+        {% endif %}
+        {% if section.settings.heading != blank %}
+          <h2 class="fss-heading">{{ section.settings.heading }}</h2>
+        {% endif %}
+        {% if section.settings.text != blank %}
+          <div class="fss-text">{{ section.settings.text }}</div>
+        {% endif %}
+      </div>
+
+      <div class="fss-controls" id="fss-controls">
+        <div class="fss-buttons">
+          <button class="fss-prev" aria-label="Previous slide" disabled>
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="8" viewBox="0 0 25 8" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M-0.000362717 4.33334L4.86719 8L2.51091 4.69995L24.8906 4.69995L24.8906 3.69995L2.45142 3.69995L4.8131 1.75523e-06L-0.000362717 4.33334Z" fill="black"></path>
+            </svg>
+          </button>
+          <button class="fss-next" aria-label="Next slide">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="8" viewBox="0 0 25 8" fill="none">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M24.891 3.66667L20.0234 0L22.3797 3.30005H0V4.30005H22.4392L20.0775 8L24.891 3.66667Z" fill="black"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="fss-progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="0">
+          <span class="fss-progress-fill" style="width: 0%;"></span>
+        </div>
+        
+      </div>
+    </div>
+
+    <div class="fss-right">
+      <div class="fss-slider-container">
+        <div class="fss-slides-wrapper" id="fss-slides-wrapper">
+          {% for block in section.blocks %}
+            <div class="fss-slide" data-index="{{ forloop.index0 }}">
+              <div class="fss-media-block">
+                {% if block.type == 'image' %}
+                  {% if block.settings.image != blank %}
+                    <img
+                      src="{{ block.settings.image | img_url: '800x800' }}"
+                      alt="{{ block.settings.image.alt | default: 'Story image' }}"
+                      loading="lazy"
+                    >
+                  {% else %}
+                    <div class="fss-placeholder">Add an image</div>
+                  {% endif %}
+                {% elsif block.type == 'video' %}
+                  {% if block.settings.video_url != blank %}
+                    <video
+                      src="{{ block.settings.video_url }}"
+                      autoplay
+                      muted
+                      loop
+                      playsinline
+                      preload="metadata"
+                    ></video>
+                  {% else %}
+                    <div class="fss-placeholder">Add a video URL</div>
+                  {% endif %}
+                {% endif %}
+              </div>
+            </div>
+          {% else %}
+            <div class="fss-empty">Add blocks (image or video) to this section.</div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Stories Slider",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "STYLEDBYYOU"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "#ARCINAORI"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text",
+      "default": "As styled by you. Thank you for sharing your moments in AO, it's a pleasure to be part of them."
+    },
+    {
+      "type": "select",
+      "id": "slides_per_view_desktop",
+      "label": "Slides per view (Desktop)",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "2.5", "label": "2.5" },
+        { "value": "3", "label": "3" },
+        { "value": "3.5", "label": "3.5" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "3.5"
+    },
+    {
+      "type": "select",
+      "id": "slides_per_view_mobile",
+      "label": "Slides per view (Mobile)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "1.5", "label": "1.5" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "1.5"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_slider",
+      "label": "Enable Slider",
+      "default": true,
+      "info": "If unchecked, all slides will show in a static grid."
+    },
+    {
+      "type": "header",
+      "content": "⭐ Heading Settings"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_desktop",
+      "label": "Heading Font Size (Desktop)",
+      "min": 16,
+      "max": 60,
+      "step": 1,
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Heading Font Size (Mobile)",
+      "min": 14,
+      "max": 40,
+      "step": 1,
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_text_shadow",
+      "label": "Enable Text Shadow",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "⭐ Subheading Settings"
+    },
+    {
+      "type": "range",
+      "id": "subheading_font_size_desktop",
+      "label": "Subheading Font Size (Desktop)",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "subheading_font_size_mobile",
+      "label": "Subheading Font Size (Mobile)",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#999999"
+    },
+    {
+      "type": "checkbox",
+      "id": "subheading_text_shadow",
+      "label": "Enable Text Shadow",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "⭐ Text Settings"
+    },
+    {
+      "type": "range",
+      "id": "text_font_size_desktop",
+      "label": "Text Font Size (Desktop)",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "text_font_size_mobile",
+      "label": "Text Font Size (Mobile)",
+      "min": 8,
+      "max": 24,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#333333"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    },
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Video file URL",
+          "info": "Upload your video to Shopify Files, copy the URL, and paste it here. Supports .mp4, .mov, etc."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Stories Slider",
+      "category": "Custom",
+      "blocks": [{ "type": "image" }, { "type": "image" }, { "type": "video" }]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+    .fss-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 15px;
+      font-family: var(--font-body-family, sans-serif);
+    }
+
+    .fss-grid {
+      gap: 40px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+  .fss-left {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-bottom: 36px;
+  }
+
+  .custom-fss-all-top {
+      width: 100%;
+      max-width: 30%;
+  }
+    .fss-subheading {
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 0 0 5px;
+      font-weight: 600;
+    }
+    .fss-heading {
+      margin: 0 0 10px;
+      font-weight: 700;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+    .fss-text {
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .fss-right {
+      flex: 1;
+      min-width: 0;
+    }
+
+   .fss-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    min-height: 40px;
+    flex-direction: column;
+    align-items: baseline;
+}
+
+    .fss-controls.is-hidden {
+      display: none;
+    }
+
+    .fss-progress-bar {
+      width: 200px;
+      height: 2px;
+      background: #e0e0e0;
+      border-radius: 2px;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .fss-progress-fill {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: #000;
+      border-radius: 2px;
+      transition: width 0.3s ease;
+    }
+
+    .fss-buttons {
+      display: flex;
+      gap: 10px;
+    }
+ button.fss-prev {
+    padding: 0px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+button.fss-next {
+ padding: 0px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+    .fss-slider-container {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fss-slides-wrapper {
+      display: flex;
+      gap: 2px;
+      transition: transform 0.4s ease-in-out;
+      will-change: transform;
+    }
+    .fss-slides-wrapper {
+      flex-wrap: nowrap;
+    }
+    .fss-slides-wrapper.is-static {
+      flex-wrap: wrap;
+      transform: none !important;
+    }
+
+    .fss-slide {
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    .fss-media-block {
+      position: relative;
+      background: #fafafa;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fss-media-block img,
+    .fss-media-block video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .fss-media-block video {
+      background: #000;
+    }
+
+    .fss-placeholder {
+      color: #bbb;
+      font-size: 14px;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .fss-empty {
+      text-align: center;
+      padding: 40px 0;
+      width: 100%;
+      color: #999;
+    }
+
+    @media screen and (max-width: 768px) {
+      .fss-grid {
+        flex-direction: column;
+        gap: 30px;
+      }
+      .fss-left {
+        flex: 1 1 auto;
+        max-width: 100%;
+        text-align: center;
+      }
+      .fss-controls {
+        justify-content: center;
+      }
+
+      .fss-left {
+    display: flex;
+    flex-direction: column;
+}
+.custom-fss-all-top {
+    width: 100%;
+    max-width: 100%;
+}
+    }
+</style>
+
+<script>
+  (function () {
+    const section = document.querySelector('[data-section-type="featured-stories-slider"]');
+    if (!section) return;
+
+    const wrapper = section.querySelector('#fss-slides-wrapper');
+    const slides = wrapper ? wrapper.querySelectorAll('.fss-slide') : [];
+    const total = slides.length;
+    if (total === 0) return;
+
+    const controls = section.querySelector('#fss-controls');
+    const prevBtn = section.querySelector('.fss-prev');
+    const nextBtn = section.querySelector('.fss-next');
+    const progressFill = section.querySelector('.fss-progress-fill');
+
+    const sliderEnabled = section.dataset.sliderEnabled === 'true';
+    const slidesDesktop = parseFloat(section.dataset.slidesDesktop) || 3.5;
+    const slidesMobile = parseFloat(section.dataset.slidesMobile) || 1.5;
+
+    function getVisibleSlides() {
+      if (window.innerWidth >= 1024) return slidesDesktop;
+      if (window.innerWidth >= 768) return Math.min(slidesDesktop, 2.5);
+      return slidesMobile;
+    }
+
+    let currentIndex = 0;
+    let startX = 0;
+    let isDragging = false;
+
+    function isSliderActive() {
+      if (!sliderEnabled) return false;
+      const visible = getVisibleSlides();
+      return total > Math.ceil(visible);
+    }
+
+    function getMaxIndex() {
+      const visible = getVisibleSlides();
+      return Math.max(0, total - Math.ceil(visible));
+    }
+
+    function updateSliderState() {
+      const active = isSliderActive();
+
+      if (active) {
+        wrapper.classList.remove('is-static');
+        controls.classList.remove('is-hidden');
+        wrapper.style.flexWrap = 'nowrap';
+        updateSliderPosition();
+      } else {
+        wrapper.classList.add('is-static');
+        controls.classList.add('is-hidden');
+        wrapper.style.transform = 'translateX(0px)';
+        wrapper.style.flexWrap = 'wrap';
+        if (progressFill) progressFill.style.width = '0%';
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+      }
+    }
+
+    function updateSliderPosition() {
+      if (!isSliderActive()) return;
+
+      const maxIndex = getMaxIndex();
+      if (currentIndex > maxIndex) currentIndex = maxIndex;
+      if (currentIndex < 0) currentIndex = 0;
+
+      const slide = slides[0];
+      if (!slide) return;
+      const slideWidth = slide.offsetWidth;
+      const gap = 20;
+      const offset = currentIndex * (slideWidth + gap);
+
+      wrapper.style.transform = `translateX(-${offset}px)`;
+
+      const progress = maxIndex === 0 ? 0 : (currentIndex / maxIndex) * 100;
+      if (progressFill) progressFill.style.width = progress + '%';
+
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex === maxIndex;
+
+      const progressBar = section.querySelector('.fss-progress-bar');
+      if (progressBar) {
+        progressBar.setAttribute('aria-valuenow', currentIndex);
+        progressBar.setAttribute('aria-valuemax', maxIndex);
+      }
+    }
+
+    function goTo(index) {
+      if (!isSliderActive()) return;
+      const maxIndex = getMaxIndex();
+      currentIndex = Math.min(Math.max(index, 0), maxIndex);
+      updateSliderPosition();
+    }
+
+    function goPrev() {
+      goTo(currentIndex - 1);
+    }
+    function goNext() {
+      goTo(currentIndex + 1);
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', goPrev);
+    if (nextBtn) nextBtn.addEventListener('click', goNext);
+
+    const container = section.querySelector('.fss-slider-container');
+    if (container) {
+      container.addEventListener('touchstart', function(e) {
+        if (!isSliderActive()) return;
+        startX = e.touches[0].clientX;
+        isDragging = true;
+      }, { passive: true });
+
+      container.addEventListener('touchmove', function(e) {
+      }, { passive: true });
+
+      container.addEventListener('touchend', function(e) {
+        if (!isDragging || !isSliderActive()) return;
+        isDragging = false;
+        const endX = e.changedTouches[0].clientX;
+        const diff = startX - endX;
+        if (Math.abs(diff) > 40) { 
+          if (diff > 0) {
+            goNext();
+          } else {
+            goPrev();
+          }
+        }
+      }, { passive: true });
+    }
+
+    let resizeTimeout;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        const maxIndex = getMaxIndex();
+        if (currentIndex > maxIndex) currentIndex = maxIndex;
+        updateSliderState();
+        if (isSliderActive()) {
+          updateSliderPosition();
+        }
+      }, 200);
+    });
+
+    const style = document.createElement('style');
+    const desktopBasis = 100 / slidesDesktop;
+    const mobileBasis = 100 / slidesMobile;
+    style.textContent = `
+      .fss-slide {
+        flex: 0 0 calc(${desktopBasis}% - 15px);
+      }
+      @media screen and (max-width: 1024px) and (min-width: 769px) {
+        .fss-slide {
+          flex: 0 0 calc(${100 / Math.min(slidesDesktop, 2.5)}% - 15px);
+        }
+      }
+      @media screen and (max-width: 768px) {
+        .fss-slide {
+          flex: 0 0 calc(${mobileBasis}% - 15px);
+        }
+      }
+      /* Static grid override – full width with wrap */
+      .fss-slides-wrapper.is-static .fss-slide {
+        flex: 0 0 calc(${100 / Math.min(slidesDesktop, 4)}% - 15px);
+      }
+      @media screen and (max-width: 768px) {
+        .fss-slides-wrapper.is-static .fss-slide {
+          flex: 0 0 calc(50% - 10px);
+        }
+      }
+      @media screen and (max-width: 480px) {
+        .fss-slides-wrapper.is-static .fss-slide {
+          flex: 0 0 calc(100% - 0px);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+
+    updateSliderState();
+    if (isSliderActive()) {
+      updateSliderPosition();
+    }
+  })();
+</script>

@@ -1,0 +1,777 @@
+{%- if product != blank -%}
+  {%- assign enable_sticky_bar = section.settings.enable_sticky_bar -%}
+  {%- if enable_sticky_bar -%}
+
+    {%- style -%}
+      .custom-sticky-bar-main {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        display: none;
+        background: {{ section.settings.background_color }};
+        border: {{ section.settings.border_width }}px solid {{ section.settings.border_color }};
+        border-radius: {{ section.settings.border_radius }}px 0 0 0;
+        padding: 8px 12px 10px;
+        box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+        width: 100%;
+        transition: all 0.2s ease;
+      }
+
+      .custom-sticky-bar-inner {
+        max-width: 100%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .custom-stikcy-bar-inner-flex {
+        display: flex;
+        align-items: stretch;
+        gap: 10px;
+        width: 100%;
+        min-height: 48px;
+      }
+
+    .sticky-variants {
+    flex: 1 1 55%;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    min-width: 0;
+}
+
+.variant-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+      .variant-label {
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
+        color: {{ section.settings.text_color }};
+        min-width: 32px;
+      }
+
+      .color-swatch-group {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+      }
+
+      .color-swatch {
+    appearance: none;
+    padding: 0;
+    width: 35px;
+    height: 18px;
+    border-radius: 0px;
+    border: 0px solid #e2e8f0;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    flex-shrink: 0;
+    background-size: cover;
+    background-position: center;
+}
+
+
+      .color-swatch:hover { transform: scale(1.08); border-color: #94a3b8; }
+      .color-swatch.active {
+        border-color: {{ section.settings.border_color }};
+        box-shadow: 0 0 0 2px #fff, 0 0 0 4px {{ section.settings.border_color }};
+      }
+      .color-swatch.out-of-stock {
+        opacity: 0.35;
+        cursor: not-allowed;
+        position: relative;
+      }
+
+      .color-swatch.out-of-stock::after {
+        content: '';
+        position: absolute;
+        width: 120%;
+        height: 1px;
+        background: #ef4444;
+        transform: rotate(-45deg);
+      }
+
+      .size-btn-group {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+      }
+
+      .size-btn {
+        min-width: 30px;
+        height: 26px;
+        padding: 0 6px;
+        border-radius: 4px;
+        border: 1.5px solid #e2e8f0;
+        background: #fff;
+        font-size: 10px;
+        font-weight: 500;
+        color: #1e293b;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+        flex-shrink: 0;
+      }
+      .size-btn:hover { border-color: #94a3b8; background: #f8fafc; }
+      .size-btn.active {
+        border-color: {{ section.settings.border_color }};
+        background: {{ section.settings.border_color }};
+        color: #fff;
+      }
+      .size-btn.out-of-stock { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
+
+      .sticky-size-chart {
+       border:0px;
+      }
+
+      .sticky-size-chart .chart-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 11px;
+        font-weight: 600;
+        color: {{ section.settings.text_color }};
+        text-decoration: none;
+        padding: 4px 8px;
+        border-radius: 4px;
+        transition: all 0.15s ease;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        cursor: pointer;
+      }
+      .sticky-size-chart .chart-link:hover {
+        background: #f1f5f9;
+        border-color: #94a3b8;
+      }
+      .sticky-size-chart .chart-link svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        fill: none;
+      }
+
+      .sticky-variant-status {
+        font-size: 9px;
+        color: #64748b;
+        padding: 2px 0 0 2px;
+        min-height: 14px;
+        font-weight: 400;
+        letter-spacing: 0.2px;
+      }
+      .sticky-variant-status .selected-text { color: {{ section.settings.text_color }}; font-weight: 500; }
+
+      @media screen and (max-width: 767px) {
+        .custom-sticky-bar-main { display: block !important; }
+        body { padding-bottom: 80px; }
+      }
+
+       @media screen and (max-width: 768px) {
+      .lm-main-button {
+    max-width: 100%;
+
+}
+       }
+      @media screen and (max-width: 420px) {
+        .custom-sticky-bar-main { padding: 6px 8px 8px; }
+        .custom-stikcy-bar-inner-flex { gap: 6px; min-height: 40px; }
+        .sticky-variants { flex: 1 1 50%; }
+        .sticky-size-chart { flex: 0 0 46%; }
+        .color-swatch { width: 22px; height: 22px; }
+        .size-btn { min-width: 26px; height: 22px; font-size: 9px; padding: 0 4px; }
+        .sticky-add-to-cart { font-size: 12px; padding: 10px 12px; min-height: 40px; }
+        .variant-label { font-size: 8px; min-width: 26px; }
+        .sticky-size-chart .chart-link { font-size: 9px; padding: 2px 6px; }
+        body { padding-bottom: 70px; }
+      }
+
+      :root {
+        --lm-button-box: {{ section.settings.lm_main_button.red }}, {{ section.settings.lm_main_button.green }}, {{ section.settings.lm_main_button.blue }};
+      }
+      .lm-main-button {
+        background-color: {{ section.settings.lm_main_button }};
+        background: {{ section.settings.lm_main_button_gr }};
+        color: {{ section.settings.lm_main_text }};
+      }
+      .lm-main-button::after {
+        box-shadow: 0 0 0 calc(var(--buttons-border-width) + var(--border-offset))
+          rgba(var(--color-button-text), var(--border-opacity)),
+          0 0 0 var(--buttons-border-width) rgb(255 204 4 / 0%);
+      }
+      .lm-main-button:not([disabled]):hover:after {
+        box-shadow: 0 0 0 calc(var(--buttons-border-width) + var(--border-offset))
+          rgba(var(--color-button-text), var(--border-opacity)),
+          0 0 0 var(--buttons-border-width) rgb(255 204 4 / 0%);
+      }
+
+      {% unless section.settings.lm_button_animation == 'none' %}
+        {% if section.settings.lm_button_animation == 'soft' %}
+          .lm-main-button {
+            position: relative;
+            overflow: hidden;
+          }
+          .lm-main-button::before {
+            content: '';
+            position: absolute;
+            z-index:0;
+            top: 0;
+            left: -105%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+            transform: skewX(-20deg);
+            transition: all 0.5s ease-in-out;
+          }
+          .lm-main-button:hover::before {
+            left: 105%;
+          }
+        {% elsif section.settings.lm_button_animation == 'ripple' %}
+          .lm-main-button {
+            position: relative;
+            overflow: hidden;
+          }
+          .lm-main-button::before {
+            content: '';
+            position: absolute;
+            z-index: 0;
+            top: 100%;
+            left: -100%;
+            width: 200%;
+            height: 300%;
+            background: rgb(var(--lm-button-box), .1);
+            transform: rotate(304deg);
+            animation: diagonal-swipe 2s infinite linear;
+          }
+          @keyframes diagonal-swipe {
+            0% { top: -100%; left: -100%; }
+            100% { top: 100%; left: 100%; }
+          }
+        {% elsif section.settings.lm_button_animation == 'fade' %}
+          .lm-main-button {
+            position: relative;
+            background: {{ section.settings.lm_main_button }};
+            animation: blink-bg 1.5s infinite;
+          }
+          @keyframes blink-bg {
+            0%, 100% { background-color: {{ section.settings.lm_main_button }}; }
+            50% { background-color: rgb(var(--lm-button-box), 0.6); }
+          }
+        {% elsif section.settings.lm_button_animation == 'bubble' %}
+          .lm-main-button {
+            position: relative;
+            overflow: hidden;
+          }
+          .lm-main-button::before {
+            content: '';
+            position: absolute;
+            z-index:0;
+            top: 100%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: rgba(52, 152, 219, 0.5);
+            border-radius: 50%;
+            animation: bubble-float 4s infinite ease-in-out;
+          }
+          @keyframes bubble-float {
+            0% { top: 100%; opacity: 0; transform: scale(0.5); }
+            50% { opacity: 0.8; transform: scale(1); }
+            100% { top: -20%; opacity: 0; }
+          }
+        {% elsif section.settings.lm_button_animation == 'wave' %}
+          .lm-main-button {
+            position: relative;
+            overflow: hidden;
+          }
+          .lm-main-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150%;
+            z-index:0;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: wave 2s infinite linear;
+          }
+          @keyframes wave {
+            0% { left: -150%; }
+            100% { left: 150%; }
+          }
+        {% elsif section.settings.lm_button_animation == 'glowing' %}
+          .lm-main-button {
+            position: relative;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            animation: glowing-border 2s infinite ease-in-out;
+          }
+          @keyframes glowing-border {
+            0%, 100% { border-color: {{ section.settings.lm_main_button }}; box-shadow: 0 0 10px {{ section.settings.lm_main_button }}; }
+            50% { border-color: rgb(var(--lm-button-box), 0.4); box-shadow: 0 0 15px rgb(var(--lm-button-box), 0.4); }
+          }
+        {% elsif section.settings.lm_button_animation == 'pulse' %}
+          .lm-main-button {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(90deg, rgb(var(--lm-button-box)), rgb(var(--lm-button-box), 0.2), rgb(var(--lm-button-box), 0.8));
+            animation: gradient-pulse 2s infinite alternate;
+            background-size: 500% 400%;
+          }
+          @keyframes gradient-pulse {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+          }
+        {% elsif section.settings.lm_button_animation == 'flicker' %}
+          .lm-main-button {
+            position: relative;
+            background: {{ section.settings.lm_main_button }};
+            box-shadow: 0 0 5px {{ section.settings.lm_main_button }};
+            animation: flicker-glow 3s infinite;
+          }
+          @keyframes flicker-glow {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+              opacity: 1;
+              box-shadow: 0 0 10px {{ section.settings.lm_main_button }}, 0 0 20px {{ section.settings.lm_main_button }};
+            }
+            20%, 24%, 55% {
+              opacity: 0.8;
+              box-shadow: 0 0 5px {{ section.settings.lm_main_button }}, 0 0 10px {{ section.settings.lm_main_button }};
+            }
+          }
+        {% elsif section.settings.lm_button_animation == 'slide' %}
+          .lm-main-button {
+            background: {{ section.settings.lm_main_button_gr }};
+            background-size: 200% 200%;
+            -webkit-animation: AnimationName 3s ease infinite;
+            -moz-animation: AnimationName 3s ease infinite;
+            animation: AnimationName 3s ease infinite;
+          }
+          @-webkit-keyframes AnimationName {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+          @-moz-keyframes AnimationName {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+          @keyframes AnimationName {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+          }
+        {% endif %}
+      {% endunless %}
+
+      .sticky-product-form .product-form__buttons {
+        display: block;
+        width: 100%;
+      }
+      .sticky-product-form .product-form__submit {
+        width: 100%;
+        min-height: 48px;
+        margin-bottom: 0;
+      }
+      .sticky-product-form .shopify-payment-button {
+        display: none; 
+      }
+
+      {% if section.settings.show_full_button %}
+        .sticky-product-form .product-form__buttons {
+          display: block;
+        }
+        .sticky-product-form .product-form__submit {
+          margin-bottom: 1rem;
+        }
+      {% endif %}
+
+      @media screen and (max-width: 767px) {
+  body.sticky-active variant-radios,
+  body.sticky-active .product-form__buttons,
+  body.sticky-active product-form .product-form__buttons {
+    display: none !important;
+  }
+}
+    {%- endstyle -%}
+
+    {%- assign product_form_id = 'sticky-product-form-' | append: section.id -%}
+
+    <div class="custom-sticky-bar-main"
+         data-product-id="{{ product.id }}"
+         data-product-handle="{{ product.handle }}">
+
+      <div class="custom-sticky-bar-inner">
+
+        <div class="custom-stikcy-bar-inner-flex">
+
+          <div class="sticky-variants" id="stickyVariants">
+            {%- for option in product.options_with_values -%}
+              {%- assign option_name_downcase = option.name | downcase -%}
+              <div class="variant-row" data-option-position="{{ option.position }}">
+                <span class="variant-label">{{ option.name }}</span>
+
+                {%- if option_name_downcase contains 'color' or option_name_downcase contains 'colour' -%}
+                  <div class="color-swatch-group sticky-option-group"
+                       data-option-name="{{ option.name | escape }}"
+                       data-option-position="{{ option.position }}">
+                    {%- for value in option.values -%}
+                      <button
+                        type="button"
+                        class="color-swatch sticky-option-value{% unless value.available %} out-of-stock{% endunless %}"
+                        style="background-color: {{ value | downcase
+                          | replace: 'red', '#ef4444'
+                          | replace: 'blue', '#3b82f6'
+                          | replace: 'green', '#22c55e'
+                          | replace: 'black', '#1e293b'
+                          | replace: 'white', '#f8fafc'
+                          | replace: 'yellow', '#eab308'
+                          | replace: 'purple', '#a855f7'
+                          | replace: 'pink', '#ec4899'
+                          | replace: 'orange', '#f97316'
+                          | replace: 'gray', '#6b7280'
+                          | replace: 'grey', '#6b7280'
+                          | replace: 'brown', '#92400e' }};"
+                        data-value="{{ value | escape }}"
+                        aria-label="{{ option.name }}: {{ value }}"
+                        title="{{ value }}"
+                        {% unless value.available %}disabled{% endunless %}>
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                {%- else -%}
+                  <div class="size-btn-group sticky-option-group"
+                       data-option-name="{{ option.name | escape }}"
+                       data-option-position="{{ option.position }}">
+                    {%- for value in option.values -%}
+                      <button
+                        type="button"
+                        class="size-btn sticky-option-value{% unless value.available %} out-of-stock{% endunless %}"
+                        data-value="{{ value | escape }}"
+                        {% unless value.available %}disabled{% endunless %}>
+                        {{ value }}
+                      </button>
+                    {%- endfor -%}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+
+            <div class="sticky-variant-status">
+              <span class="selected-text" id="stickySelectedText">Select options</span>
+            </div>
+          </div>
+
+          <div class="sticky-size-chart">
+            <a href="#" class="chart-link" id="sizeChartLink">
+              <svg viewBox="0 0 24 24" stroke-width="2">
+                <path d="M3 3h18v18H3z" />
+                <path d="M9 3v18M15 3v18M3 9h18M3 15h18" />
+                <line x1="9" y1="9" x2="15" y2="15" />
+                <line x1="15" y1="9" x2="9" y2="15" />
+              </svg>
+              Size Chart
+            </a>
+          </div>
+
+        </div>
+
+        <div class="sticky-product-form">
+<button type="button"
+  id="stickyAddToCart"
+  class="product-form__submit lm-main-button button button--full-width button--primary">
+  <span>Add to cart</span>
+
+  <div class="loading__spinner hidden">
+    <svg class="spinner" viewBox="0 0 66 66">
+      <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+    </svg>
+  </div>
+</button>
+        </div>
+
+      </div>
+    </div>
+
+  {%- endif -%}
+{%- endif -%}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // =========================
+  // CACHE DOM (PERFORMANCE BOOST)
+  // =========================
+  const stickyBar = document.querySelector('.custom-sticky-bar-main');
+  const stickyBtn = document.getElementById('stickyAddToCart');
+  const stickyText = document.getElementById('stickySelectedText');
+  const sizeChartBtn = document.getElementById('sizeChartLink');
+
+  const variantRoot = document.querySelector('variant-radios');
+
+  // =========================
+  // UTILS
+  // =========================
+  let syncTimer;
+
+  function debounceSync(fn) {
+    clearTimeout(syncTimer);
+    syncTimer = setTimeout(fn, 50);
+  }
+
+  function setOptionValue(optionName, value) {
+    const input = document.querySelector(
+      `variant-radios input[name="${optionName}"][value="${value}"]`
+    );
+
+    if (!input) return;
+
+    input.checked = true;
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  // =========================
+  // STICKY -> MAIN (EVENT DELEGATION)
+  // =========================
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.sticky-option-value');
+    if (!btn) return;
+
+    const group = btn.closest('.sticky-option-group');
+    if (!group) return;
+
+    setOptionValue(group.dataset.optionName, btn.dataset.value);
+  });
+
+  // =========================
+  // MAIN -> STICKY SYNC (OPTIMIZED)
+  // =========================
+  function syncStickyUI() {
+    if (!variantRoot) return;
+
+    const checkedInputs = variantRoot.querySelectorAll('input:checked');
+
+    const selectedValues = [];
+
+    checkedInputs.forEach(input => {
+      selectedValues.push(input.value);
+
+      const optionName = input.name;
+
+      const group = document.querySelector(
+        `.sticky-option-group[data-option-name="${optionName}"]`
+      );
+
+      if (!group) return;
+
+      group.querySelectorAll('.sticky-option-value').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.value === input.value);
+      });
+    });
+
+    if (stickyText) {
+      stickyText.textContent = selectedValues.length
+        ? selectedValues.join(' / ')
+        : 'Select options';
+    }
+  }
+
+  // =========================
+  // SHOPIFY VARIANT LISTENER
+  // =========================
+  document.addEventListener('change', (e) => {
+    if (e.target.closest('variant-radios')) {
+      debounceSync(syncStickyUI);
+    }
+  });
+
+  // =========================
+  // STICKY ADD TO CART (SAFE PROXY)
+  // =========================
+  stickyBtn?.addEventListener('click', () => {
+
+    const mainBtn =
+      document.querySelector('variant-radios form button[type="submit"]') ||
+      document.querySelector('product-form form button[type="submit"]') ||
+      document.querySelector('form[action*="/cart/add"] button[type="submit"]');
+
+    if (!mainBtn) return;
+
+    stickyBtn.classList.add('loading');
+
+    mainBtn.click();
+
+    setTimeout(() => {
+      stickyBtn.classList.remove('loading');
+    }, 1200);
+  });
+
+  // =========================
+  // SIZE CHART (APP MODAL TRIGGER)
+  // =========================
+  sizeChartBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+
+    const tryOpen = () => {
+      const appTrigger = document.querySelector('.ks-chart-modal-link');
+      if (appTrigger) appTrigger.click();
+    };
+
+    // immediate + fallback
+    tryOpen();
+    setTimeout(tryOpen, 300);
+  });
+
+  // =========================
+  // STICKY VISIBILITY STATE
+  // =========================
+  function updateStickyState() {
+    if (!stickyBar) return;
+
+    const isVisible = window.getComputedStyle(stickyBar).display !== 'none';
+
+    if (window.innerWidth <= 767 && isVisible) {
+      document.body.classList.add('sticky-active');
+    } else {
+      document.body.classList.remove('sticky-active');
+    }
+  }
+
+  // =========================
+  // INIT (LIGHTWEIGHT)
+  // =========================
+  updateStickyState();
+  window.addEventListener('scroll', updateStickyState, { passive: true });
+  window.addEventListener('resize', updateStickyState);
+
+  syncStickyUI();
+
+});
+</script>
+{% schema %}
+{
+  "name": "Custom Sticky Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_bar",
+      "label": "Enable Sticky Bar",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1e293b"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#0f172a"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border Width (px)",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border Radius (px)",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Add to Cart Button (lm-main-button) Settings"
+    },
+    {
+      "type": "color",
+      "id": "lm_main_button",
+      "label": "Button Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color_background",
+      "id": "lm_main_button_gr",
+      "label": "Button Background Gradient (overrides solid color)",
+      "default": "linear-gradient(135deg, #000000, #333333)"
+    },
+    {
+      "type": "color",
+      "id": "lm_main_text",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "lm_button_animation",
+      "label": "Button Animation",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "soft", "label": "Soft Shine" },
+        { "value": "ripple", "label": "Ripple" },
+        { "value": "fade", "label": "Fade" },
+        { "value": "bubble", "label": "Bubble" },
+        { "value": "wave", "label": "Wave" },
+        { "value": "glowing", "label": "Glowing" },
+        { "value": "pulse", "label": "Pulse" },
+        { "value": "flicker", "label": "Flicker" },
+        { "value": "slide", "label": "Slide" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "header",
+      "content": "Sticky Bar Colors & Style (fallback)"
+    },
+    {
+      "type": "color",
+      "id": "add_to_cart_bg",
+      "label": "Button Background (fallback, if no lm-main-button)",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "add_to_cart_text",
+      "label": "Button Text (fallback)",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_full_button",
+      "label": "Make button full width",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Sticky Bar",
+      "category": "Product"
+    }
+  ]
+}
+{% endschema %}
