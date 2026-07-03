@@ -58,7 +58,7 @@
           "type": "price",
           "settings": {
             "price_style": "price",
-            "price_size": 20,
+            "price_size": 15,
             "badge_text_1": 13,
             "price_first": false,
             "badge_bg_1": "#d10000",
