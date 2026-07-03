@@ -443,6 +443,94 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "featured_stories_GfVpYa": {
+      "type": "featured-stories",
+      "blocks": {
+        "image_baNWMk": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/98A6264_c7a79ce2-130d-490e-99a3-b9e2f7220753.jpg"
+          }
+        },
+        "image_LUANji": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/98A6265.jpg"
+          }
+        },
+        "image_VMnCiz": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/98A4726_1.jpg"
+          }
+        },
+        "image_Q6NrKf": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/98A5396_75bc842f-ceed-4e9d-8916-86f778680b11.jpg"
+          }
+        },
+        "image_xEmkNm": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/98A5396_75bc842f-ceed-4e9d-8916-86f778680b11.jpg"
+          }
+        },
+        "image_Gqrzny": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/98A5396_75bc842f-ceed-4e9d-8916-86f778680b11.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "image_baNWMk",
+        "image_LUANji",
+        "image_VMnCiz",
+        "image_Q6NrKf",
+        "image_xEmkNm",
+        "image_Gqrzny"
+      ],
+      "name": "Featured Stories Slider",
+      "settings": {
+        "subheading": "STYLEDBYYOU",
+        "heading": "#centifashion",
+        "text": "As styled by you. Thank you for sharing your moments in AO, it's a pleasure to be part of them.",
+        "slides_per_view_desktop": "3.5",
+        "slides_per_view_mobile": "1.5",
+        "enable_slider": true,
+        "heading_font_size_desktop": 32,
+        "heading_font_size_mobile": 24,
+        "heading_color": "#000000",
+        "heading_text_shadow": false,
+        "subheading_font_size_desktop": 14,
+        "subheading_font_size_mobile": 12,
+        "subheading_color": "#999999",
+        "subheading_text_shadow": false,
+        "text_font_size_desktop": 14,
+        "text_font_size_mobile": 12,
+        "text_color": "#333333"
+      }
+    },
+    "sticky_bar_e8Tmad": {
+      "type": "sticky-bar",
+      "name": "Custom Sticky Bar",
+      "settings": {
+        "enable_sticky_bar": true,
+        "background_color": "#ffffff",
+        "text_color": "#1e293b",
+        "border_color": "#0f172a",
+        "border_width": 0,
+        "border_radius": 0,
+        "lm_main_button": "#000000",
+        "lm_main_button_gr": "linear-gradient(135deg, rgba(0, 0, 0, 1), rgba(51, 51, 51, 1) 100%)",
+        "lm_main_text": "#ffffff",
+        "lm_button_animation": "none",
+        "add_to_cart_bg": "#000000",
+        "add_to_cart_text": "#ffffff",
+        "show_full_button": true
+      }
     }
   },
   "order": [
@@ -450,6 +538,8 @@
     "main",
     "related-products",
     "1747402752e1e5eb78",
-    "featured_collection_kiXC9r"
+    "featured_collection_kiXC9r",
+    "featured_stories_GfVpYa",
+    "sticky_bar_e8Tmad"
   ]
 }
