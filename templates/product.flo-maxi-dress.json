@@ -409,6 +409,7 @@
     },
     "featured_collection_kiXC9r": {
       "type": "featured-collection",
+      "disabled": true,
       "name": "t:sections.featured-collection.presets.name",
       "settings": {
         "title": "OTHER PRODUCTS",
@@ -513,6 +514,36 @@
         "text_color": "#333333"
       }
     },
+    "custom_featured_collection_PHYqHf": {
+      "type": "custom-featured-collection",
+      "name": "Featured Slider",
+      "settings": {
+        "subheading": "NEW",
+        "heading": "Featured Collection",
+        "heading_alignment": "left",
+        "collection": "edits",
+        "products_limit": 8,
+        "columns_desktop": 4,
+        "enable_slider": true,
+        "heading_font_size_desktop": 22,
+        "heading_font_size_mobile": 22,
+        "heading_color": "#000000",
+        "heading_text_shadow": false,
+        "subheading_font_size_desktop": 11,
+        "subheading_font_size_mobile": 11,
+        "subheading_color": "#999999",
+        "subheading_text_shadow": false,
+        "title_font_size": 10,
+        "title_color": "#ffffff",
+        "title_text_shadow": false,
+        "variant_font_size": 10,
+        "variant_color": "#ffffff",
+        "variant_text_shadow": false,
+        "price_font_size": 10,
+        "price_color": "#ffffff",
+        "price_text_shadow": false
+      }
+    },
     "sticky_bar_e8Tmad": {
       "type": "sticky-bar",
       "name": "Custom Sticky Bar",
@@ -540,6 +571,7 @@
     "1747402752e1e5eb78",
     "featured_collection_kiXC9r",
     "featured_stories_GfVpYa",
+    "custom_featured_collection_PHYqHf",
     "sticky_bar_e8Tmad"
   ]
 }
