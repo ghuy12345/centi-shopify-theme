@@ -448,16 +448,22 @@
     "featured_stories_GfVpYa": {
       "type": "featured-stories",
       "blocks": {
-        "image_baNWMk": {
+        "image_zixLUi": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/98A6264_c7a79ce2-130d-490e-99a3-b9e2f7220753.jpg"
+            "image": "shopify://shop_images/98A5918.jpg"
           }
         },
-        "image_LUANji": {
+        "image_eDK4T8": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/98A6265.jpg"
+            "image": "shopify://shop_images/98A5385_1.jpg"
+          }
+        },
+        "image_JcDQYy": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/98A4342.jpg"
           }
         },
         "image_VMnCiz": {
@@ -469,7 +475,7 @@
         "image_Q6NrKf": {
           "type": "image",
           "settings": {
-            "image": "shopify://shop_images/98A5396_75bc842f-ceed-4e9d-8916-86f778680b11.jpg"
+            "image": "shopify://shop_images/Centi_Fashion_CocoFlo19682-1.jpg"
           }
         },
         "image_xEmkNm": {
@@ -486,8 +492,9 @@
         }
       },
       "block_order": [
-        "image_baNWMk",
-        "image_LUANji",
+        "image_zixLUi",
+        "image_eDK4T8",
+        "image_JcDQYy",
         "image_VMnCiz",
         "image_Q6NrKf",
         "image_xEmkNm",
