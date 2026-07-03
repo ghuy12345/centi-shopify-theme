@@ -34,7 +34,7 @@
         "title": {
           "type": "title",
           "settings": {
-            "title_size": 33,
+            "title_size": 24,
             "title_height": 120,
             "text_transform": "uppercase",
             "title_font_weight": "600",
@@ -47,11 +47,11 @@
           "settings": {
             "text": "Maxi Mesh Dress",
             "text_style": "body",
-            "text_size": 16,
+            "text_size": 11,
             "text_font_weight": "400",
             "text_color": "#000000",
             "text_transform": "none",
-            "text_alignment": "left"
+            "text_alignment": "center"
           }
         },
         "price": {
