@@ -423,7 +423,7 @@
                 <span class="variant-label">{{ option.name }}</span>
 
                 {%- if option_name_downcase contains 'color' or option_name_downcase contains 'colour' -%}
-                  <div class="color-swatch-group sticky-option-group"
+                  {% comment %} <div class="color-swatch-group sticky-option-group"
                        data-option-name="{{ option.name | escape }}"
                        data-option-position="{{ option.position }}">
                     {%- for value in option.values -%}
@@ -449,7 +449,7 @@
                         {% unless value.available %}disabled{% endunless %}>
                       </button>
                     {%- endfor -%}
-                  </div>
+                  </div> {% endcomment %}
                 {%- else -%}
                   <div class="size-btn-group sticky-option-group"
                        data-option-name="{{ option.name | escape }}"
