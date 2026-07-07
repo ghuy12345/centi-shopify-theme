@@ -1461,7 +1461,7 @@
                               <legend class="form__label form__label-{{block.id}}{% if block.settings.label_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.label_style == 'subtitle' %} subtitle{% endif %}">
                                 {{ option.name -}}
                                 <span id="atc selected-{{ option.name | downcase | replace: ' ', '-' }}"></span>
-                                {% comment %} {{- option.selected_value }} {% endcomment %}abc
+                                {% comment %} {{- option.selected_value }} {% endcomment %}
                               </legend>
 
                               {% if is_size %}
@@ -1855,7 +1855,7 @@
                               class="form__label form__label-{{block.id}}{% if block.settings.label_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.label_style == 'subtitle' %} subtitle{% endif %}"
                               for="Option-{{ section.id }}-{{ forloop.index0 }}"
                             >
-                              {{ option.name }}
+                              {{ option.name }}ssfdsdfsdf
                             </label>
 
                             {% if is_size %}
@@ -1874,7 +1874,7 @@
                                     type="button"
                                     aria-haspopup="dialog"
                                   >
-                                    {{ size_chart_title }}
+                                    {{ size_chart_title }}sdfsdf
                                   </button>
                                 </modal-opener>
                                 <a
