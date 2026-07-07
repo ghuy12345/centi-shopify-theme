@@ -1759,14 +1759,11 @@
                               endif
                             -%}
                             <div style="display: flex;align-items: center;width:100%;align-items: baseline;{% if block.settings.spaced_size %}justify-content: space-between;{% endif %}">
-                              {% comment %} {% assign option_name = option.name | downcase %}
-                              <legend class="form__label form__label-{{block.id}}{% if block.settings.label_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.label_style == 'subtitle' %} subtitle{% endif %} ">
-                                {{ option.name -}} 
-                                <span id="selected-{{ option.name | downcase | replace: ' ', '-' }}"></span>
-                                {% comment %} {% if option_name == 'color' or option_name == 'colour' %} {% endcomment %}
-                                  {{ option.selected_value }}
-                                {% comment %} {% endif %} {% endcomment %}
-                              </legend> {% endcomment %}
+                              {% assign option_name = option.name | downcase %}
+<legend class="form__label form__label-{{block.id}}{% if block.settings.label_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.label_style == 'subtitle' %} subtitle{% endif %}">
+  {{ option.name }}
+  <span id="selected-{{ option.name | downcase | replace: ' ', '-' }}"></span>
+</legend>
 
                               {% if is_size %}
                                 {% unless block.settings.spaced_size %}
