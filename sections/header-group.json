@@ -1,1 +1,144 @@
-{"name":"t:sections.header.name","type":"header","sections":{"lumin_scrolling_text_XiXQBh":{"type":"lumin-scrolling-text","blocks":{"announcement_fxpe7x":{"type":"announcement","settings":{"Announcement":"<p><strong>SAFI COLLECTION IS NOW LIVE<\/strong><\/p>","announcement_size":12,"announcement_size_m":12,"text_spacing":1,"text_transform":"uppercase","announcement_color":"#ffffff","icon":"none","text_link":""}},"announcement_eg7Wkj":{"type":"announcement","settings":{"Announcement":"<p><strong>limited release. Shop CENTI’s debut now.<\/strong><\/p>","announcement_size":12,"announcement_size_m":12,"text_spacing":1,"text_transform":"uppercase","announcement_color":"#ffffff","icon":"none","text_link":""}}},"block_order":["announcement_fxpe7x","announcement_eg7Wkj"],"disabled":true,"settings":{"scroll_speed":15,"reverse":false,"fade":false,"color_scheme":"background-2","padding_desktop":4,"padding_mobile":4,"padding_item_desktop":28,"padding_item_mobile":16,"padding_top":0,"padding_bottom":0}},"announcement_bar_GFUcVz":{"type":"announcement-bar","blocks":{"announcement_GRqBhx":{"type":"announcement","settings":{"text":"Free international shipping on orders over £150.","link":""}},"announcement_CtCp9F":{"type":"announcement","settings":{"text":"All taxes & duties included in the price for EU and US customers","link":""}},"announcement_FxUixL":{"type":"announcement","disabled":true,"settings":{"text":"Midseason Sale: 20% Off","link":""}}},"block_order":["announcement_GRqBhx","announcement_CtCp9F","announcement_FxUixL"],"settings":{"color_scheme":"background-1","show_line_separator":false,"show_social":false,"auto_rotate":false,"hide_arrows":true,"change_slides_speed":3,"enable_country_selector":true,"enable_language_selector":true}},"header":{"type":"header","custom_css":[],"settings":{"logo_position":"middle-left","hide_search":false,"menu":"main-menu","sticky_header_type":"none","show_line_separator":false,"transparent_header":"transparent_header_home","content_color":"#ffffff","menu_type_desktop":"mega","menu_hover":true,"mega_columns":"20","menu_align":"center","extended-megamenu-show-imgs":"no","link_img_size":100,"img_radius":6,"mega_menu_head_size":15,"head_menu_bold":true,"mega_menu_link_size":14,"menu_bold":false,"mega_menu_head_color":"#000000","mega_menu_link_color":"#000000","color_scheme":"background-1","menu_color_scheme":"background-1","enable_country_selector":false,"enable_language_selector":false,"mobile_logo_position":"center","margin_bottom":0,"padding_top":4,"padding_bottom":4}}},"order":["lumin_scrolling_text_XiXQBh","announcement_bar_GFUcVz","header"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "lumin_scrolling_text_XiXQBh": {
+      "type": "lumin-scrolling-text",
+      "blocks": {
+        "announcement_fxpe7x": {
+          "type": "announcement",
+          "settings": {
+            "Announcement": "<p><strong>SAFI COLLECTION IS NOW LIVE</strong></p>",
+            "announcement_size": 12,
+            "announcement_size_m": 12,
+            "text_spacing": 1,
+            "text_transform": "uppercase",
+            "announcement_color": "#ffffff",
+            "icon": "none",
+            "text_link": ""
+          }
+        },
+        "announcement_eg7Wkj": {
+          "type": "announcement",
+          "settings": {
+            "Announcement": "<p><strong>limited release. Shop CENTI’s debut now.</strong></p>",
+            "announcement_size": 12,
+            "announcement_size_m": 12,
+            "text_spacing": 1,
+            "text_transform": "uppercase",
+            "announcement_color": "#ffffff",
+            "icon": "none",
+            "text_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement_fxpe7x",
+        "announcement_eg7Wkj"
+      ],
+      "disabled": true,
+      "settings": {
+        "scroll_speed": 15,
+        "reverse": false,
+        "fade": false,
+        "color_scheme": "background-2",
+        "padding_desktop": 4,
+        "padding_mobile": 4,
+        "padding_item_desktop": 28,
+        "padding_item_mobile": 16,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "announcement_bar_GFUcVz": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_GRqBhx": {
+          "type": "announcement",
+          "settings": {
+            "text": "Free international shipping on orders over £150.",
+            "link": ""
+          }
+        },
+        "announcement_CtCp9F": {
+          "type": "announcement",
+          "settings": {
+            "text": "All taxes & duties included in the price for EU and US customers",
+            "link": ""
+          }
+        },
+        "announcement_FxUixL": {
+          "type": "announcement",
+          "disabled": true,
+          "settings": {
+            "text": "Midseason Sale: 20% Off",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement_GRqBhx",
+        "announcement_CtCp9F",
+        "announcement_FxUixL"
+      ],
+      "settings": {
+        "color_scheme": "background-1",
+        "show_line_separator": false,
+        "show_social": false,
+        "auto_rotate": false,
+        "hide_arrows": true,
+        "change_slides_speed": 3,
+        "enable_country_selector": true,
+        "enable_language_selector": true
+      }
+    },
+    "header": {
+      "type": "header",
+      "custom_css": [],
+      "settings": {
+        "logo_position": "middle-center",
+        "hide_search": false,
+        "menu": "main-menu",
+        "sticky_header_type": "none",
+        "show_line_separator": false,
+        "transparent_header": "transparent_header_home",
+        "content_color": "#ffffff",
+        "menu_type_desktop": "mega",
+        "menu_hover": true,
+        "mega_columns": "20",
+        "menu_align": "center",
+        "extended-megamenu-show-imgs": "no",
+        "link_img_size": 100,
+        "img_radius": 6,
+        "mega_menu_head_size": 15,
+        "head_menu_bold": true,
+        "mega_menu_link_size": 14,
+        "menu_bold": false,
+        "mega_menu_head_color": "#000000",
+        "mega_menu_link_color": "#000000",
+        "color_scheme": "background-1",
+        "menu_color_scheme": "background-1",
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "mobile_logo_position": "center",
+        "margin_bottom": 0,
+        "padding_top": 4,
+        "padding_bottom": 4
+      }
+    }
+  },
+  "order": [
+    "lumin_scrolling_text_XiXQBh",
+    "announcement_bar_GFUcVz",
+    "header"
+  ]
+}
