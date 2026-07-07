@@ -1459,7 +1459,7 @@
                             -%}
                             <div style="display: flex;align-items: center;width:100%;align-items: baseline;{% if block.settings.spaced_size %}justify-content: space-between;{% endif %}">
                               <legend class="form__label form__label-{{block.id}}{% if block.settings.label_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.label_style == 'subtitle' %} subtitle{% endif %}">
-                                {{ option.name -}}aa
+                                {{ option.name -}}
                                 <span id="atc selected-{{ option.name | downcase | replace: ' ', '-' }}"></span>
                                 {{- option.selected_value }}
                               </legend>
@@ -1481,7 +1481,7 @@
                                       style="padding: 0;text-decoration: none;border-bottom: 1px solid;"
                                       aria-haspopup="dialog"
                                     >
-                                      {{ size_chart_title }}aaa
+                                      {{ size_chart_title }}
                                     </button>
                                   </modal-opener>
                                   <a
@@ -1874,7 +1874,7 @@
                                     type="button"
                                     aria-haspopup="dialog"
                                   >
-                                    {{ size_chart_title }}aa
+                                    {{ size_chart_title }}
                                   </button>
                                 </modal-opener>
                                 <a
