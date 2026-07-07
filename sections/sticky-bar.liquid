@@ -420,7 +420,7 @@
             {%- for option in product.options_with_values -%}
               {%- assign option_name_downcase = option.name | downcase -%}
               <div class="variant-row" data-option-position="{{ option.position }}">
-                <span class="variant-label">{{ option.name }}</span>
+                {% comment %} <span class="variant-label">{{ option.name }}</span> {% endcomment %}
 
                 {%- if option_name_downcase contains 'color' or option_name_downcase contains 'colour' -%}
                   {% comment %} <div class="color-swatch-group sticky-option-group"
