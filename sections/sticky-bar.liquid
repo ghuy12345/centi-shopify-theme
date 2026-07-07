@@ -187,7 +187,7 @@
         .custom-sticky-bar-main { padding: 6px 8px 8px; }
         .custom-stikcy-bar-inner-flex { gap: 6px; min-height: 40px; }
         .sticky-variants { flex: 1 1 50%; }
-        .sticky-size-chart { flex: 0 0 46%; }
+        .sticky-size-chart { flex: 0 0 26%; }
         .color-swatch { width: 22px; height: 22px; }
         .size-btn { min-width: 26px; height: 22px; font-size: 9px; padding: 0 4px; }
         .sticky-add-to-cart { font-size: 12px; padding: 10px 12px; min-height: 40px; }
@@ -509,9 +509,6 @@
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-  // =========================
-  // CACHE DOM (PERFORMANCE BOOST)
-  // =========================
   const stickyBar = document.querySelector('.custom-sticky-bar-main');
   const stickyBtn = document.getElementById('stickyAddToCart');
   const stickyText = document.getElementById('stickySelectedText');
@@ -519,9 +516,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const variantRoot = document.querySelector('variant-radios');
 
-  // =========================
-  // UTILS
-  // =========================
   let syncTimer;
 
   function debounceSync(fn) {
@@ -540,9 +534,6 @@ document.addEventListener('DOMContentLoaded', () => {
     input.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
-  // =========================
-  // STICKY -> MAIN (EVENT DELEGATION)
-  // =========================
   document.addEventListener('click', (e) => {
     const btn = e.target.closest('.sticky-option-value');
     if (!btn) return;
@@ -553,9 +544,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setOptionValue(group.dataset.optionName, btn.dataset.value);
   });
 
-  // =========================
-  // MAIN -> STICKY SYNC (OPTIMIZED)
-  // =========================
   function syncStickyUI() {
     if (!variantRoot) return;
 
@@ -586,18 +574,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // =========================
-  // SHOPIFY VARIANT LISTENER
-  // =========================
   document.addEventListener('change', (e) => {
     if (e.target.closest('variant-radios')) {
       debounceSync(syncStickyUI);
     }
   });
 
-  // =========================
-  // STICKY ADD TO CART (SAFE PROXY)
-  // =========================
   stickyBtn?.addEventListener('click', () => {
 
     const mainBtn =
@@ -616,9 +598,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1200);
   });
 
-  // =========================
-  // SIZE CHART (APP MODAL TRIGGER)
-  // =========================
   sizeChartBtn?.addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -627,14 +606,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (appTrigger) appTrigger.click();
     };
 
-    // immediate + fallback
     tryOpen();
     setTimeout(tryOpen, 300);
   });
 
-  // =========================
-  // STICKY VISIBILITY STATE
-  // =========================
   function updateStickyState() {
     if (!stickyBar) return;
 
@@ -647,9 +622,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // =========================
-  // INIT (LIGHTWEIGHT)
-  // =========================
   updateStickyState();
   window.addEventListener('scroll', updateStickyState, { passive: true });
   window.addEventListener('resize', updateStickyState);

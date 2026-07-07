@@ -4243,3 +4243,7 @@ img, video, iframe {
   max-width: 100%;
   height: auto;
 }
+
+.product-card-wrapper .card__badge {
+    display: none;
+}

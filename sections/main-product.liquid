@@ -191,7 +191,7 @@
   {%- endif -%}
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
-  <div class="page-width">
+ 
     <div class="product product--{{ section.settings.media_size }} product--{{ section.settings.media_position }} {% if section.settings.gallery_layout == 'vertical_right' or section.settings.gallery_layout == 'vertical_left' %} product--thumbnail{% else %} product--{{ section.settings.gallery_layout }}{% endif %} product--mobile-{{ section.settings.mobile_thumbnails }} grid grid--1-col {% if product.media.size > 0 %}grid--2-col-tablet{% else %}product--no-media{% endif %}">
       <div class="grid__item product__media-wrapper{% if section.settings.media_position == 'right' %} medium-hide large-up-hide lumin-quick-add-show{% endif %}">
         {% if section.settings.gallery_layout == 'vertical_right'
@@ -204,7 +204,7 @@
       </div>
       <div
         class="
-          product__info-wrapper grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}
+          product__info-wrapper page-width grid__item{% if settings.page_width > 1400 and section.settings.media_size == "small" %} product__info-wrapper--extra-padding{% endif %}
           {% assign contains_product_group = false %}
 
             {% for block in section.blocks %}
@@ -2800,7 +2800,7 @@
         ]
       }
     </script>
-  </div>
+  {% comment %} </div> {% endcomment %}
 </section>
 
 <style>
@@ -2818,7 +2818,7 @@
     font-size: 14px;
 }
 
-.caption-large, .customer .field input, .customer select, .field__input, .form__label, .select__select {
+form#product-form-installment-template--28880783507800__main {
     text-align: center;
 }
 
@@ -2880,7 +2880,111 @@ fieldset.js.product-form__input {
     padding: 0 1rem;
     font-size: 12px;
 }
+
+.product.product--large.product--left.product--columns{
+    position:relative;
+}
+
+.product__info-wrapper.grid__item{
+    will-change:top;
+}
+
+.product__info-wrapper.page-width.grid__item.scroll-trigger.animate--slide-in {
+    padding-right: 5rem;
+}
+
+.grid__item.product__media-wrapper .grid {
+    column-gap: 3px;
+    row-gap: 3px;
+}
+
+.product li.product__media-item.grid__item.slider__slide:nth-child(3n) {
+  width: 100%;
+  max-width: 100%;
+}
+.product__media-item>* {
+    height: 100%;
+}
+
+.product--columns .product__media-item:not(.product__media-item--single):not(:only-child) {
+    max-width: calc(51% - var(--grid-desktop-horizontal-spacing) / 2);
+}
+
+@media screen and (max-width: 768px) {
+.product__info-wrapper.page-width.grid__item.scroll-trigger.animate--slide-in {
+    padding-right: 2rem;
+}
+}
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    if (window.innerWidth <= 990) return;
+
+    const container = document.querySelector(".product.product--large.product--left.product--columns");
+    if (!container) return;
+
+    const media = container.querySelector(".product__media-wrapper");
+    const info = container.querySelector(".product__info-wrapper.grid__item");
+
+    if (!media || !info) return;
+
+    container.style.position = "relative";
+
+    function stickyProduct() {
+
+        if (window.innerWidth <= 990) {
+            info.removeAttribute("style");
+            return;
+        }
+
+        const containerTop = container.offsetTop;
+        const mediaHeight = media.offsetHeight;
+        const infoHeight = info.offsetHeight;
+
+        const start = containerTop - 80;
+        const end = containerTop + mediaHeight - infoHeight - 80;
+
+        const scrollTop = window.pageYOffset;
+
+        if (scrollTop < start) {
+
+            info.style.position = "absolute";
+            info.style.top = "0";
+            info.style.right = "0";
+            info.style.left = "";
+            info.style.bottom = "";
+            info.style.width = "";
+
+        } else if (scrollTop >= start && scrollTop <= end) {
+
+            const rect = info.getBoundingClientRect();
+
+            info.style.position = "fixed";
+            info.style.top = "80px";
+            info.style.left = rect.left + "px";
+            info.style.width = rect.width + "px";
+            info.style.right = "";
+            info.style.bottom = "";
+
+        } else {
+
+            info.style.position = "absolute";
+            info.style.top = (mediaHeight - infoHeight) + "px";
+            info.style.right = "0";
+            info.style.left = "";
+            info.style.width = "";
+
+        }
+    }
+
+    window.addEventListener("scroll", stickyProduct);
+    window.addEventListener("resize", stickyProduct);
+
+    stickyProduct();
+});
+</script>
 
 {% schema %}
 {
