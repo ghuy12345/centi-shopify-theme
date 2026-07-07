@@ -1760,15 +1760,12 @@
                             -%}
                             <div style="display: flex;align-items: center;width:100%;align-items: baseline;{% if block.settings.spaced_size %}justify-content: space-between;{% endif %}">
                               
-                              {% comment %} <legend class="form__label form__label-{{block.id}}{% if block.settings.label_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.label_style == 'subtitle' %} subtitle{% endif %} ">
+                              <legend class="form__label form__label-{{block.id}}{% if block.settings.label_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.label_style == 'subtitle' %} subtitle{% endif %} ">
                                 {{ option.name -}} 
                                 <span id="selected-{{ option.name | downcase | replace: ' ', '-' }}"></span>
-                                {% comment %} {{- option.selected_value -}} {% endcomment %}
-                              </legend> {% endcomment %}
-                            <legend class="form__label custom-lable form__label-{{block.id}}{% if block.settings.label_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.label_style == 'subtitle' %} subtitle{% endif %} ">
-                                {{ option.name -}} 
-                       
+                                {{- option.selected_value -}}
                               </legend>
+
                               {% if is_size %}
                                 {% unless block.settings.spaced_size %}
                                   <span style="padding: 0 4px 0 10px;">—</span>
