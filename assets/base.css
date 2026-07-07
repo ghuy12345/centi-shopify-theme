@@ -4247,3 +4247,7 @@ img, video, iframe {
 .product-card-wrapper .card__badge {
     display: none;
 }
+
+shopify-payment-terms {
+    display: none !important;
+}

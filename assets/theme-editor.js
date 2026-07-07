@@ -49,29 +49,26 @@ document.addEventListener('shopify:inspector:deactivate', () => hideProductModal
 
 document.addEventListener("DOMContentLoaded", function () {
 
-    function updateShopPay() {
-        const shopPay = document.querySelector('shopify-payment-terms');
+    function addCustomShopPay() {
 
-        if (!shopPay || !shopPay.shadowRoot) return;
+        if (document.querySelector(".custom-shop-pay")) return;
 
-        const root = shopPay.shadowRoot;
+        const price = document.querySelector(".price__regular .price-item--regular, .price__sale .price-item--sale");
 
-        const text = root.querySelector('.shopify-installments__content');
-        if (!text) return;
+        if (!price) return;
 
-        let html = text.innerHTML;
+        let amount = price.textContent.trim();
 
-        // Remove starting text
-        html = html.replace(/Pay in \d+ interest-free instalments of\s*/i, '');
+        const html = `
+            <div class="custom-shop-pay">
+                <span>${amount} with</span>
+                <img src="https://cdn.shopify.com/shopifycloud/shopify_pay/assets/shop-pay-monotone-logo-examples.svg" alt="Shop Pay">
+            </div>
+        `;
 
-        // Remove Learn more link
-        html = html.replace(/<a[^>]*>Learn more<\/a>/i, '');
-
-        // Remove extra spaces
-        html = html.replace(/\s+/g, ' ').trim();
-
-        text.innerHTML = html;
+        document.querySelector("shopify-payment-terms")?.insertAdjacentHTML("afterend", html);
     }
 
-    setInterval(updateShopPay, 500);
+    setTimeout(addCustomShopPay, 1000);
+
 });
