@@ -3010,35 +3010,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     stickyProduct();
 });
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    function updateShopPay() {
-        const shopPay = document.querySelector('shopify-payment-terms');
-
-        if (!shopPay || !shopPay.shadowRoot) return;
-
-        const root = shopPay.shadowRoot;
-
-        const text = root.querySelector('.shopify-installments__content');
-        if (!text) return;
-
-        let html = text.innerHTML;
-
-        // Remove starting text
-        html = html.replace(/Pay in \d+ interest-free instalments of\s*/i, '');
-
-        // Remove Learn more link
-        html = html.replace(/<a[^>]*>Learn more<\/a>/i, '');
-
-        // Remove extra spaces
-        html = html.replace(/\s+/g, ' ').trim();
-
-        text.innerHTML = html;
-    }
-
-    setInterval(updateShopPay, 500);
-});
 </script>
 
 {% schema %}
