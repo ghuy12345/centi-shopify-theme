@@ -87,7 +87,7 @@
             "font_style": "normal",
             "swatchType": "color",
             "optionName": "Colour",
-            "swatchStyle": "round",
+            "swatchStyle": "square",
             "swatchSize": 28,
             "swatchHeight": 32,
             "size_trigger": "",
