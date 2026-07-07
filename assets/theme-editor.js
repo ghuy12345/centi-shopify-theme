@@ -47,28 +47,124 @@ document.addEventListener('shopify:inspector:activate', () => hideProductModal()
 document.addEventListener('shopify:inspector:deactivate', () => hideProductModal());
 
 
-document.addEventListener("DOMContentLoaded", function () {
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const TERMS_SELECTOR = 'shopify-payment-terms';
+  const BUTTON_SELECTOR = '.shopify-payment-button';
+  const CUSTOM_CLASS = 'custom-shop-pay-terms';
 
-    function addCustomShopPay() {
+  let initInterval = null;
+  let variantCheckInterval = null;
+  let lastKnownText = '';
 
-        if (document.querySelector(".custom-shop-pay")) return;
+  // Helper: Extract clean text from the Shadow DOM
+  function getShadowText() {
+    const terms = document.querySelector(TERMS_SELECTOR);
+    if (!terms || !terms.shadowRoot) return null;
+    
+    const contentSpan = terms.shadowRoot.querySelector('#shopify-installments-content');
+    if (!contentSpan) return null;
 
-        const price = document.querySelector(".price__regular .price-item--regular, .price__sale .price-item--sale");
+    // Clone to avoid mutating the actual shadow DOM
+    const cloned = contentSpan.cloneNode(true);
+    const logoContainer = cloned.querySelector('div'); // The div wrapping the SVG
+    if (logoContainer) logoContainer.remove();
 
-        if (!price) return;
+    // Clean up text
+    return cloned.textContent.trim().replace(/\s*with\s*$/i, '').trim();
+  }
 
-        let amount = price.textContent.trim();
+  // Helper: Create or update the custom UI
+  function updateCustomUI(text) {
+    let container = document.querySelector('.' + CUSTOM_CLASS);
+    
+    // Create container if it doesn't exist
+    if (!container) {
+      const btn = document.querySelector(BUTTON_SELECTOR);
+      if (!btn) return;
+      
+      container = document.createElement('div');
+      container.className = CUSTOM_CLASS;
 
-        const html = `
-            <div class="custom-shop-pay">
-                <span>${amount} with</span>
-                <img src="https://cdn.shopify.com/shopifycloud/shopify_pay/assets/shop-pay-monotone-logo-examples.svg" alt="Shop Pay">
-            </div>
-        `;
+      // Create the "View sample plans" button
+      const newBtn = document.createElement('button');
+      newBtn.textContent = 'View sample plans';
+      newBtn.className = 'custom-shop-pay-cta';
+      
+      // Click handler dynamically finds the original CTA to open the modal
+      newBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const originalCta = document.querySelector(TERMS_SELECTOR)?.shadowRoot?.querySelector('#shopify-installments-cta');
+        if (originalCta) originalCta.click();
+      });
 
-        document.querySelector("shopify-payment-terms")?.insertAdjacentHTML("afterend", html);
+      container.appendChild(document.createTextNode('')); // Placeholder for text node
+      container.appendChild(newBtn);
+      
+      // Insert below the Shop Pay button
+      btn.parentNode.insertBefore(container, btn.nextSibling);
     }
 
-    setTimeout(addCustomShopPay, 1000);
+    // Update the text node (first child)
+    if (container.firstChild && container.firstChild.nodeType === Node.TEXT_NODE) {
+      container.firstChild.nodeValue = text + ' ';
+    }
+    
+    lastKnownText = text;
+  }
 
+  // 1. Initialization Polling (Runs until elements are found)
+  function init() {
+    const terms = document.querySelector(TERMS_SELECTOR);
+    const btn = document.querySelector(BUTTON_SELECTOR);
+
+    if (terms && btn && terms.shadowRoot) {
+      const text = getShadowText();
+      if (text) {
+        updateCustomUI(text);
+        terms.style.display = 'none'; // Hide original Shopify element
+
+        // Stop initialization polling
+        if (initInterval) {
+          clearInterval(initInterval);
+          initInterval = null;
+        }
+
+        // Start variant checking
+        startVariantCheck();
+      }
+    }
+  }
+
+  // 2. Variant Change Polling (Runs slowly to check for price updates)
+  function startVariantCheck() {
+    if (variantCheckInterval) return; // Prevent duplicate intervals
+
+    variantCheckInterval = setInterval(() => {
+      const terms = document.querySelector(TERMS_SELECTOR);
+      if (!terms) return;
+
+      // Ensure original stays hidden
+      if (terms.style.display !== 'none') {
+        terms.style.display = 'none';
+      }
+
+      // Only update DOM if the text actually changed (prevents freezing)
+      const currentText = getShadowText();
+      if (currentText && currentText !== lastKnownText) {
+        updateCustomUI(currentText);
+      }
+    }, 500); // Check twice a second (very lightweight)
+  }
+
+  // Kick off initialization
+  init();
+  initInterval = setInterval(init, 300); 
+
+  // Cleanup intervals when leaving the page (Good practice)
+  window.addEventListener('beforeunload', () => {
+    if (initInterval) clearInterval(initInterval);
+    if (variantCheckInterval) clearInterval(variantCheckInterval);
+  });
 });
+</script>
