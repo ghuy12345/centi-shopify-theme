@@ -11,6 +11,7 @@
   "sections": {
     "301f7d84-22e5-45b5-8f0a-a01627b7db19": {
       "type": "breadcrumbs",
+      "disabled": true,
       "settings": {
         "color_scheme": "",
         "title_home": "Home",
@@ -44,6 +45,7 @@
         },
         "74e17b96-75e8-4ec7-ae08-2df77f4249cb": {
           "type": "text",
+          "disabled": true,
           "settings": {
             "text": "Maxi Mesh Dress",
             "text_style": "body",
