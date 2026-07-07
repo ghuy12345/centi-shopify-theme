@@ -1461,7 +1461,7 @@
                               <legend class="form__label form__label-{{block.id}}{% if block.settings.label_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.label_style == 'subtitle' %} subtitle{% endif %}">
                                 {{ option.name -}}
                                 {% comment %} <span id="atc selected-{{ option.name | downcase | replace: ' ', '-' }}"></span> {% endcomment %}
-                                {{- option.selected_value }}
+                                {% comment %} {{- option.selected_value }} {% endcomment %}
                               </legend>
 
                               {% if is_size %}
@@ -1761,8 +1761,8 @@
                             <div style="display: flex;align-items: center;width:100%;align-items: baseline;{% if block.settings.spaced_size %}justify-content: space-between;{% endif %}">
                               <legend class="form__label form__label-{{block.id}}{% if block.settings.label_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.label_style == 'subtitle' %} subtitle{% endif %} ">
                                 {{ option.name -}} 
-                                {% comment %} <span id="selected-{{ option.name | downcase | replace: ' ', '-' }}"></span> {% endcomment %}
-                                {% comment %} {{- option.selected_value -}} {% endcomment %}
+                                <span id="selected-{{ option.name | downcase | replace: ' ', '-' }}"></span>
+                                {{- option.selected_value -}}
                               </legend>
 
                               {% if is_size %}
@@ -1874,7 +1874,7 @@
                                     type="button"
                                     aria-haspopup="dialog"
                                   >
-                                    {% comment %} {{ size_chart_title }} {% endcomment %}
+                                    {{ size_chart_title }}
                                   </button>
                                 </modal-opener>
                                 <a
