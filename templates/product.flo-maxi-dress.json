@@ -349,7 +349,7 @@
         "container_border_color_mb": "#f9f9f9",
         "media_size": "large",
         "constrain_to_viewport": false,
-        "media_fit": "cover",
+        "media_fit": "contain",
         "gallery_layout": "columns",
         "thumbnail_size": 76,
         "thumbnail_radius": 4,
