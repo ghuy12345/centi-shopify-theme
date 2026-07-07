@@ -615,7 +615,7 @@
                             <legend class="form__label ">
                               {{ option.name }}:
                               <span id="atc selected-{{ option.name | downcase | replace: ' ', '-' }}"> </span>
-                              {% comment %} {{- option.selected_value }} {% endcomment %}
+                              {{- option.selected_value }}
                             </legend>
 
                             {%- liquid
