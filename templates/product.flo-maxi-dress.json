@@ -345,7 +345,7 @@
         "show_container_mb": true,
         "container_padding_mb": 20,
         "container_radius_mb": 0,
-        "container_color_mb": "#f9f9f9",
+        "container_color_mb": "#FFFFFF",
         "container_border_color_mb": "#f9f9f9",
         "media_size": "large",
         "constrain_to_viewport": false,
