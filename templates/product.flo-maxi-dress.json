@@ -337,7 +337,7 @@
         "show_container": false,
         "container_radius": 0,
         "container_padding": 30,
-        "container_color": "#f9f9f9",
+        "container_color": "#FFFFFF",
         "container_border_color": "#f9f9f9",
         "container_text": "",
         "container_text_bg": "#212121",
