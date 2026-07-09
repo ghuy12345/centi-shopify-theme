@@ -4232,7 +4232,9 @@ details-disclosure > details {
 .product--thumbnail_slider .product__media-gallery slider-component.thumbnail-slider .thumbnail-list.slider--tablet-up{display: flex; padding: 0 0.7rem; flex: 1; scroll-padding-left: 0.5rem; flex-direction: column;}
 .product--thumbnail_slider .product__media-gallery slider-component.thumbnail-slider .thumbnail-list.slider--tablet-up .thumbnail-list__item{width: 100%;}
 }
+
 /* Fix mobile horizontal scrolling issue */
+
 html, body {
   max-width: 100%;
   overflow-x: hidden;
@@ -4248,7 +4250,7 @@ img, video, iframe {
     display: none;
 }
 
-  shopify-payment-terms {
-    display: flex;
-    justify-content: center;
+shopify-payment-terms {
+  display: flex;
+  justify-content: center;
 }
