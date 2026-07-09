@@ -501,6 +501,29 @@ src="https://www.facebook.com/tr?id=1992065521688558&ev=PageView&noscript=1"
         });
       </script>
     {% endif %}
-    
+     <script>
+function modifyShopPayText() {
+  const shopPay = document.querySelector('shopify-payment-terms');
+
+  if (shopPay && shopPay.shadowRoot) {
+
+    // Hide "Pay in 3 interest-free instalments of"
+    const content = shopPay.shadowRoot.querySelector('#shopify-installments-content');
+
+    if (content && content.childNodes[0]) {
+      content.childNodes[0].textContent = '';
+    }
+
+    // Hide "Learn more"
+    const learnMore = shopPay.shadowRoot.querySelector('#shopify-installments-cta');
+
+    if (learnMore) {
+      learnMore.style.display = 'none';
+    }
+  }
+}
+
+setTimeout(modifyShopPayText, 1000);
+  </script>
   </body>
 </html>
