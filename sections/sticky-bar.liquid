@@ -1,22 +1,22 @@
 {%- if product != blank -%}
   {%- assign enable_sticky_bar = section.settings.enable_sticky_bar -%}
   {%- if enable_sticky_bar -%}
-    {%- style -%}
-            .custom-sticky-bar-main {
-              position: fixed;
-              bottom: 0;
-              left: 0;
-              right: 0;
-              z-index: 999;
-              display: none;
-              background: {{ section.settings.background_color }};
-              border: {{ section.settings.border_width }}px solid {{ section.settings.border_color }};
-              border-radius: {{ section.settings.border_radius }}px 0 0 0;
-              padding: 8px 12px 10px;
-              box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
-              width: 100%;
-              transition: all 0.2s ease;
-            }
+  {%- style -%}
+  .custom-sticky-bar-main {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    display: none;
+    background: {{ section.settings.background_color }};
+    border: {{ section.settings.border_width }}px solid {{ section.settings.border_color }};
+    border-radius: {{ section.settings.border_radius }}px 0 0 0;
+    padding: 8px 12px 10px;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.08);
+    width: 100%;
+    transition: all 0.2s ease;
+  }
 
             .custom-sticky-bar-inner {
               max-width: 100%;
