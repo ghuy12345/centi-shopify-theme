@@ -4248,3 +4248,7 @@ img, video, iframe {
     display: none;
 }
 
+  shopify-payment-terms {
+    display: flex;
+    justify-content: center;
+}
