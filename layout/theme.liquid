@@ -504,26 +504,51 @@ src="https://www.facebook.com/tr?id=1992065521688558&ev=PageView&noscript=1"
      <script>
 function modifyShopPayText() {
   const shopPay = document.querySelector('shopify-payment-terms');
+  if (!shopPay || !shopPay.shadowRoot) return;
 
-  if (shopPay && shopPay.shadowRoot) {
+  const meta = JSON.parse(shopPay.getAttribute('shopify-meta'));
+  const variantId = shopPay.getAttribute('variant-id');
 
-    // Hide "Pay in 3 interest-free instalments of"
-    const content = shopPay.shadowRoot.querySelector('#shopify-installments-content');
+  const variant = meta.variants.find(
+    item => String(item.id) === String(variantId)
+  );
 
-    if (content && content.childNodes[0]) {
-      content.childNodes[0].textContent = '';
-    }
+  if (!variant) return;
 
-    // Hide "Learn more"
-    const learnMore = shopPay.shadowRoot.querySelector('#shopify-installments-cta');
+  const terms = variant.number_of_payment_terms;
 
-    if (learnMore) {
-      learnMore.style.display = 'none';
-    }
+  const fullPrice = Number(
+    variant.full_price.replace(/[^0-9.]/g, '')
+  );
+
+  const currency = variant.full_price.replace(/[0-9.,\s]/g, '');
+  const installmentPrice = (fullPrice / terms).toFixed(2);
+
+  const content = shopPay.shadowRoot.querySelector(
+    '#shopify-installments-content'
+  );
+
+  if (content) {
+    content.innerHTML = `
+      <span class="font-bold">
+        ${terms} × ${currency}${installmentPrice}
+      </span>
+      with <strong style="color:#5a31f4;">Shop Pay</strong>
+    `;
   }
+
+  const learnMore = shopPay.shadowRoot.querySelector(
+    '#shopify-installments-cta'
+  );
+
+  if (learnMore) learnMore.style.display = 'none';
 }
 
-setTimeout(modifyShopPayText, 1000);
-  </script>
+setTimeout(modifyShopPayText, 800);
+
+document.addEventListener('change', () => {
+  setTimeout(modifyShopPayText, 200);
+});
+</script>
   </body>
 </html>
