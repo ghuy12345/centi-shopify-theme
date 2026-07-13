@@ -2911,7 +2911,7 @@
   }
 
 
-  @media screen and (max-width: 749px) {
+  {% comment %} @media screen and (max-width: 749px) {
 
   .product .product__media-list {
     gap: 10px;
@@ -2934,19 +2934,41 @@
   .product li.product__media-item.grid__item.slider__slide img {
     width: 100% !important;
     height: 100% !important;
-    object-fit: fill !important;
+    object-fit: cover !important;
     object-position: center !important;
     display: block;
   }
-  .media>*:not(.zoom):not(.deferred-media__poster-button), .media model-viewer {
+
+} {% endcomment %}
+
+@media screen and (max-width: 749px) {
+
+  .product li.product__media-item.grid__item.slider__slide:nth-child(3n) {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .product li.product__media-item.grid__item.slider__slide {
+    width: 100% !important;
+    max-width: 100% !important;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+  }
+
+  .product li.product__media-item.grid__item.slider__slide .product__media,
+  .product li.product__media-item.grid__item.slider__slide .media,
+  .product li.product__media-item.grid__item.slider__slide picture {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .product li.product__media-item.grid__item.slider__slide img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center center !important;
     display: block;
-    max-width: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: auto;
-    width: 100%;
-}
+  }
 
 }
 
