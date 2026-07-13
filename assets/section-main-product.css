@@ -61,7 +61,7 @@
 
   .product--large:not(.product--no-media) .product__info-wrapper {
     padding: 0 0 0 5rem;
-    max-width: 100%;
+    max-width: 40%;
     width: calc(40% - var(--lumin-container-margin) -  var(--grid-desktop-horizontal-spacing) / 2);
     margin-left: var(--lumin-container-margin);
   }
