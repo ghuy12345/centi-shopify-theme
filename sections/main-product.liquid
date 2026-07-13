@@ -2997,18 +2997,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     container.style.position = "relative";
 
+    let fixedLeft = 0;
+    let fixedWidth = 0;
+
+    function updatePosition() {
+        // Original position ko sirf resize/load par calculate karo
+        const rect = info.getBoundingClientRect();
+        fixedLeft = rect.left + window.pageXOffset;
+        fixedWidth = rect.width;
+    }
+
     function stickyProduct() {
 
         if (window.innerWidth <= 990) {
             info.removeAttribute("style");
             return;
         }
-
-        const containerRect = container.getBoundingClientRect();
-        const infoRect = info.getBoundingClientRect();
-
-        const left = containerRect.left + media.offsetWidth;
-        const width = info.offsetWidth;
 
         const containerTop = container.offsetTop;
         const mediaHeight = media.offsetHeight;
@@ -3023,38 +3027,44 @@ document.addEventListener("DOMContentLoaded", function () {
 
             info.style.position = "absolute";
             info.style.top = "0";
-            info.style.right = "0";
             info.style.left = "";
+            info.style.right = "0";
             info.style.width = "";
 
         } else if (scrollTop <= end) {
 
             info.style.position = "fixed";
             info.style.top = "80px";
-            info.style.left = left + "px";
-            info.style.width = width + "px";
-            info.style.right = "";
+            info.style.left = fixedLeft + "px";
+            info.style.width = fixedWidth + "px";
+            info.style.right = "auto";
 
         } else {
 
             info.style.position = "absolute";
             info.style.top = (mediaHeight - infoHeight) + "px";
-            info.style.right = "0";
             info.style.left = "";
+            info.style.right = "0";
             info.style.width = "";
         }
     }
 
-    window.addEventListener("scroll", stickyProduct);
-    window.addEventListener("resize", stickyProduct);
+    // Initial position
+    updatePosition();
 
-    // Page fully load hone ke baad bhi recalculate
-    window.addEventListener("load", stickyProduct);
-
-    // Images load hone ke baad bhi recalculate
-    document.querySelectorAll(".product__media-wrapper img").forEach(img => {
-        img.addEventListener("load", stickyProduct);
+    // Sab images load hone ke baad dobara calculate
+    window.addEventListener("load", function () {
+        updatePosition();
+        stickyProduct();
     });
+
+    // Resize par dobara calculate
+    window.addEventListener("resize", function () {
+        updatePosition();
+        stickyProduct();
+    });
+
+    window.addEventListener("scroll", stickyProduct);
 
     stickyProduct();
 });
