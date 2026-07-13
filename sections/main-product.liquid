@@ -2984,67 +2984,43 @@ modal-opener.product__modal-opener.product__modal-opener--image.no-js-hidden {
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-
     if (window.innerWidth <= 990) return;
-
     const container = document.querySelector(".product.product--large.product--left.product--columns");
     if (!container) return;
-
     const media = container.querySelector(".product__media-wrapper");
     const info = container.querySelector(".product__info-wrapper.grid__item");
 
     if (!media || !info) return;
-
     container.style.position = "relative";
-
-    let fixedLeft = 0;
-    let fixedWidth = 0;
-
-    function updatePosition() {
-
-        info.style.position = "absolute";
-        info.style.top = "0";
-        info.style.left = "";
-        info.style.right = "0";
-        info.style.width = "";
-
-        const rect = info.getBoundingClientRect();
-
-        fixedLeft = rect.left + window.scrollX;
-        fixedWidth = rect.width;
-    }
-
     function stickyProduct() {
-
         if (window.innerWidth <= 990) {
             info.removeAttribute("style");
             return;
         }
-
         const containerTop = container.offsetTop;
         const mediaHeight = media.offsetHeight;
         const infoHeight = info.offsetHeight;
-
         const start = containerTop - 80;
         const end = containerTop + mediaHeight - infoHeight - 80;
-
         const scrollTop = window.pageYOffset;
-
         if (scrollTop < start) {
 
             info.style.position = "absolute";
             info.style.top = "0";
             info.style.right = "0";
             info.style.left = "";
+            info.style.bottom = "";
             info.style.width = "";
 
-        } else if (scrollTop <= end) {
+        } else if (scrollTop >= start && scrollTop <= end) {
 
+            const rect = info.getBoundingClientRect();
             info.style.position = "fixed";
             info.style.top = "80px";
-            info.style.left = fixedLeft + "px";
-            info.style.width = fixedWidth + "px";
-            info.style.right = "auto";
+            info.style.left = rect.left + "px";
+            info.style.width = rect.width + "px";
+            info.style.right = "";
+            info.style.bottom = "";
 
         } else {
 
@@ -3057,40 +3033,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    function refreshSticky() {
-        updatePosition();
-        stickyProduct();
-    }
-
-    refreshSticky();
-
     window.addEventListener("scroll", stickyProduct);
-
-    window.addEventListener("resize", function () {
-        refreshSticky();
-    });
-
-    window.addEventListener("load", function () {
-        refreshSticky();
-    });
-
-    document.querySelectorAll("img").forEach(function(img) {
-        img.addEventListener("load", refreshSticky);
-    });
-
-    // Active class change hone par bhi refresh
-    const observer = new MutationObserver(function() {
-        setTimeout(refreshSticky, 20);
-    });
-
-    observer.observe(document.body, {
-        subtree: true,
-        attributes: true,
-        attributeFilter: ["class"]
-    });
-
+    window.addEventListener("resize", stickyProduct);
+    stickyProduct();
+    
 });
 </script>
+
 {% schema %}
 {
   "name": "t:sections.main-product.name",
