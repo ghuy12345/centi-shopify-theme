@@ -3001,9 +3001,16 @@ document.addEventListener("DOMContentLoaded", function () {
     let fixedWidth = 0;
 
     function updatePosition() {
-        // Original position ko sirf resize/load par calculate karo
+
+        info.style.position = "absolute";
+        info.style.top = "0";
+        info.style.left = "";
+        info.style.right = "0";
+        info.style.width = "";
+
         const rect = info.getBoundingClientRect();
-        fixedLeft = rect.left + window.pageXOffset;
+
+        fixedLeft = rect.left + window.scrollX;
         fixedWidth = rect.width;
     }
 
@@ -3027,8 +3034,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             info.style.position = "absolute";
             info.style.top = "0";
-            info.style.left = "";
             info.style.right = "0";
+            info.style.left = "";
             info.style.width = "";
 
         } else if (scrollTop <= end) {
@@ -3043,30 +3050,45 @@ document.addEventListener("DOMContentLoaded", function () {
 
             info.style.position = "absolute";
             info.style.top = (mediaHeight - infoHeight) + "px";
-            info.style.left = "";
             info.style.right = "0";
+            info.style.left = "";
             info.style.width = "";
+
         }
     }
 
-    // Initial position
-    updatePosition();
-
-    // Sab images load hone ke baad dobara calculate
-    window.addEventListener("load", function () {
+    function refreshSticky() {
         updatePosition();
         stickyProduct();
-    });
+    }
 
-    // Resize par dobara calculate
-    window.addEventListener("resize", function () {
-        updatePosition();
-        stickyProduct();
-    });
+    refreshSticky();
 
     window.addEventListener("scroll", stickyProduct);
 
-    stickyProduct();
+    window.addEventListener("resize", function () {
+        refreshSticky();
+    });
+
+    window.addEventListener("load", function () {
+        refreshSticky();
+    });
+
+    document.querySelectorAll("img").forEach(function(img) {
+        img.addEventListener("load", refreshSticky);
+    });
+
+    // Active class change hone par bhi refresh
+    const observer = new MutationObserver(function() {
+        setTimeout(refreshSticky, 20);
+    });
+
+    observer.observe(document.body, {
+        subtree: true,
+        attributes: true,
+        attributeFilter: ["class"]
+    });
+
 });
 </script>
 {% schema %}
