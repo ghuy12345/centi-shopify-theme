@@ -2927,65 +2927,30 @@
 
   @media screen and (max-width: 749px) {
 
-  /* Product Media Item */
+  .product .product__media-list {
+    gap: 10px;
+  }
+
   .product li.product__media-item.grid__item.slider__slide {
-    position: relative;
-    width: 100%;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 450px !important; /* Apne hisab se 400px, 450px ya 500px kar sakte ho */
     overflow: hidden;
-    aspect-ratio: 3 / 4;
-    -webkit-aspect-ratio: 3 / 4;
   }
 
-  /* Safari Fallback */
-  @supports not (aspect-ratio: 1 / 1) {
-    .product li.product__media-item.grid__item.slider__slide {
-      height: 0;
-      padding-bottom: 133.333%;
-    }
-  }
-
-  /* Every 3rd Image Full Width */
-  .product li.product__media-item.grid__item.slider__slide:nth-child(3n) {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  /* Media Wrapper */
   .product li.product__media-item.grid__item.slider__slide .product__media,
   .product li.product__media-item.grid__item.slider__slide .media,
   .product li.product__media-item.grid__item.slider__slide picture {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    aspect-ratio: unset !important;
-  }
-
-  /* Image */
-  .product li.product__media-item.grid__item.slider__slide img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    display: block;
-    object-fit: cover;
-    object-position: center;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-
-  /* Shopify Media Override */
-  .product .media {
-    aspect-ratio: unset !important;
+    width: 100% !important;
     height: 100% !important;
   }
 
-  .product .media img {
+  .product li.product__media-item.grid__item.slider__slide img {
     width: 100% !important;
     height: 100% !important;
     object-fit: cover !important;
+    object-position: center !important;
+    display: block;
   }
 
 }
