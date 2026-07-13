@@ -2906,7 +2906,7 @@
       height: 100%;
   }
 
-  @media screen and (max-width: 749px) {
+  {% comment %} @media screen and (max-width: 749px) {
 
     .product li.product__media-item.grid__item.slider__slide:nth-child(3n) {
       width: 100%;
@@ -2923,7 +2923,7 @@
       height: 100%;
       object-fit: cover;
     }
-  }
+  } {% endcomment %}
 
   .product--columns .product__media-item:not(.product__media-item--single):not(:only-child) {
       max-width: calc(51% - var(--grid-desktop-horizontal-spacing) / 2);
