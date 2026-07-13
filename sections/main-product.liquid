@@ -2984,43 +2984,56 @@ modal-opener.product__modal-opener.product__modal-opener--image.no-js-hidden {
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
+
     if (window.innerWidth <= 990) return;
+
     const container = document.querySelector(".product.product--large.product--left.product--columns");
     if (!container) return;
+
     const media = container.querySelector(".product__media-wrapper");
     const info = container.querySelector(".product__info-wrapper.grid__item");
 
     if (!media || !info) return;
+
     container.style.position = "relative";
+
     function stickyProduct() {
+
         if (window.innerWidth <= 990) {
             info.removeAttribute("style");
             return;
         }
+
+        const containerRect = container.getBoundingClientRect();
+        const infoRect = info.getBoundingClientRect();
+
+        const left = containerRect.left + media.offsetWidth;
+        const width = info.offsetWidth;
+
         const containerTop = container.offsetTop;
         const mediaHeight = media.offsetHeight;
         const infoHeight = info.offsetHeight;
+
         const start = containerTop - 80;
         const end = containerTop + mediaHeight - infoHeight - 80;
+
         const scrollTop = window.pageYOffset;
+
         if (scrollTop < start) {
 
             info.style.position = "absolute";
             info.style.top = "0";
             info.style.right = "0";
             info.style.left = "";
-            info.style.bottom = "";
             info.style.width = "";
 
-        } else if (scrollTop >= start && scrollTop <= end) {
+        } else if (scrollTop <= end) {
 
-            const rect = info.getBoundingClientRect();
             info.style.position = "fixed";
             info.style.top = "80px";
-            info.style.left = rect.left + "px";
-            info.style.width = rect.width + "px";
+            info.style.left = left + "px";
+            info.style.width = width + "px";
             info.style.right = "";
-            info.style.bottom = "";
 
         } else {
 
@@ -3029,17 +3042,23 @@ document.addEventListener("DOMContentLoaded", function () {
             info.style.right = "0";
             info.style.left = "";
             info.style.width = "";
-
         }
     }
 
     window.addEventListener("scroll", stickyProduct);
     window.addEventListener("resize", stickyProduct);
+
+    // Page fully load hone ke baad bhi recalculate
+    window.addEventListener("load", stickyProduct);
+
+    // Images load hone ke baad bhi recalculate
+    document.querySelectorAll(".product__media-wrapper img").forEach(img => {
+        img.addEventListener("load", stickyProduct);
+    });
+
     stickyProduct();
-    
 });
 </script>
-
 {% schema %}
 {
   "name": "t:sections.main-product.name",
