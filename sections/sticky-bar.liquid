@@ -220,143 +220,163 @@ body { padding-bottom: 70px; }
   0 0 0 var(--buttons-border-width) rgb(255 204 4 / 0%);
 }
 
-            .lm-main-button:not([disabled]):hover:after {
-              box-shadow: 0 0 0 calc(var(--buttons-border-width) + var(--border-offset))
-                rgba(var(--color-button-text), var(--border-opacity)),
-                0 0 0 var(--buttons-border-width) rgb(255 204 4 / 0%);
-            }
+.lm-main-button:not([disabled]):hover:after {
+  box-shadow: 0 0 0 calc(var(--buttons-border-width) + var(--border-offset))
+  rgba(var(--color-button-text), var(--border-opacity)),
+  0 0 0 var(--buttons-border-width) rgb(255 204 4 / 0%);
+}
 
-            {% unless section.settings.lm_button_animation == 'none' %}
-              {% if section.settings.lm_button_animation == 'soft' %}
-                .lm-main-button {
-                  position: relative;
-                  overflow: hidden;
-                }
-                .lm-main-button::before {
-                  content: '';
-                  position: absolute;
-                  z-index:0;
-                  top: 0;
-                  left: -105%;
-                  width: 100%;
-                  height: 100%;
-                  background: linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.8), rgba(255,255,255,0.2));
-                  transform: skewX(-20deg);
-                  transition: all 0.5s ease-in-out;
-                }
-                .lm-main-button:hover::before {
-                  left: 105%;
-                }
-              {% elsif section.settings.lm_button_animation == 'ripple' %}
-                .lm-main-button {
-                  position: relative;
-                  overflow: hidden;
-                }
-                .lm-main-button::before {
-                  content: '';
-                  position: absolute;
-                  z-index: 0;
-                  top: 100%;
-                  left: -100%;
-                  width: 200%;
-                  height: 300%;
-                  background: rgb(var(--lm-button-box), .1);
-                  transform: rotate(304deg);
-                  animation: diagonal-swipe 2s infinite linear;
-                }
-                @keyframes diagonal-swipe {
-                  0% { top: -100%; left: -100%; }
-                  100% { top: 100%; left: 100%; }
-                }
-              {% elsif section.settings.lm_button_animation == 'fade' %}
-                .lm-main-button {
-                  position: relative;
-                  background: {{ section.settings.lm_main_button }};
-                  animation: blink-bg 1.5s infinite;
-                }
-                @keyframes blink-bg {
-                  0%, 100% { background-color: {{ section.settings.lm_main_button }}; }
-                  50% { background-color: rgb(var(--lm-button-box), 0.6); }
-                }
-              {% elsif section.settings.lm_button_animation == 'bubble' %}
-                .lm-main-button {
-                  position: relative;
-                  overflow: hidden;
-                }
-                .lm-main-button::before {
-                  content: '';
-                  position: absolute;
-                  z-index:0;
-                  top: 100%;
-                  left: 50%;
-                  width: 20px;
-                  height: 20px;
-                  background: rgba(52, 152, 219, 0.5);
-                  border-radius: 50%;
-                  animation: bubble-float 4s infinite ease-in-out;
-                }
-                @keyframes bubble-float {
-                  0% { top: 100%; opacity: 0; transform: scale(0.5); }
-                  50% { opacity: 0.8; transform: scale(1); }
-                  100% { top: -20%; opacity: 0; }
-                }
-              {% elsif section.settings.lm_button_animation == 'wave' %}
-                .lm-main-button {
-                  position: relative;
-                  overflow: hidden;
-                }
-                .lm-main-button::before {
-                  content: '';
-                  position: absolute;
-                  top: 0;
-                  left: -150%;
-                  z-index:0;
-                  width: 200%;
-                  height: 100%;
-                  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-                  animation: wave 2s infinite linear;
-                }
-                @keyframes wave {
-                  0% { left: -150%; }
-                  100% { left: 150%; }
-                }
-              {% elsif section.settings.lm_button_animation == 'glowing' %}
-                .lm-main-button {
-                  position: relative;
-                  border: 2px solid transparent;
-                  background-clip: padding-box;
-                  animation: glowing-border 2s infinite ease-in-out;
-                }
-                @keyframes glowing-border {
-                  0%, 100% { border-color: {{ section.settings.lm_main_button }}; box-shadow: 0 0 10px {{ section.settings.lm_main_button }}; }
-                  50% { border-color: rgb(var(--lm-button-box), 0.4); box-shadow: 0 0 15px rgb(var(--lm-button-box), 0.4); }
-                }
-              {% elsif section.settings.lm_button_animation == 'pulse' %}
-                .lm-main-button {
-                  position: relative;
-                  overflow: hidden;
-                  background: linear-gradient(90deg, rgb(var(--lm-button-box)), rgb(var(--lm-button-box), 0.2), rgb(var(--lm-button-box), 0.8));
-                  animation: gradient-pulse 2s infinite alternate;
-                  background-size: 500% 400%;
-                }
-                @keyframes gradient-pulse {
-                  0% { background-position: 0% 50%; }
-                  100% { background-position: 100% 50%; }
-                }
-              {% elsif section.settings.lm_button_animation == 'flicker' %}
-                .lm-main-button {
-                  position: relative;
-                  background: {{ section.settings.lm_main_button }};
-                  box-shadow: 0 0 5px {{ section.settings.lm_main_button }};
-                  animation: flicker-glow 3s infinite;
-                }
-                @keyframes flicker-glow {
-                  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-                    opacity: 1;
-                    box-shadow: 0 0 10px {{ section.settings.lm_main_button }}, 0 0 20px {{ section.settings.lm_main_button }};
-                  }
-                  20%, 24%, 55% {
-                    opacity: 0.8;
+{% unless section.settings.lm_button_animation == 'none' %}
+  {% if section.settings.lm_button_animation == 'soft' %}
+  .lm-main-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.lm-main-button::before {
+  content: '';
+  position: absolute;
+  z-index:0;
+  top: 0;
+  left: -105%;
+ width: 100%;
+ height: 100%;
+ background: linear-gradient(90deg, rgba(255,255,255,0.2), rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+  transform: skewX(-20deg);
+ transition: all 0.5s ease-in-out;
+}
+
+.lm-main-button:hover::before {
+  left: 105%;
+}
+
+{% elsif section.settings.lm_button_animation == 'ripple' %}
+  .lm-main-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.lm-main-button::before {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  top: 100%;
+  left: -100%;
+  width: 200%;
+  height: 300%;
+  background: rgb(var(--lm-button-box), .1);
+  transform: rotate(304deg);
+  animation: diagonal-swipe 2s infinite linear;
+}
+
+@keyframes diagonal-swipe {
+    0% { top: -100%; left: -100%; }
+    100% { top: 100%; left: 100%; }
+}
+
+{% elsif section.settings.lm_button_animation == 'fade' %}
+  .lm-main-button {
+    position: relative;
+    background: {{ section.settings.lm_main_button }};
+   animation: blink-bg 1.5s infinite;
+}
+
+@keyframes blink-bg {
+  0%, 100% { background-color: {{ section.settings.lm_main_button }}; }
+  50% { background-color: rgb(var(--lm-button-box), 0.6); }
+}
+
+{% elsif section.settings.lm_button_animation == 'bubble' %}
+   .lm-main-button {
+    position: relative;
+    overflow: hidden;
+}
+
+.lm-main-button::before {
+  content: '';
+  position: absolute;
+  z-index:0;
+  top: 100%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: rgba(52, 152, 219, 0.5);
+  border-radius: 50%;
+  animation: bubble-float 4s infinite ease-in-out;
+}
+
+@keyframes bubble-float {
+    0% { top: 100%; opacity: 0; transform: scale(0.5); }
+    50% { opacity: 0.8; transform: scale(1); }
+    100% { top: -20%; opacity: 0; }
+}
+
+{% elsif section.settings.lm_button_animation == 'wave' %}
+   .lm-main-button {
+   position: relative;
+    overflow: hidden;
+}
+
+.lm-main-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  z-index:0;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: wave 2s infinite linear;
+}
+
+@keyframes wave {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+
+{% elsif section.settings.lm_button_animation == 'glowing' %}
+  .lm-main-button {
+    position: relative;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    animation: glowing-border 2s infinite ease-in-out;
+}
+
+@keyframes glowing-border {
+    0%, 100% { border-color: {{ section.settings.lm_main_button }}; box-shadow: 0 0 10px {{ section.settings.lm_main_button }}; }
+    50% { border-color: rgb(var(--lm-button-box), 0.4); box-shadow: 0 0 15px rgb(var(--lm-button-box), 0.4); }
+}
+
+{% elsif section.settings.lm_button_animation == 'pulse' %}
+  .lm-main-button {
+    position: relative;
+    overflow: hidden;
+   background: linear-gradient(90deg, rgb(var(--lm-button-box)), rgb(var(--lm-button-box), 0.2), rgb(var(--lm-button-box), 0.8));
+   animation: gradient-pulse 2s infinite alternate;
+   background-size: 500% 400%;
+ }
+
+ @keyframes gradient-pulse {
+  0% { background-position: 0% 50%; }
+   100% { background-position: 100% 50%; }
+ }
+
+{% elsif section.settings.lm_button_animation == 'flicker' %}
+  .lm-main-button {
+    position: relative;
+    background: {{ section.settings.lm_main_button }};
+    box-shadow: 0 0 5px {{ section.settings.lm_main_button }};
+   animation: flicker-glow 3s infinite;
+}
+
+@keyframes flicker-glow {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+  opacity: 1;
+  box-shadow: 0 0 10px {{ section.settings.lm_main_button }}, 0 0 20px {{ section.settings.lm_main_button }};
+  }
+
+  20%, 24%, 55% {
+  opacity: 0.8;
                     box-shadow: 0 0 5px {{ section.settings.lm_main_button }}, 0 0 10px {{ section.settings.lm_main_button }};
                   }
                 }
