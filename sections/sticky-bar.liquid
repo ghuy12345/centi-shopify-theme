@@ -428,13 +428,7 @@ body { padding-bottom: 70px; }
               }
             {% endif %}
 
-            @media screen and (max-width: 767px) {
-        body.sticky-active variant-radios,
-        body.sticky-active .product-form__buttons,
-        body.sticky-active product-form .product-form__buttons {
-          display: none !important;
-        }
-      }
+        
     {%- endstyle -%}
 
     {%- assign product_form_id = 'sticky-product-form-' | append: section.id -%}
