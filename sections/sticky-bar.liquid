@@ -122,10 +122,13 @@
               flex-shrink: 0;
             }
             .size-btn:hover { border-color: #94a3b8; background: #f8fafc; }
+
             .size-btn.active {
               border-color: {{ section.settings.border_color }};
               background: #ffff;
               color: #000;
+                  border: 0px;
+    border-bottom: 1px solid;
             }
             .size-btn.out-of-stock { opacity: 0.35; cursor: not-allowed; text-decoration: line-through; }
 
