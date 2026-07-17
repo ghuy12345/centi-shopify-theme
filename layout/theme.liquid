@@ -550,5 +550,38 @@ document.addEventListener('change', () => {
   setTimeout(modifyShopPayText, 200);
 });
 </script>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  if (window.innerWidth <= 749) {
+
+    const sizeContainer = document.querySelector(
+      'variant-radios .product-form__input:first-of-type'
+    );
+
+    const sizeChart = document.querySelector(
+      '.ks-chart-container.sizing-chart-container'
+    );
+
+    const addToCartButton = document.querySelector(
+      'product-form button[type="submit"], .product-form__submit'
+    );
+
+    if (sizeContainer) {
+      sizeContainer.classList.add('mobile-size-options');
+    }
+
+    if (sizeChart) {
+      sizeChart.classList.add('mobile-size-chart');
+    }
+
+    if (addToCartButton) {
+      addToCartButton.classList.add('mobile-add-to-cart');
+    }
+  }
+});
+</script>
   </body>
 </html>
