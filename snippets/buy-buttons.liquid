@@ -79,6 +79,7 @@
           {% endif %}
         >
 
+        <!-- preorder-debug: mgmt=[{{ product.selected_or_first_available_variant.inventory_management }}] policy=[{{ product.selected_or_first_available_variant.inventory_policy }}] qty=[{{ product.selected_or_first_available_variant.inventory_quantity }}] flag=[{{ is_preorder }}] -->
         <input
           type="hidden"
           id="PreorderProperty-{{ section_id }}"
