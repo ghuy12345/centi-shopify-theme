@@ -432,6 +432,7 @@ body { padding-bottom: 70px; }
     {%- endstyle -%}
 
     {%- assign product_form_id = 'sticky-product-form-' | append: section.id -%}
+    {%- capture is_preorder -%}{% render 'preorder-flag', product: product %}{%- endcapture -%}
 
     <div
       class="custom-sticky-bar-main"
@@ -526,7 +527,7 @@ body { padding-bottom: 70px; }
             id="stickyAddToCart"
             class="product-form__submit lm-main-button button button--full-width button--primary"
           >
-            <span>Add to cart</span>
+            <span>{% if is_preorder == 'true' %}{{ 'products.product.preorder' | t }}{% else %}Add to cart{% endif %}</span>
 
             <div class="loading__spinner hidden">
               <svg class="spinner" viewBox="0 0 66 66">

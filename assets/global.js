@@ -1145,10 +1145,19 @@ class VariantSelects extends HTMLElement {
 
         
         const addButtonUpdated = html.getElementById(`ProductSubmitButton-${sectionId}`);
+        const updatedButtonText = addButtonUpdated
+          ? addButtonUpdated.querySelector('span')?.textContent.trim()
+          : null;
         this.toggleAddButton(
           addButtonUpdated ? addButtonUpdated.hasAttribute('disabled') : true,
-          window.variantStrings.soldOut
+          updatedButtonText || window.variantStrings.soldOut
         );
+
+        const preorderSource = html.getElementById(`PreorderProperty-${sectionId}`);
+        const preorderDestination = document.getElementById(`PreorderProperty-${this.dataset.section}`);
+        if (preorderDestination) {
+          preorderDestination.disabled = !preorderSource || preorderSource.hasAttribute('disabled');
+        }
 
          
 
@@ -1172,8 +1181,11 @@ class VariantSelects extends HTMLElement {
       if (text) addButtonText.textContent = text;
    } else {
     addButton.removeAttribute('disabled');
-      addButtonText.textContent = window.variantStrings.addToCart;
+      addButtonText.textContent = text || window.variantStrings.addToCart;
   }
+
+    const stickyBarText = document.querySelector('#stickyAddToCart span');
+    if (stickyBarText) stickyBarText.textContent = addButtonText.textContent;
 
     if (!modifyClass) return;
   }

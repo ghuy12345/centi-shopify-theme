@@ -12,6 +12,7 @@
 {% endcomment %}
 <div {{ block.shopify_attributes }}>
   {%- if product != blank -%}
+    {%- capture is_preorder -%}{% render 'preorder-flag', product: product %}{%- endcapture -%}
     {%- liquid
       assign gift_card_recipient_feature_active = false
       if block.settings.show_gift_card_recipient and product.gift_card?
@@ -78,6 +79,14 @@
           {% endif %}
         >
 
+        <input
+          type="hidden"
+          id="PreorderProperty-{{ section_id }}"
+          name="properties[_preorder]"
+          value="true"
+          {% unless is_preorder == 'true' %}disabled{% endunless %}
+        >
+
         {%- if gift_card_recipient_feature_active -%}
           {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
         {%- endif -%}
@@ -105,6 +114,8 @@
             <span>
               {%- if product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
                 {{ 'products.product.sold_out' | t }}
+              {%- elsif is_preorder == 'true' -%}
+                {{ 'products.product.preorder' | t }}
               {%- else -%}
                   {{ 'products.product.add_to_cart' | t}}
               {%- endif -%}
