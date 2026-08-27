@@ -1,4 +1,4 @@
-{% comment %}
+{%- comment -%}
   Determines whether the product's selected variant is a preorder.
   Outputs 'true' when the variant is tracked by Shopify, uses the
   "continue selling when out of stock" policy, and has no stock left.
@@ -9,7 +9,7 @@
 
   Usage:
   {%- capture is_preorder -%}{% render 'preorder-flag', product: product %}{%- endcapture -%}
-{% endcomment %}
+{%- endcomment -%}
 {%- liquid
   assign v = product.selected_or_first_available_variant
   if v.inventory_management == 'shopify' and v.inventory_policy == 'continue' and v.inventory_quantity <= 0
