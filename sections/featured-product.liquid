@@ -239,7 +239,7 @@
                   }
                     {% endif %}
                 </style>
-                {% assign --sale-price =  block.settings.sale_price_color %}
+                {% assign renamed_variable_--sale-price = block.settings.sale_price_color %}
                 <div
                   class="no-js-hidden"
                   id="price-{{ section.id }}"
@@ -3211,3 +3211,13 @@ function updateCountdown() {
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% assign --sale-price =  block.settings.sale_price_color %}"
+  to: "{% assign renamed_variable_--sale-price = block.settings.sale_price_color %}"
+  position: 11061..11137
+{% endcomment %}

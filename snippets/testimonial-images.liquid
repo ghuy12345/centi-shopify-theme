@@ -10,59 +10,34 @@
 >
   <div class="lm-img-bar" {{ block.shopify_attributes }}>
     {%- if block.settings.image != blank -%}
-      {%
-        render 'responsive-image-low' with
-        image: block.settings.image,
-        image_class: "image",
-        wrapper_class: "image-wrapper"
-      %}
+      {% render 'responsive-image-low' with image, image: block.settings.image, image_class: "image", wrapper_class: "image-wrapper" %}
     {%- else -%}
       <img src="{{ '2.jpg' | asset_url }}" alt="review image" width="100" height="100">
     {%- endif -%}
     {%- unless block.settings.hide_img_2 -%}
       {%- if block.settings.image_2 != blank -%}
-        {%
-          render 'responsive-image-low' with
-          image: block.settings.image_2,
-          image_class: "image",
-          wrapper_class: "image-wrapper"
-        %}
+        {% render 'responsive-image-low' with image, image: block.settings.image_2, image_class: "image", wrapper_class: "image-wrapper" %}
       {%- else -%}
         <img src="{{ '1.jpg' | asset_url }}" alt="review image" width="100" height="100">
       {%- endif -%}
     {% endunless %}
     {%- unless block.settings.hide_img_3 -%}
       {%- if block.settings.image_3 != blank -%}
-        {%
-          render 'responsive-image-low' with
-          image: block.settings.image_3,
-          image_class: "image",
-          wrapper_class: "image-wrapper"
-        %}
+        {% render 'responsive-image-low' with image, image: block.settings.image_3, image_class: "image", wrapper_class: "image-wrapper" %}
       {%- else -%}
         <img src="{{ '3.jpg' | asset_url }}" alt="review image" width="100" height="100">
       {%- endif -%}
     {% endunless %}
     {%- unless block.settings.hide_img_4 -%}
       {%- if block.settings.image_4 != blank -%}
-        {%
-          render 'responsive-image-low' with
-          image: block.settings.image_4,
-          image_class: "image",
-          wrapper_class: "image-wrapper"
-        %}
+        {% render 'responsive-image-low' with image, image: block.settings.image_4, image_class: "image", wrapper_class: "image-wrapper" %}
       {%- else -%}
         <img src="{{ '4.jpg' | asset_url }}" alt="review image" width="100" height="100">
       {%- endif -%}
     {% endunless %}
     {%- unless block.settings.hide_img_5 -%}
       {%- if block.settings.image_5 != blank -%}
-        {%
-          render 'responsive-image-low' with
-          image: block.settings.image_5 | image_url: width: 100,
-          image_class: "image",
-          wrapper_class: "image-wrapper"
-        %}
+        {% render 'responsive-image-low' with image, image: block.settings.image_5, image_url: width, image_class: "image", wrapper_class: "image-wrapper" %}
       {%- else -%}
         <img src="{{ '5.jpg' | asset_url }}" alt="review image" width="100" height="100">
       {%- endif -%}
@@ -78,3 +53,60 @@
     -}}
   </span>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%
+            render 'responsive-image-low' with
+            image: block.settings.image,
+            image_class: "image",
+            wrapper_class: "image-wrapper"
+          %}
+  to: '{% render ''responsive-image-low'' with image, image: block.settings.image,
+    image_class: "image", wrapper_class: "image-wrapper" %}'
+  position: 357..486
+- from: |-
+    {%
+              render 'responsive-image-low' with
+              image: block.settings.image_2,
+              image_class: "image",
+              wrapper_class: "image-wrapper"
+            %}
+  to: '{% render ''responsive-image-low'' with image, image: block.settings.image_2,
+    image_class: "image", wrapper_class: "image-wrapper" %}'
+  position: 712..843
+- from: |-
+    {%
+              render 'responsive-image-low' with
+              image: block.settings.image_3,
+              image_class: "image",
+              wrapper_class: "image-wrapper"
+            %}
+  to: '{% render ''responsive-image-low'' with image, image: block.settings.image_3,
+    image_class: "image", wrapper_class: "image-wrapper" %}'
+  position: 1095..1226
+- from: |-
+    {%
+              render 'responsive-image-low' with
+              image: block.settings.image_4,
+              image_class: "image",
+              wrapper_class: "image-wrapper"
+            %}
+  to: '{% render ''responsive-image-low'' with image, image: block.settings.image_4,
+    image_class: "image", wrapper_class: "image-wrapper" %}'
+  position: 1478..1609
+- from: |-
+    {%
+              render 'responsive-image-low' with
+              image: block.settings.image_5 | image_url: width: 100,
+              image_class: "image",
+              wrapper_class: "image-wrapper"
+            %}
+  to: '{% render ''responsive-image-low'' with image, image: block.settings.image_5,
+    image_url: width, image_class: "image", wrapper_class: "image-wrapper" %}'
+  position: 1861..2010
+{% endcomment %}

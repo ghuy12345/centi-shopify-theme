@@ -1,6 +1,6 @@
 {{ 'component-image-with-text.css' | asset_url | stylesheet_tag }}
 
-{%- assign section.id = section.id | replace: '+', '' -%}
+{%- assign renamed_variable_section_2e_id = section.id | replace: '+', '' -%}
 {%- style -%}
   .section-{{ section.id }}-padding {
     padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
@@ -187,7 +187,7 @@
                   >
                     {% render 'collapsible-row-block', block: block, section: section %}
                   </div>
-                {%- when 'countdown_timer', block:block -%}
+                {%- when 'countdown_timer', block.block -%}
                   <div
                     id="LM--{{ block.id }}"
                     class="lumin-section-block lumin-section__block-id-{{ block.id }} lumin-section__block--{{ block.type }}"
@@ -4109,3 +4109,16 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- assign section.id = section.id | replace: '+', '' -%}"
+  to: "{%- assign renamed_variable_section_2e_id = section.id | replace: '+', '' -%}"
+  position: 68..145
+- from: "{%- when 'countdown_timer', block:block -%}"
+  to: "{%- when 'countdown_timer', block.block -%}"
+  position: 10470..10513
+{% endcomment %}
