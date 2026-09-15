@@ -162,12 +162,7 @@
           <div class="slideshow__media banner__media media{% if block.settings.image == blank %} placeholder{% endif %}">
             {%- if block.settings.image -%}
               {%- assign height = block.settings.image.width | divided_by: block.settings.image.aspect_ratio | round -%}
-              {%
-                    render 'responsive-image' with
-                    image: block.settings.image,
-                    image_class: "image",
-                    wrapper_class: "image-wrapper"
-                  %}
+              {% render 'responsive-image' with image, image: block.settings.image, image_class: "image", wrapper_class: "image-wrapper" %}
                 {%- else -%}
                {% render 'lumin-placeholder' %}
                   
@@ -756,3 +751,20 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%
+                        render 'responsive-image' with
+                        image: block.settings.image,
+                        image_class: "image",
+                        wrapper_class: "image-wrapper"
+                      %}
+  to: '{% render ''responsive-image'' with image, image: block.settings.image, image_class:
+    "image", wrapper_class: "image-wrapper" %}'
+  position: 6839..6964
+{% endcomment %}

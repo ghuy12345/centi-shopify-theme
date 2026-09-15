@@ -205,12 +205,7 @@
                   <a href="{{ block.settings.grid-url }}" style="text-decoration: none;">
                 {% endif %}
                 {% if block.settings.image != blank %}
-              {%
-                    render 'responsive-image' with
-                    image: block.settings.image,
-                    image_class: "image",
-                    wrapper_class: "image-wrapper"
-                  %}
+              {% render 'responsive-image' with image, image: block.settings.image, image_class: "image", wrapper_class: "image-wrapper" %}
             {%- else -%}
               {% render 'lumin-placeholder' %}
             {%- endif -%}
@@ -2422,3 +2417,20 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%
+                        render 'responsive-image' with
+                        image: block.settings.image,
+                        image_class: "image",
+                        wrapper_class: "image-wrapper"
+                      %}
+  to: '{% render ''responsive-image'' with image, image: block.settings.image, image_class:
+    "image", wrapper_class: "image-wrapper" %}'
+  position: 8463..8588
+{% endcomment %}
