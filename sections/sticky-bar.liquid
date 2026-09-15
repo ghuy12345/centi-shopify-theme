@@ -557,7 +557,9 @@ body { padding-bottom: 70px; }
     }
 
     function setOptionValue(optionName, value) {
-      const input = document.querySelector(`variant-radios input[name="${optionName}"][value="${value}"]`);
+      const input = document.querySelector(
+        `variant-radios input[name="${CSS.escape(optionName)}"][value="${CSS.escape(value)}"]`
+      );
 
       if (!input) return;
 
