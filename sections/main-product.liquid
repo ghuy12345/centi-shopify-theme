@@ -1117,6 +1117,9 @@
                  <div class="accordion__content rte" id="ProductAccordion-{{ block.id }}-{{ section.id }}">
                 {% if product.metafields.custom.size != blank %}
   {{ product.metafields.custom.size | newline_to_br }}
+  Key: {{ product.metafields.custom.size }}
+<br>
+Value: {{ product.metafields.custom.size.value }}
 {% else %}
   {{ block.settings.content }}
 {% endif %}
