@@ -53,17 +53,15 @@
       </li>
     {% endif %}
     {% if block.settings.tab_3 %}
-  <div
-    id="content-3--{{ block.id }}"
-    class="custom__tab-content lumin-tab-content-{{ block.id }}{% if block.settings.large-hide-3 %} large-up-hide{% endif %}{% if block.settings.small-hide-3 %} small-hide{% endif %}"
-    {{ block.shopify_attributes }}
-  >
-    {% if product.metafields.custom.composition != blank %}
-      {{ product.metafields.custom.composition | metafield_tag }}
+      <li class="tab__list{% if block.settings.large-hide-3 %} large-up-hide{% endif %}{% if block.settings.small-hide-3 %} small-hide{% endif %}">
+        <h4
+          class="custom-tab"
+          data-content-id="content-3--{{ block.id }}"
+        >
+          {{ block.settings.heading_3 }}
+        </h4>
+      </li>
     {% endif %}
-  </div>
-{% endif %}
-
   </ul>
 
   <div
@@ -90,15 +88,18 @@
       {% endif %}
     </div>
   {% endif %}
-  {% if block.settings.tab_3 %}
-    <div
-      id="content-3--{{ block.id }}"
-      class="custom__tab-content lumin-tab-content-{{ block.id }}{% if block.settings.large-hide-3 %} large-up-hide{% endif %}{% if block.settings.small-hide-3 %} small-hide{% endif %}"
-      {{ block.shopify_attributes }}
-    >
-      {{ block.settings.tab_content_3 }}
-    </div>
-  {% endif %}
+{% if block.settings.tab_3 %}
+  <div
+    id="content-3--{{ block.id }}"
+    class="custom__tab-content lumin-tab-content-{{ block.id }}{% if block.settings.large-hide-3 %} large-up-hide{% endif %}{% if block.settings.small-hide-3 %} small-hide{% endif %}"
+    {{ block.shopify_attributes }}
+  >
+    {% if product.metafields.custom.composition != blank %}
+      {{ product.metafields.custom.composition | metafield_tag }}
+    {% endif %}
+  </div>
+{% endif %}
+
 </div>
 
 <script>
