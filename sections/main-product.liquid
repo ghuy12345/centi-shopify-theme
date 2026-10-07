@@ -1116,10 +1116,10 @@
                     </summary>
                  <div class="accordion__content rte" id="ProductAccordion-{{ block.id }}-{{ section.id }}">
                 {% if product.metafields.custom.size != blank %}
-                  {{ product.metafields.custom.size | metafield_tag }}
-                {% else %}
-                  {{ block.settings.content }}
-                {% endif %}
+  {{ product.metafields.custom.size | newline_to_br }}
+{% else %}
+  {{ block.settings.content }}
+{% endif %}
               </div>
                   </details>
                 </div>
