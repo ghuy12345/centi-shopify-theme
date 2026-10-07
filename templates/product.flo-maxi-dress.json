@@ -246,7 +246,7 @@
             "small-hide": false,
             "heading_1": "DESCRIPTION",
             "description": true,
-            "tab_content": "<p>Made to accentuate your natural figure whilst looking elegant & chic. <br/><br/>Structured shoulders with shoulder padding. Single breasted with contrasting buttons at centre front & cuff for a smart tailored look. Breast fake pocket with two functional jet pockets.</p>",
+            "tab_content": "<p>Made to accentuate your natural figure whilst looking elegant & chic.&nbsp;<br/><br/>Structured shoulders with shoulder padding. Single breasted with contrasting buttons at centre front & cuff for a smart tailored look. Breast fake pocket with two functional jet pockets.</p>",
             "tab_2": true,
             "large-hide-2": false,
             "small-hide-2": false,
@@ -260,8 +260,13 @@
             "tab_content_3": "<p><strong>Shell:</strong> 41% Rayon 29% Cotton 20% Acrylic 4% Spandex<br/><br/><strong>Mesh:</strong> 95% Nylon 5% Spandex</p>"
           }
         },
+        "size_fit_Xm8iqa": {
+          "type": "size_fit",
+          "settings": {}
+        },
         "collapsible_tab_AeQtTa": {
           "type": "collapsible_tab",
+          "disabled": true,
           "settings": {
             "open_first_collapsible_row": false,
             "heading": "SIZE & FIT",
@@ -323,6 +328,7 @@
         "7629a4c1-0c48-41f9-90fa-778caa9c799d",
         "006e6c29-717a-4f58-8fea-cabc7da6316f",
         "tabs_LJqdkY",
+        "size_fit_Xm8iqa",
         "collapsible_tab_AeQtTa",
         "9ccffc8d-e4c7-404f-8007-8c5162f22285",
         "f34ad5c4-50a9-4a95-a561-d8c51d1b76dd",
