@@ -1097,6 +1097,28 @@
                 </p>
               {%- when 'custom_liquid' -%}
                 {{ block.settings.custom_liquid }}
+                {%- when 'size_fit' -%}
+  {% assign size = product.metafields.custom.size %}
+
+  {% if size != blank %}
+    <div class="product__accordion accordion quick-add-hidden" {{ block.shopify_attributes }}>
+      <details id="Details-{{ block.id }}-{{ section.id }}">
+        <summary>
+          <div class="summary__title">
+            {% render 'icon-accordion', icon: 'ruler' %}
+            <h2 class="accordion__title inline-richtext">
+              SIZE & FIT
+            </h2>
+          </div>
+          {% render 'icon-caret' %}
+        </summary>
+
+        <div class="accordion__content rte">
+          {{ size.value }}
+        </div>
+      </details>
+    </div>
+  {% endif %}
               {%- when 'collapsible_tab' -%}
                 <div class="product__accordion accordion quick-add-hidden" {{ block.shopify_attributes }}>
                   <details
