@@ -11,20 +11,23 @@
 -%}
 
 {% style %}
-  .ai-waitlist-{{ ai_gen_id }} {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 80vh;
-    min-height: 80svh;
-    padding: {{ section.settings.padding_top }}px 24px {{ section.settings.padding_bottom }}px;
+  .ai-waitlist-{{ ai_gen_id }},
+  .ai-waitlist-{{ ai_gen_id }} *,
+  .ai-waitlist-{{ ai_gen_id }} *::before,
+  .ai-waitlist-{{ ai_gen_id }} *::after {
     box-sizing: border-box;
+  }
+  .ai-waitlist-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
   }
   .ai-waitlist__inner-{{ ai_gen_id }} {
     width: 100%;
-    max-width: 520px;
+    max-width: 568px;
     margin: 0 auto;
+    padding: 0 24px;
     text-align: center;
     color: rgb(var(--color-foreground));
   }
@@ -54,7 +57,10 @@
     color: rgba(var(--color-foreground), 0.8);
   }
   .ai-waitlist__body-{{ ai_gen_id }} p { margin: 0; }
-  .ai-waitlist__form-wrap-{{ ai_gen_id }} { margin-top: 32px; }
+  .ai-waitlist__form-wrap-{{ ai_gen_id }} {
+    margin-top: 32px;
+    width: 100%;
+  }
   .ai-waitlist__fields-{{ ai_gen_id }} {
     display: flex;
     gap: 10px;
@@ -64,6 +70,7 @@
     min-width: 0;
     flex: 1 1 auto;
     height: 50px;
+    margin: 0;
     padding: 0 15px;
     border: 1px solid rgba(var(--color-foreground), 0.8);
     border-radius: 0;
@@ -71,8 +78,8 @@
     color: rgb(var(--color-foreground));
     font-family: var(--font-body-family);
     font-size: 14px;
-    box-sizing: border-box;
     -webkit-appearance: none;
+    appearance: none;
   }
   .ai-waitlist__email-{{ ai_gen_id }}::placeholder {
     color: rgba(var(--color-foreground), 0.55);
@@ -85,6 +92,7 @@
   .ai-waitlist__button-{{ ai_gen_id }} {
     flex: 0 0 auto;
     height: 50px;
+    margin: 0;
     padding: 0 28px;
     border: 1px solid rgb(var(--color-button));
     border-radius: 0;
@@ -123,10 +131,19 @@
     color: rgba(var(--color-foreground), 0.6);
   }
   @media screen and (max-width: 749px) {
+    .ai-waitlist-{{ ai_gen_id }} {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+    .ai-waitlist__inner-{{ ai_gen_id }} { padding: 0 24px; }
     .ai-waitlist__heading-{{ ai_gen_id }} { font-size: {{ section.settings.heading_size_mobile }}px; }
+    .ai-waitlist__body-{{ ai_gen_id }} { font-size: 14px; }
     .ai-waitlist__fields-{{ ai_gen_id }} { flex-direction: column; }
     .ai-waitlist__email-{{ ai_gen_id }},
-    .ai-waitlist__button-{{ ai_gen_id }} { width: 100%; }
+    .ai-waitlist__button-{{ ai_gen_id }} {
+      width: 100%;
+      flex: 0 0 auto;
+    }
   }
 {% endstyle %}
 
@@ -188,8 +205,11 @@
     { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" },
     { "type": "range", "id": "heading_size_desktop", "label": "Heading size desktop", "min": 32, "max": 64, "step": 2, "unit": "px", "default": 48 },
     { "type": "range", "id": "heading_size_mobile", "label": "Heading size mobile", "min": 24, "max": 44, "step": 2, "unit": "px", "default": 34 },
-    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
-    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+    { "type": "header", "content": "Spacing" },
+    { "type": "range", "id": "padding_top", "label": "Padding top (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Padding top (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Padding bottom (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
   ],
   "presets": [{ "name": "Waitlist Signup" }]
 }
