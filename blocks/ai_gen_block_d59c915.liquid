@@ -8,6 +8,11 @@
   assign small_print = section.settings.small_print | default: 'By signing up you agree to receive emails from CENTI. You can unsubscribe at any time.'
   assign customer_tags = section.settings.customer_tags | default: 'waitlist, november-launch'
   assign body = section.settings.body | default: '<p>Our bestselling maxi skirt is finally arriving in regular length, alongside a new burgundy suit and brown belt. Everything launches on pre-order on 1st November. Join the waitlist to be the first to know when it goes live.</p>'
+
+  assign pad_top = section.settings.padding_top | default: 100
+  assign pad_bottom = section.settings.padding_bottom | default: 100
+  assign pad_top_mobile = section.settings.padding_top_mobile | default: 72
+  assign pad_bottom_mobile = section.settings.padding_bottom_mobile | default: 72
 -%}
 
 {% style %}
@@ -20,14 +25,13 @@
   .ai-waitlist-{{ ai_gen_id }} {
     display: block;
     width: 100%;
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
+    margin: 0;
   }
-  .ai-waitlist__inner-{{ ai_gen_id }} {
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__inner-{{ ai_gen_id }} {
     width: 100%;
     max-width: 568px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: {{ pad_top }}px 24px {{ pad_bottom }}px !important;
     text-align: center;
     color: rgb(var(--color-foreground));
   }
@@ -131,11 +135,9 @@
     color: rgba(var(--color-foreground), 0.6);
   }
   @media screen and (max-width: 749px) {
-    .ai-waitlist-{{ ai_gen_id }} {
-      padding-top: {{ section.settings.padding_top_mobile }}px;
-      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__inner-{{ ai_gen_id }} {
+      padding: {{ pad_top_mobile }}px 24px {{ pad_bottom_mobile }}px !important;
     }
-    .ai-waitlist__inner-{{ ai_gen_id }} { padding: 0 24px; }
     .ai-waitlist__heading-{{ ai_gen_id }} { font-size: {{ section.settings.heading_size_mobile }}px; }
     .ai-waitlist__body-{{ ai_gen_id }} { font-size: 14px; }
     .ai-waitlist__fields-{{ ai_gen_id }} { flex-direction: column; }
@@ -206,10 +208,10 @@
     { "type": "range", "id": "heading_size_desktop", "label": "Heading size desktop", "min": 32, "max": 64, "step": 2, "unit": "px", "default": 48 },
     { "type": "range", "id": "heading_size_mobile", "label": "Heading size mobile", "min": 24, "max": 44, "step": 2, "unit": "px", "default": 34 },
     { "type": "header", "content": "Spacing" },
-    { "type": "range", "id": "padding_top", "label": "Padding top (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
-    { "type": "range", "id": "padding_bottom", "label": "Padding bottom (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
-    { "type": "range", "id": "padding_top_mobile", "label": "Padding top (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 },
-    { "type": "range", "id": "padding_bottom_mobile", "label": "Padding bottom (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 48 }
+    { "type": "range", "id": "padding_top", "label": "Padding top (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 100 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 100 },
+    { "type": "range", "id": "padding_top_mobile", "label": "Padding top (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "padding_bottom_mobile", "label": "Padding bottom (mobile)", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 72 }
   ],
   "presets": [{ "name": "Waitlist Signup" }]
 }
