@@ -81,8 +81,10 @@
             "color_scheme": "background-1",
             "heading_size_desktop": 48,
             "heading_size_mobile": 34,
-            "padding_top": 40,
-            "padding_bottom": 40
+            "padding_top": 52,
+            "padding_bottom": 40,
+            "padding_top_mobile": 60,
+            "padding_bottom_mobile": 68
           },
           "blocks": {}
         }
