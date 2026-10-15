@@ -51,6 +51,7 @@
         "textarea_N9xEPT",
         "text_6XGwdQ"
       ],
+      "disabled": true,
       "settings": {
         "heading": "Get In Touch",
         "heading_size": "h1",
@@ -63,10 +64,38 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "17920550783d460715": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_d59c915_9Dk8Ge": {
+          "type": "ai_gen_block_d59c915",
+          "settings": {
+            "eyebrow": "LAUNCHING 1ST NOVEMBER",
+            "heading": "Join the waitlist",
+            "body": "<p>Our bestselling maxi skirt is finally arriving in regular length, alongside a new burgundy suit and brown belt. Everything launches on pre-order on 1st November. Join the waitlist to be the first to know when it goes live.</p>",
+            "button_text": "JOIN THE WAITLIST",
+            "success_message": "You're on the list. We'll be in touch before launch.",
+            "small_print": "By signing up you agree to receive emails from CENTI. You can unsubscribe at any time.",
+            "customer_tags": "waitlist, november-launch",
+            "color_scheme": "background-1",
+            "heading_size_desktop": 48,
+            "heading_size_mobile": 34,
+            "padding_top": 40,
+            "padding_bottom": 40
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_d59c915_9Dk8Ge"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "main",
-    "contact_form_ikVfzk"
+    "contact_form_ikVfzk",
+    "17920550783d460715"
   ]
 }
