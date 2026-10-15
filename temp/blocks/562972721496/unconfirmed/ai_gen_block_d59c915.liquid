@@ -1,6 +1,181 @@
+{% doc %}
+  @prompt
+    Create a new standalone section called "Waitlist Signup" for my Dawn-based theme. It must be addable from "Add section" in a page template, with all settings at section level.
+    
+    Layout:
+    - Plain, minimal, centred page section. No images.
+    - Fills most of the screen height (min-height 80vh) with content vertically centred.
+    - Content max-width about 520px, centred, with 24px side padding on mobile.
+    
+    Content, in this order:
+    1. Eyebrow: small uppercase text, about 11px, letter spacing 0.2em, using the theme's body font (var(--font-body-family)). Default: "LAUNCHING 1ST NOVEMBER"
+    2. Heading: theme's heading font (var(--font-heading-family)), normal case, about 48px desktop and 34px mobile, line height 1.15, 16px gap above. Default: "Join the waitlist"
+    3. Body text: theme's body font, about 15px, line height 1.7, 20px gap above. Default: "Our bestselling maxi skirt is finally arriving in regular length, alongside a new burgundy suit and brown belt. Everything launches on pre-order on 1st November. Join the waitlist to be the first to know when it goes live."
+    4. Email signup form, 32px gap above:
+       - Use Shopify's native customer form ({% form 'customer' %}) with contact[accepts_marketing] set to true and a hidden contact[tags] field set from a section setting (default: "waitlist, november-launch").
+       - Email input and button side by side on desktop, stacked full width on mobile.
+       - Email input: theme's body font, 14px, 1px border, square corners, placeholder "Email address".
+       - Button: theme's body font, 12px, uppercase, letter spacing 0.15em, square corners, uses the theme's button colours. Default text: "JOIN THE WAITLIST".
+       - On successful submit, replace the form with a success message. Default: "You're on the list. We'll be in touch before launch."
+       - Show form errors clearly underneath.
+    5. Small print: theme's body font, 11px, muted colour, 16px gap above. Default: "By signing up you agree to receive emails from CENTI. You can unsubscribe at any time."
+    
+    Settings in the theme editor:
+    - Eyebrow text, heading text, body text (richtext), button text, success message, small print
+    - Customer tags (text, default "waitlist, november-launch")
+    - Colour scheme picker
+    - Heading size desktop and mobile (range sliders)
+    - Padding top and bottom (range sliders)
+    
+    Use the theme's existing font and colour scheme variables rather than hard-coded fonts or colours.
+{% enddoc %}
+{% assign ai_gen_id = section.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-waitlist-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    min-height: 80vh;
+    padding: {{ section.settings.padding_top }}px 24px {{ section.settings.padding_bottom }}px;
+    box-sizing: border-box;
+  }
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__inner-{{ ai_gen_id }} {
+    width: 100%;
+    max-width: 520px;
+    min-height: calc(80vh - {{ section.settings.padding_top }}px - {{ section.settings.padding_bottom }}px);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__eyebrow-{{ ai_gen_id }} {
+    margin: 0;
+    font-family: var(--font-body-family);
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__heading-{{ ai_gen_id }} {
+    margin: 16px 0 0;
+    font-family: var(--font-heading-family);
+    font-size: {{ section.settings.heading_size_desktop }}px;
+    line-height: 1.15;
+    font-weight: 400;
+    text-transform: none;
+  }
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__body-{{ ai_gen_id }} {
+    margin-top: 20px;
+    font-family: var(--font-body-family);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__body-{{ ai_gen_id }} p { margin: 0; }
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__form-wrap-{{ ai_gen_id }} { margin-top: 32px; }
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__fields-{{ ai_gen_id }} { display: flex; gap: 10px; width: 100%; }
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__email-{{ ai_gen_id }} {
+    min-width: 0;
+    flex: 1 1 auto;
+    min-height: 50px;
+    padding: 0 15px;
+    border: 1px solid currentColor;
+    border-radius: 0;
+    background: transparent;
+    color: inherit;
+    font-family: var(--font-body-family);
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__email-{{ ai_gen_id }}:focus-visible,
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__button-{{ ai_gen_id }}:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__button-{{ ai_gen_id }} {
+    flex: 0 0 auto;
+    min-height: 50px;
+    padding: 0 20px;
+    border: 1px solid rgb(var(--color-button));
+    border-radius: 0;
+    background: rgb(var(--color-button));
+    color: rgb(var(--color-button-text));
+    font-family: var(--font-body-family);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__error-{{ ai_gen_id }} {
+    margin: 12px 0 0;
+    text-align: left;
+    font-family: var(--font-body-family);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__error-{{ ai_gen_id }} ul { margin: 0; padding-left: 20px; }
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__success-{{ ai_gen_id }} {
+    margin: 0;
+    font-family: var(--font-body-family);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+  .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__small-print-{{ ai_gen_id }} {
+    margin: 16px 0 0;
+    opacity: 0.75;
+    font-family: var(--font-body-family);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  @media screen and (max-width: 749px) {
+    .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__heading-{{ ai_gen_id }} { font-size: {{ section.settings.heading_size_mobile }}px; }
+    .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__fields-{{ ai_gen_id }} { flex-direction: column; }
+    .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__email-{{ ai_gen_id }},
+    .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__button-{{ ai_gen_id }} { width: 100%; }
+  }
+{% endstyle %}
+
+<section class="ai-waitlist-{{ ai_gen_id }} color-{{ section.settings.color_scheme }}" {{ section.shopify_attributes }}>
+  <div class="ai-waitlist__inner-{{ ai_gen_id }}">
+    {% if section.settings.eyebrow != blank %}<p class="ai-waitlist__eyebrow-{{ ai_gen_id }}">{{ section.settings.eyebrow | escape }}</p>{% endif %}
+    {% if section.settings.heading != blank %}<h1 class="ai-waitlist__heading-{{ ai_gen_id }}">{{ section.settings.heading | escape }}</h1>{% endif %}
+    {% if section.settings.body != blank %}<div class="ai-waitlist__body-{{ ai_gen_id }}">{{ section.settings.body }}</div>{% endif %}
+    <div class="ai-waitlist__form-wrap-{{ ai_gen_id }}">
+      {% form 'customer' %}
+        {% if form.posted_successfully? %}
+          <p class="ai-waitlist__success-{{ ai_gen_id }}" tabindex="-1">{{ section.settings.success_message | escape }}</p>
+        {% else %}
+          <input type="hidden" name="contact[accepts_marketing]" value="true">
+          <input type="hidden" name="contact[tags]" value="{{ section.settings.customer_tags | escape }}">
+          <div class="ai-waitlist__fields-{{ ai_gen_id }}">
+            <input class="ai-waitlist__email-{{ ai_gen_id }}" type="email" name="contact[email]" value="{{ form.email | escape }}" placeholder="Email address" aria-label="Email address" autocomplete="email" autocorrect="off" autocapitalize="off" required {% if form.errors %}aria-invalid="true" aria-describedby="WaitlistError-{{ section.id }}"{% endif %}>
+            <button class="ai-waitlist__button-{{ ai_gen_id }}" type="submit">{{ section.settings.button_text | escape }}</button>
+          </div>
+          {% if form.errors %}<div class="ai-waitlist__error-{{ ai_gen_id }}" id="WaitlistError-{{ section.id }}" role="alert">{{ form.errors | default_errors }}</div>{% endif %}
+        {% endif %}
+      {% endform %}
+    </div>
+    {% if section.settings.small_print != blank %}<p class="ai-waitlist__small-print-{{ ai_gen_id }}">{{ section.settings.small_print | escape }}</p>{% endif %}
+  </div>
+</section>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Waitlist Signup",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow text", "default": "LAUNCHING 1ST NOVEMBER" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Join the waitlist" },
+    { "type": "richtext", "id": "body", "label": "Body text", "default": "<p>Our bestselling maxi skirt is finally arriving in regular length, alongside a new burgundy suit and brown belt. Everything launches on pre-order on 1st November. Join the waitlist to be the first to know when it goes live.</p>" },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "JOIN THE WAITLIST" },
+    { "type": "text", "id": "success_message", "label": "Success message", "default": "You're on the list. We'll be in touch before launch." },
+    { "type": "text", "id": "small_print", "label": "Small print", "default": "By signing up you agree to receive emails from CENTI. You can unsubscribe at any time." },
+    { "type": "text", "id": "customer_tags", "label": "Customer tags", "default": "waitlist, november-launch" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" },
+    { "type": "range", "id": "heading_size_desktop", "label": "Heading size desktop", "min": 32, "max": 64, "step": 2, "unit": "px", "default": 48 },
+    { "type": "range", "id": "heading_size_mobile", "label": "Heading size mobile", "min": 24, "max": 44, "step": 2, "unit": "px", "default": 34 },
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 40 }
+  ],
+  "presets": [{ "name": "Waitlist Signup" }]
+}
 {% endschema %}
