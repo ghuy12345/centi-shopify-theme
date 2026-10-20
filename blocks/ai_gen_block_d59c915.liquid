@@ -155,6 +155,12 @@
       font-size: 16px;
     }
   }
+
+  /* Hide the footer email signup on this page only */
+  .footer-block--newsletter,
+  .shopify-section-group-footer-group .newsletter {
+    display: none !important;
+  }
 {% endstyle %}
 
 <div class="ai-waitlist-{{ ai_gen_id }} color-{{ section.settings.color_scheme }} gradient">
