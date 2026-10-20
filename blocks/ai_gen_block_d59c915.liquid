@@ -157,8 +157,10 @@
   }
 
   /* Hide the footer email signup on this page only */
-  .footer-block--newsletter,
-  .shopify-section-group-footer-group .newsletter {
+  .shopify-section-group-footer-group:has(input[name="contact[email]"]):not(:has(footer)),
+  footer [class*="newsletter"],
+  footer [class*="email-signup"],
+  footer [class*="subscribe"] {
     display: none !important;
   }
 {% endstyle %}
