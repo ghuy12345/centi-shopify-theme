@@ -147,6 +147,14 @@
       flex: 0 0 auto;
     }
   }
+  @media screen and (min-width: 750px) {
+    .ai-waitlist-{{ ai_gen_id }} .ai-waitlist__inner-{{ ai_gen_id }} {
+      max-width: 760px;
+    }
+    .ai-waitlist__body-{{ ai_gen_id }} {
+      font-size: 16px;
+    }
+  }
 {% endstyle %}
 
 <div class="ai-waitlist-{{ ai_gen_id }} color-{{ section.settings.color_scheme }} gradient">
@@ -205,7 +213,7 @@
     { "type": "text", "id": "small_print", "label": "Small print", "default": "By signing up you agree to receive emails from CENTI. You can unsubscribe at any time." },
     { "type": "text", "id": "customer_tags", "label": "Customer tags", "default": "waitlist, november-launch" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" },
-    { "type": "range", "id": "heading_size_desktop", "label": "Heading size desktop", "min": 32, "max": 64, "step": 2, "unit": "px", "default": 48 },
+    { "type": "range", "id": "heading_size_desktop", "label": "Heading size desktop", "min": 32, "max": 64, "step": 2, "unit": "px", "default": 40 },
     { "type": "range", "id": "heading_size_mobile", "label": "Heading size mobile", "min": 24, "max": 44, "step": 2, "unit": "px", "default": 34 },
     { "type": "header", "content": "Spacing" },
     { "type": "range", "id": "padding_top", "label": "Padding top (desktop)", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 100 },
