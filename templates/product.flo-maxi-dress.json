@@ -25,7 +25,7 @@
       "type": "main-product",
       "blocks": {
         "kiwi_size_chart_recommender_kiwi_sizing_wBgahk": {
-          "type": "shopify://apps/kiwi-size-chart-recommender/blocks/kiwiSizing/b7369922-bf15-44ce-a121-a22a8fcbc4b0",
+          "type": "shopify://apps/kiwi-size-chart/blocks/kiwiSizing/b7369922-bf15-44ce-a121-a22a8fcbc4b0",
           "settings": {
             "fallbackToBlockPosition": false,
             "waitForElementSelector": "",
@@ -257,7 +257,7 @@
             "large-hide-3": false,
             "small-hide-3": false,
             "heading_3": "COMPOSITION",
-            "tab_content_3": "<p><strong>Shell:</strong> 41% Rayon 29% Cotton 20% Acrylic 4% Spandex<br/><br/><strong>Mesh:</strong> 95% Nylon 5% Spandex</p>"
+            "tab_content_3": "<p><strong>Shell & Lining: </strong>100% Polyester</p>"
           }
         },
         "size_fit_Xm8iqa": {
@@ -400,7 +400,7 @@
       "type": "apps",
       "blocks": {
         "kiwi_size_chart_recommender_kiwi_sizing_tABf7K": {
-          "type": "shopify://apps/kiwi-size-chart-recommender/blocks/kiwiSizing/b7369922-bf15-44ce-a121-a22a8fcbc4b0",
+          "type": "shopify://apps/kiwi-size-chart/blocks/kiwiSizing/b7369922-bf15-44ce-a121-a22a8fcbc4b0",
           "settings": {
             "fallbackToBlockPosition": false,
             "waitForElementSelector": "",
