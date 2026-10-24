@@ -25,7 +25,7 @@
       "type": "main-product",
       "blocks": {
         "kiwi_size_chart_recommender_kiwi_sizing_wBgahk": {
-          "type": "shopify://apps/kiwi-size-chart-recommender/blocks/kiwiSizing/b7369922-bf15-44ce-a121-a22a8fcbc4b0",
+          "type": "shopify://apps/kiwi-size-chart/blocks/kiwiSizing/b7369922-bf15-44ce-a121-a22a8fcbc4b0",
           "settings": {
             "fallbackToBlockPosition": false,
             "waitForElementSelector": "",
@@ -246,7 +246,7 @@
             "small-hide": false,
             "heading_1": "DESCRIPTION",
             "description": true,
-            "tab_content": "<p>Made to accentuate your natural figure whilst looking elegant & chic. <br/><br/>Structured shoulders with shoulder padding. Single breasted with contrasting buttons at centre front & cuff for a smart tailored look. Breast fake pocket with two functional jet pockets.</p>",
+            "tab_content": "<p>Made to accentuate your natural figure whilst looking elegant & chic.&nbsp;<br/><br/>Structured shoulders with shoulder padding. Single breasted with contrasting buttons at centre front & cuff for a smart tailored look. Breast fake pocket with two functional jet pockets.</p>",
             "tab_2": true,
             "large-hide-2": false,
             "small-hide-2": false,
@@ -257,7 +257,7 @@
             "large-hide-3": false,
             "small-hide-3": false,
             "heading_3": "COMPOSITION",
-            "tab_content_3": "<p><strong>Shell:</strong> 41% Rayon 29% Cotton 20% Acrylic 4% Spandex<br/><br/><strong>Mesh:</strong> 95% Nylon 5% Spandex</p>"
+            "tab_content_3": "<p><strong>Shell & Lining: </strong>100% Polyester</p>"
           }
         },
         "collapsible_tab_AeQtTa": {
@@ -266,7 +266,7 @@
             "open_first_collapsible_row": false,
             "heading": "SIZE & FIT",
             "icon": "ruler",
-            "content": "<p>- True to size<br/>- Suitable for Tall girls<br/>- Elasticated Skirt bottom<br/>- Versatile Tie Tail</p>",
+            "content": "<p>- Elasticated Waistband</p><p>- Floor-sweeping length&nbsp;</p><p>- Fully double-lined</p><p>- Invisible Zip&nbsp;</p><p>- Hock & Eye to secure Zip</p>",
             "page": ""
           }
         },
@@ -394,7 +394,7 @@
       "type": "apps",
       "blocks": {
         "kiwi_size_chart_recommender_kiwi_sizing_tABf7K": {
-          "type": "shopify://apps/kiwi-size-chart-recommender/blocks/kiwiSizing/b7369922-bf15-44ce-a121-a22a8fcbc4b0",
+          "type": "shopify://apps/kiwi-size-chart/blocks/kiwiSizing/b7369922-bf15-44ce-a121-a22a8fcbc4b0",
           "settings": {
             "fallbackToBlockPosition": false,
             "waitForElementSelector": "",
