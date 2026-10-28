@@ -1115,8 +1115,18 @@
                       {% render 'icon-caret' %}
                     </summary>
                     <div class="accordion__content rte" id="ProductAccordion-{{ block.id }}-{{ section.id }}">
-                      {{ block.settings.content }}
-                      {{ block.settings.page.content }}
+                      {%- assign accordion_heading = block.settings.heading | default: block.settings.page.title | strip | downcase -%}
+                      {%- if accordion_heading == 'size & fit' or accordion_heading == 'size and fit' or accordion_heading == 'size &amp; fit' -%}
+                        {%- if product.metafields.custom.size.value != blank -%}
+                          {{ product.metafields.custom.size | metafield_tag }}
+                        {%- else -%}
+                          {{ block.settings.content }}
+                          {{ block.settings.page.content }}
+                        {%- endif -%}
+                      {%- else -%}
+                        {{ block.settings.content }}
+                        {{ block.settings.page.content }}
+                      {%- endif -%}
                     </div>
                   </details>
                 </div>
