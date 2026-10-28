@@ -260,13 +260,18 @@
             "tab_content_3": "<p><strong>Shell & Lining: </strong>100% Polyester</p>"
           }
         },
+        "size_fit_Xm8iqa": {
+          "type": "size_fit",
+          "settings": {}
+        },
         "collapsible_tab_AeQtTa": {
           "type": "collapsible_tab",
+          "disabled": true,
           "settings": {
             "open_first_collapsible_row": false,
             "heading": "SIZE & FIT",
             "icon": "ruler",
-            "content": "<p>- Elasticated Waistband</p><p>- Floor-sweeping length&nbsp;</p><p>- Fully double-lined</p><p>- Invisible Zip&nbsp;</p><p>- Hock & Eye to secure Zip</p>",
+            "content": "<p>- True to size<br/>- Suitable for Tall girls<br/>- Elasticated Skirt bottom<br/>- Versatile Tie Tail</p>",
             "page": ""
           }
         },
@@ -323,6 +328,7 @@
         "7629a4c1-0c48-41f9-90fa-778caa9c799d",
         "006e6c29-717a-4f58-8fea-cabc7da6316f",
         "tabs_LJqdkY",
+        "size_fit_Xm8iqa",
         "collapsible_tab_AeQtTa",
         "9ccffc8d-e4c7-404f-8007-8c5162f22285",
         "f34ad5c4-50a9-4a95-a561-d8c51d1b76dd",
