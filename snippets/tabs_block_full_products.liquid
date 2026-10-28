@@ -1,5 +1,8 @@
 {{ 'lumin-tab.css' | asset_url | stylesheet_tag }}
-{% assign product = section.settings.product %}
+
+{% if product == blank %}
+  {% assign product = section.settings.product %}
+{% endif %}
 <style>
      ul.lumin-tab-{{ block.id }} {
        justify-content: {{ block.settings.tab_font_align }};
