@@ -312,7 +312,9 @@
               {%- when 'testimonial-images' -%}
                 {% render 'testimonial-images', block: block %}
               {%- when 'tabs' -%}
-                {% render 'tabs-block', block: block %}
+
+{% render 'tabs-block', block: block, product: product %}
+
               {%- when 'breadcrumbs' -%}
                 {%- style -%}
                     .breadcrumbs {
