@@ -242,11 +242,6 @@
         "disabled": false,
         "settings": {}
       },
-      "11349500561483629931": {
-        "type": "shopify://apps/notify-app/blocks/app-embed/b399b727-6c85-44fc-9e21-63114bd72054",
-        "disabled": false,
-        "settings": {}
-      },
       "6810535121229352664": {
         "type": "shopify://apps/monster-cart-upsell-free-gifts/blocks/app-embed/a1b8e58a-bf1d-4e0f-8768-a387c3f643c0",
         "disabled": false,
@@ -274,6 +269,18 @@
         "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
         "disabled": false,
         "settings": {}
+      },
+      "9685009021672784835": {
+        "type": "shopify://apps/g-combined-listings/blocks/swatch_renderer/b3e63011-8382-4b7f-8929-7fe2b1aec125",
+        "disabled": false,
+        "settings": {
+          "enable_swatch_product_page": false,
+          "enable_swatch_product_card_1": false,
+          "enable_swatch_product_card_2": false,
+          "swatch_option_identifiers": "Color, Colour, Couleur, Colore, Farbe,\nPattern, Patrón, Motif, Muster, Motivo,\nMaterial, Matériau, Materiale,\nFinish, Finition, Finitura, Oberfläche, Acabado",
+          "custom_css_prod": "/* Custom CSS */",
+          "custom_css_card": "/* Custom CSS */"
+        }
       }
     },
     "color_schemes": {
