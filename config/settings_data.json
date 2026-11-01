@@ -242,11 +242,6 @@
         "disabled": false,
         "settings": {}
       },
-      "11349500561483629931": {
-        "type": "shopify://apps/notify-app/blocks/app-embed/b399b727-6c85-44fc-9e21-63114bd72054",
-        "disabled": false,
-        "settings": {}
-      },
       "6810535121229352664": {
         "type": "shopify://apps/monster-cart-upsell-free-gifts/blocks/app-embed/a1b8e58a-bf1d-4e0f-8768-a387c3f643c0",
         "disabled": false,
@@ -272,6 +267,11 @@
       },
       "2567389343055140935": {
         "type": "shopify://apps/microsoft-clarity/blocks/clarity_js/31c3d126-8116-4b4a-8ba1-baeda7c4aeea",
+        "disabled": false,
+        "settings": {}
+      },
+      "16160716078332068383": {
+        "type": "shopify://apps/rubik-variant-images/blocks/rubik-variant-images/e684282e-1343-4a60-8fa2-6393aded15f6",
         "disabled": false,
         "settings": {}
       }
