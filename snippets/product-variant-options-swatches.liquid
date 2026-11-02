@@ -228,8 +228,9 @@
         class="color-swatch"
         style="
           background-image: url({{ product.variants[forloop.index0].image | img_url: '100px' }});background-size: cover;
-          border-radius: {{ settings.image_swatch_border_radius }}px !important; width: {{ settings.swatch_size_w}}px; height: {{ settings.swatch_size_h}}px;
-        "
+border-radius: 50% !important;
+width: {{ settings.swatch_size_w }}px;
+height: {{ settings.swatch_size_w }}px;        "
       >
         <span class="visually-hidden">{{ value -}}</span>
       </label>
