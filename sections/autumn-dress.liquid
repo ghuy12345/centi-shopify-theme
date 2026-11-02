@@ -1882,7 +1882,17 @@
                             assign is_size = true
                           endif
                         -%}
-                        <div class="product-form__input product-form__input--dropdown" {% render 'linked-product-option-hidden', product: product, option: option %}>
+
+                        <div
+                        class="product-form__input product-form__input--dropdown"
+                        {% render 'linked-product-option-hidden', product: product, option: option %}
+                        {% assign option_name_lower = option.name | downcase %}
+                        {% if product.metafields.custom.linked_color_products.value != blank %}
+                            {% if option_name_lower == 'color' or option_name_lower == 'colour' %}
+                            style="display: none !important;"
+                            {% endif %}
+                        {% endif %}
+                        >
                           <div style="display: flex;align-items: center;width:100%;align-items: baseline;{% if block.settings.spaced_size %}justify-content: space-between;{% endif %}">
                             <label
                               class="form__label form__label-{{block.id}}{% if block.settings.label_style == 'uppercase' %} caption-with-letter-spacing{% elsif block.settings.label_style == 'subtitle' %} subtitle{% endif %}"
