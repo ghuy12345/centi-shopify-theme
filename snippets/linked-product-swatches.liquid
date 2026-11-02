@@ -1,0 +1,80 @@
+
+{% liquid
+  assign linked_products = product.metafields.custom.linked_color_products.value
+%}
+
+{% if linked_products != blank %}
+  <div class="linked-color-swatches">
+    <p class="linked-color-title">
+      Color:
+      <strong>
+        {{ product.metafields.custom.swatch_name.value | escape }}
+      </strong>
+    </p>
+
+    <div class="linked-color-options">
+      {% for linked_product in linked_products %}
+        {% liquid
+          assign color_value = linked_product.metafields.custom.swatch_color.value
+          assign color_name = linked_product.metafields.custom.swatch_name.value | default: linked_product.title
+        %}
+
+        <a
+          href="{{ linked_product.url }}"
+          class="linked-color-option{% if linked_product.id == product.id %} is-selected{% endif %}"
+          title="{{ color_name | escape }}"
+          aria-label="{{ color_name | escape }}"
+          {% if linked_product.id == product.id %}
+            aria-current="page"
+          {% endif %}
+        >
+          <span
+            class="linked-color-circle"
+            style="background-color: {{ color_value | default: '#cccccc' }};"
+          ></span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+<style>
+  .linked-color-swatches {
+    margin: 20px 0;
+  }
+
+  .linked-color-title {
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .linked-color-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .linked-color-option {
+    width: 38px;
+    height: 38px;
+    padding: 4px;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+  }
+
+  .linked-color-option.is-selected,
+  .linked-color-option:hover {
+    border: 2px solid #111;
+  }
+
+  .linked-color-circle {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, .08);
+  }
+</style>
