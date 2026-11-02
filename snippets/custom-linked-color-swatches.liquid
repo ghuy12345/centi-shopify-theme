@@ -1,0 +1,154 @@
+
+{% comment %}
+  Custom Linked Color Swatches
+  Metafields:
+  custom.swatch_name1 - List of text
+  custom.linked_color_products - List of products
+{% endcomment %}
+
+{% liquid
+  assign swatch_names = product.metafields.custom.swatch_name1.value
+  assign linked_products = product.metafields.custom.linked_color_products.value
+  assign active_color = ''
+  assign has_current_product = false
+
+  for linked_product in linked_products
+    if linked_product.id == product.id
+      assign has_current_product = true
+      assign active_color = swatch_names[forloop.index0]
+      break
+    endif
+  endfor
+%}
+
+{% if linked_products != blank %}
+
+  <div class="custom-linked-colors">
+
+    <div class="custom-linked-colors__heading">
+      Color:
+      <span>{{ active_color | escape }}</span>
+    </div>
+
+    <div class="custom-linked-colors__items">
+
+      {% for linked_product in linked_products %}
+
+        {% liquid
+          assign swatch_name = swatch_names[forloop.index0]
+          assign is_active = false
+
+          if linked_product.id == product.id
+            assign is_active = true
+          endif
+        %}
+
+        <a
+          href="{{ linked_product.url }}"
+          class="custom-linked-colors__item{% if is_active %} is-active{% endif %}"
+          title="{{ swatch_name | escape }}"
+          aria-label="{{ swatch_name | escape }}"
+          {% if is_active %}
+            aria-current="page"
+          {% endif %}
+        >
+
+          {% if linked_product.featured_image != blank %}
+            {{
+              linked_product.featured_image
+              | image_url: width: 180
+              | image_tag:
+                loading: 'lazy',
+                class: 'custom-linked-colors__image',
+                alt: swatch_name
+            }}
+          {% else %}
+            <span class="custom-linked-colors__fallback">
+              {{ swatch_name | escape }}
+            </span>
+          {% endif %}
+
+        </a>
+
+      {% endfor %}
+
+    </div>
+
+  </div>
+
+{% endif %}
+
+<style>
+.custom-linked-colors {
+  margin: 20px 0;
+  width: 100%;
+}
+
+.custom-linked-colors__heading {
+  font-size: 20px;
+  font-weight: 400;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.custom-linked-colors__heading span {
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+.custom-linked-colors__items {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.custom-linked-colors__item {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 3px;
+  border: 2px solid transparent;
+  box-shadow: 0 1px 6px rgba(0,0,0,.15);
+  text-decoration: none;
+  overflow: hidden;
+  transition: border-color .2s ease;
+}
+
+.custom-linked-colors__item.is-active,
+.custom-linked-colors__item:hover {
+  border-color: #798b9e;
+}
+
+.custom-linked-colors__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.custom-linked-colors__fallback {
+  font-size: 11px;
+  text-align: center;
+  color: #333;
+}
+
+@media (max-width: 749px) {
+  .custom-linked-colors__heading {
+    font-size: 18px;
+  }
+
+  .custom-linked-colors__items {
+    gap: 12px;
+  }
+
+  .custom-linked-colors__item {
+    width: 68px;
+    height: 68px;
+  }
+}
+</style>
