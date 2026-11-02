@@ -1422,13 +1422,13 @@
                 {% render 'share-button', block: block, share_link: share_url %}
 
               
-          {%- when 'product_grouping_picker' -%}
-            {% render 'product-grouping-picker-custom', product: product, block: block %}
+              {%- when 'product_grouping_picker' -%}
+                {% render 'product-grouping-picker-custom', product: product, block: block %}
 
-          {%- when 'variant_picker' -%}
-            {% if template.suffix == 'autumn-dress' %}
-              {% render 'global-color-swatches', product: product %}
-            {% endif %}
+              {%- when 'variant_picker' -%}
+                {% if template.suffix == 'autumn-dress' %}
+                  {% render 'global-color-swatches', product: product %}
+                {% endif %}
 
                 <style>
                        .form__label-{{block.id}} {
