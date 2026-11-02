@@ -22,20 +22,7 @@
       {{ block.shopify_attributes }}
     >
       {%- for option in product.options_with_values -%}
-        
-{%- assign option_name_lower = option.name | downcase | strip -%}
-{%- if template.suffix == 'autumn-dress' and option_name_lower == 'color' -%}
-    {%- continue -%}
-{%- endif -%}
-
-
-{%- assign current_option_name = option.name | downcase | strip -%}
-<fieldset
-  class="js product-form__input"
-  {% if template.suffix == 'autumn-dress' and current_option_name == 'color' %}
-    style="display: none;"
-  {% endif %}
->
+        <fieldset class="js product-form__input">
           {%- liquid
             assign optionNames = settings.optionName | split: ','
             assign useColor = false
