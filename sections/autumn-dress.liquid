@@ -1459,7 +1459,17 @@
                       {{ block.shopify_attributes }}
                     >
                       {%- for option in product.options_with_values -%}
-                        <fieldset class="js product-form__input" {% render 'linked-product-option-hidden', product: product, option: option %}>
+                        
+                        <fieldset
+                        class="js product-form__input"
+                        {% render 'linked-product-option-hidden', product: product, option: option %}
+                        {% assign option_name_lower = option.name | downcase %}
+                        {% if product.metafields.custom.linked_color_products.value != blank %}
+                            {% if option_name_lower == 'color' or option_name_lower == 'colour' %}
+                            style="display: none !important;"
+                            {% endif %}
+                        {% endif %}
+                        >
                           {%- liquid
                             assign optionNames = block.settings.optionName | split: ','
                             assign useColor = false
