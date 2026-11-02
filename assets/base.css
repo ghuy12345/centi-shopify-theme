@@ -4255,3 +4255,15 @@ shopify-payment-terms {
   justify-content: center;
 }
 
+.product-form__input .color-swatch,
+.product-form__input .color-swatch img {
+  border-radius: 50% !important;
+}
+
+.product-form__input .color-swatch {
+  width: 85px !important;
+  height: 85px !important;
+  background-size: cover !important;
+  background-position: center !important;
+  overflow: hidden !important;
+}

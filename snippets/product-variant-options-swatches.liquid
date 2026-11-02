@@ -15,14 +15,11 @@
   %}
 {% endcomment %}
 <style>
-     .color-swatch {
-      border: 2px solid #e5e5e5 !important;
-      border-radius: 50% !important;
-      background-position: center !important;
-      background-size: cover !important;
-      background-repeat: no-repeat !important;
-      box-sizing: border-box !important;
-      flex-shrink: 0;
+        .color-swatch {
+      border: 2px solid var(--swatch-color) !important;
+      box-shadow: 0px 0px 0px 1px #f1f1f1, inset 0 0 0 1px #ffffff;
+      border-radius: 30px !important;
+      background-color: var(--swatch-color) !important;
     }
 
       .icon-check {
@@ -40,12 +37,10 @@
       left: 50%;
       transform: translate(-50%, -50%);
   }
-        .product-form__input .color-swatch {
-          width: {{ settings.swatch_size_w | default: 85 }}px !important;
-          height: {{ settings.swatch_size_w | default: 85 }}px !important;
-          border-radius: 50% !important;
+        .product-form__input .color-swatch{
+          width: {{ settings.swatch_size}}px;
+          height: {{ settings.swatch_size}}px;
           padding: 0 !important;
-          overflow: hidden !important;
         }
              .product-form__input input[type=radio]:hover+ .color-swatch {
       border: 1px solid var(--swatch-color) !important;
@@ -68,7 +63,7 @@
          .product-form__controls-group {
       justify-content: flex-end;
       }
-{% endif %}
+        {% endif %}}
 </style>
 {%- liquid
   assign variants_available_arr = product.variants | map: 'available'
@@ -232,15 +227,8 @@
         for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
         class="color-swatch"
         style="
-          background-image: url('{{ product.variants[forloop.index0].image | image_url: width: 200 }}');
-          background-size: cover !important;
-          background-position: center !important;
-          background-repeat: no-repeat !important;
-          border-radius: 50% !important;
-          width: 85px !important;
-          height: 85px !important;
-          display: inline-block;
-          overflow: hidden;
+          background-image: url({{ product.variants[forloop.index0].image | img_url: '100px' }});background-size: cover;
+          border-radius: {{ settings.image_swatch_border_radius }}px !important; width: {{ settings.swatch_size_w}}px; height: {{ settings.swatch_size_h}}px;
         "
       >
         <span class="visually-hidden">{{ value -}}</span>
