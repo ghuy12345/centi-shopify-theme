@@ -1,28 +1,21 @@
 
 {% liquid
   assign linked_colors = product.metafields.custom.linked_colors.value
-  assign selected_color = product.metafields.custom.color_name.value
+  assign current_color = product.metafields.custom.color_name.value
 %}
 
 {% if linked_colors != blank %}
   <div class="global-color-swatches">
-
-    <div class="global-color-heading">
-      Color: <span>{{ selected_color | escape }}</span>
-    </div>
-
+    <p class="global-color-title">
+      Color: {{ current_color | escape }}
+    </p>
     <div class="global-color-list">
       {% for linked_product in linked_colors %}
-
         {% assign color_name = linked_product.metafields.custom.color_name.value | default: linked_product.title %}
-
-        <a
-          href="{{ linked_product.url }}"
-          class="global-color-item{% if linked_product.id == product.id %} active{% endif %}"
-          title="{{ color_name | escape }}"
-          aria-label="{{ color_name | escape }}"
-          {% if linked_product.id == product.id %}aria-current="page"{% endif %}
-        >
+        <a href="{{ linked_product.url }}"
+           class="global-color-item{% if linked_product.id == product.id %} active{% endif %}"
+           title="{{ color_name | escape }}"
+           aria-label="{{ color_name | escape }}">
           {% if linked_product.featured_image %}
             {{
               linked_product.featured_image
@@ -30,69 +23,36 @@
               | image_tag: loading: 'lazy', alt: color_name
             }}
           {% else %}
-            <span>{{ color_name | escape }}</span>
+            {{ color_name | escape }}
           {% endif %}
         </a>
-
       {% endfor %}
     </div>
   </div>
 {% endif %}
 
 <style>
-  .global-color-swatches {
-    margin: 20px 0;
-  }
-
-  .global-color-heading {
-    font-size: 20px;
-    margin-bottom: 15px;
-  }
-
-  .global-color-heading span {
-    margin-left: 6px;
-  }
-
-  .global-color-list {
-    display: flex;
-    gap: 14px;
-    flex-wrap: wrap;
-  }
-
-  .global-color-item {
-    width: 76px;
-    height: 76px;
-    padding: 3px;
-    border: 2px solid transparent;
-    border-radius: 50%;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    color: #222;
-    font-size: 11px;
-  }
-
-  .global-color-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-  }
-
-  .global-color-item.active {
-    border-color: #8292a4;
-  }
-
-  .global-color-item:hover {
-    border-color: #222;
-  }
-
-  @media (max-width: 767px) {
-    .global-color-item {
-      width: 60px;
-      height: 60px;
-    }
-  }
+.global-color-swatches { margin: 20px 0; }
+.global-color-title { font-size: 16px; margin-bottom: 14px; }
+.global-color-list { display: flex; flex-wrap: wrap; gap: 12px; }
+.global-color-item {
+  width: 65px;
+  height: 65px;
+  padding: 3px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+.global-color-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.global-color-item.active { border-color: #333; }
+.global-color-item:hover { border-color: #888; }
 </style>
