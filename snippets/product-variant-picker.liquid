@@ -23,8 +23,9 @@
     >
       {%- for option in product.options_with_values -%}
         
-{%- if template.suffix == 'autumn-dress' and option.name == 'Color' -%}
-  {%- continue -%}
+{%- assign option_name_lower = option.name | downcase | strip -%}
+{%- if template.suffix == 'autumn-dress' and option_name_lower == 'color' -%}
+    {%- continue -%}
 {%- endif -%}
 
         <fieldset class="js product-form__input">
