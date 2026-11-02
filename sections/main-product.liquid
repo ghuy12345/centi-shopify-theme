@@ -1421,15 +1421,13 @@
                 {% assign share_url = product.selected_variant.url | default: product.url | prepend: request.origin %}
                 {% render 'share-button', block: block, share_link: share_url %}
 
-              
               {%- when 'product_grouping_picker' -%}
                 {% render 'product-grouping-picker-custom', product: product, block: block %}
 
               {%- when 'variant_picker' -%}
                 {% if template.suffix == 'autumn-dress' %}
-                  {% render 'global-color-swatches', product: product %}
-                {% endif %}
-
+  {% render 'global-color-swatches', product: product %}
+{% endif %}
                 <style>
                        .form__label-{{block.id}} {
                        font-weight: {{block.settings.font_style}};
