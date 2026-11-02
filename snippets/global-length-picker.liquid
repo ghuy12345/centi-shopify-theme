@@ -1,0 +1,63 @@
+
+{% comment %}
+  Global Tall / Regular Picker
+{% endcomment %}
+
+{% assign linked_lengths = product.metafields.custom.linked_lengths.value %}
+{% assign current_length = product.metafields.custom.length_name.value %}
+
+{% if linked_lengths != blank %}
+  <div class="global-length-picker">
+    <p class="global-length-label">
+      Length: <strong>{{ current_length }}</strong>
+    </p>
+
+    <div class="global-length-options">
+      {% for linked_product in linked_lengths %}
+        {% assign length_name = linked_product.metafields.custom.length_name.value %}
+
+        <a
+          href="{{ linked_product.url }}"
+          class="global-length-option {% if linked_product.id == product.id %}is-active{% endif %}"
+        >
+          {{ length_name | default: linked_product.title }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+<style>
+  .global-length-picker {
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .global-length-label {
+    margin-bottom: 12px;
+  }
+
+  .global-length-options {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .global-length-option {
+    padding: 12px 25px;
+    border: 1px solid #ccc;
+    color: #222;
+    text-decoration: none;
+    transition: .2s;
+  }
+
+  .global-length-option.is-active {
+    border: 2px solid #111;
+    font-weight: 600;
+  }
+
+  .global-length-option:hover {
+    border-color: #111;
+  }
+</style>
