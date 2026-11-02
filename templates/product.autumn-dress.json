@@ -22,7 +22,7 @@
       }
     },
     "main": {
-      "type": "main-product",
+      "type": "autumn-dress",
       "blocks": {
         "kiwi_size_chart_recommender_kiwi_sizing_wBgahk": {
           "type": "shopify://apps/kiwi-size-chart/blocks/kiwiSizing/b7369922-bf15-44ce-a121-a22a8fcbc4b0",
