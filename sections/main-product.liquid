@@ -1427,6 +1427,7 @@
               {%- when 'variant_picker' -%}
                 {% if template.suffix == 'autumn-dress' %}
               {% render 'global-color-swatches', product: product %}
+              {% render 'global-length-picker', product: product %}
             {% endif %}
                 <style>
                        .form__label-{{block.id}} {
@@ -1462,13 +1463,13 @@
                     >
                       {%- for option in product.options_with_values -%}
 
-{%- assign current_option_name = option.name | downcase | strip -%}
-<fieldset
-  class="js product-form__input"
-  {% if template.suffix == 'autumn-dress' and current_option_name == 'color' %}
-    style="display: none;"
-  {% endif %}
->
+                        {%- assign current_option_name = option.name | downcase | strip -%}
+                        <fieldset
+                          class="js product-form__input"
+                          {% if template.suffix == 'autumn-dress' and current_option_name == 'color' %}
+                            style="display: none;"
+                          {% endif %}
+                        >
                           {%- liquid
                             assign optionNames = block.settings.optionName | split: ','
                             assign useColor = false
