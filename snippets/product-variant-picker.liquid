@@ -28,7 +28,14 @@
     {%- continue -%}
 {%- endif -%}
 
-        <fieldset class="js product-form__input">
+
+{%- assign current_option_name = option.name | downcase | strip -%}
+<fieldset
+  class="js product-form__input"
+  {% if template.suffix == 'autumn-dress' and current_option_name == 'color' %}
+    style="display: none;"
+  {% endif %}
+>
           {%- liquid
             assign optionNames = settings.optionName | split: ','
             assign useColor = false
