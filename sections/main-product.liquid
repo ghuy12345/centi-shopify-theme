@@ -1691,28 +1691,14 @@
                                     style="
                                       background-image:url(
                                         {%- liquid
-                                         
-assign optionIndex = option.position | minus: 1
-assign swatchImage = blank
-
-for variant in product.variants
-  if variant.options[optionIndex] == value
-    if variant.image != blank
-      assign swatchImage = variant.image
-      break
-    endif
-  endif
-endfor
-
-if swatchImage == blank
-  assign swatchImage = product.featured_image
-endif
-
-if swatchImage != blank
-  assign swatchSizePortrait = swatchSize | times: 2
-  echo swatchImage | image_url: width: swatchSizePortrait
-endif
-
+                                          assign optionIndex = option.position | minus: 1
+                                          for variant in product.variants
+                                              if variant.options[optionIndex] == value
+                                                assign swatchSizePortrait = swatchSize | times: 2
+                                                echo variant.image | image_url: width: swatchSizePortrait
+                                                break
+                                              endif
+                                          endfor
                                       -%}
                                          );
                                     "
