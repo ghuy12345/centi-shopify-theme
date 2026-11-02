@@ -32,45 +32,65 @@
 
     <div class="custom-linked-colors__items">
 
-      {% for linked_product in linked_products %}
+{% for linked_product in linked_products %}
 
-        {% liquid
-          assign swatch_name = swatch_names[forloop.index0]
-          assign is_active = false
+  {% liquid
+    assign swatch_name = swatch_names[forloop.index0]
+    assign is_active = false
 
-          if linked_product.id == product.id
-            assign is_active = true
-          endif
-        %}
+    if forloop.first
+      assign is_active = true
+    endif
+  %}
 
-        <a
-          href="{{ linked_product.url }}"
-          class="custom-linked-colors__item{% if is_active %} is-active{% endif %}"
-          title="{{ swatch_name | escape }}"
-          aria-label="{{ swatch_name | escape }}"
-          {% if is_active %}
-            aria-current="page"
-          {% endif %}
-        >
+  {% if is_active %}
+    <span
+      class="custom-linked-colors__item is-active"
+      title="{{ swatch_name | escape }}"
+      aria-label="{{ swatch_name | escape }} - Selected"
+      aria-current="true"
+    >
+      {% if linked_product.featured_image != blank %}
+        {{
+          linked_product.featured_image
+          | image_url: width: 180
+          | image_tag:
+            loading: 'lazy',
+            class: 'custom-linked-colors__image',
+            alt: swatch_name
+        }}
+      {% else %}
+        <span class="custom-linked-colors__fallback">
+          {{ swatch_name | escape }}
+        </span>
+      {% endif %}
+    </span>
 
-          {% if linked_product.featured_image != blank %}
-            {{
-              linked_product.featured_image
-              | image_url: width: 180
-              | image_tag:
-                loading: 'lazy',
-                class: 'custom-linked-colors__image',
-                alt: swatch_name
-            }}
-          {% else %}
-            <span class="custom-linked-colors__fallback">
-              {{ swatch_name | escape }}
-            </span>
-          {% endif %}
+  {% else %}
+    <a
+      href="{{ linked_product.url }}"
+      class="custom-linked-colors__item"
+      title="{{ swatch_name | escape }}"
+      aria-label="{{ swatch_name | escape }}"
+    >
+      {% if linked_product.featured_image != blank %}
+        {{
+          linked_product.featured_image
+          | image_url: width: 180
+          | image_tag:
+            loading: 'lazy',
+            class: 'custom-linked-colors__image',
+            alt: swatch_name
+        }}
+      {% else %}
+        <span class="custom-linked-colors__fallback">
+          {{ swatch_name | escape }}
+        </span>
+      {% endif %}
+    </a>
+  {% endif %}
 
-        </a>
-
-      {% endfor %}
+{% endfor %}
 
     </div>
 
