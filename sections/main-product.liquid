@@ -1461,14 +1461,7 @@
                       {{ block.shopify_attributes }}
                     >
                       {%- for option in product.options_with_values -%}
-                        {% assign option_name = option.name | downcase | strip %}
-                        {% if template.suffix == 'autumn-dress' and option_name == 'color' %}
-                          <style>
-                            #variant-radios-{{ section.id }} fieldset[data-option-name="Color"] {
-                              display: none !important;
-                            }
-                          </style>
-                        {% endif %}
+                        
                         <fieldset class="js product-form__input">
                           {%- liquid
                             assign optionNames = block.settings.optionName | split: ','
