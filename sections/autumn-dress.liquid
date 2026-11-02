@@ -1425,7 +1425,7 @@
                 {% render 'product-grouping-picker-custom', product: product, block: block %}
 
               {%- when 'variant_picker' -%}
-                {% render 'linked-product-pickers', product: product %}
+                {% render 'custom-linked-color-swatches', product: product %}
                 <style>
                        .form__label-{{block.id}} {
                        font-weight: {{block.settings.font_style}};
