@@ -22,6 +22,11 @@
       {{ block.shopify_attributes }}
     >
       {%- for option in product.options_with_values -%}
+        
+{%- if template.suffix == 'autumn-dress' and option.name == 'Color' -%}
+  {%- continue -%}
+{%- endif -%}
+
         <fieldset class="js product-form__input">
           {%- liquid
             assign optionNames = settings.optionName | split: ','
