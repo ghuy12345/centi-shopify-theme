@@ -1425,6 +1425,9 @@
                 {% render 'product-grouping-picker-custom', product: product, block: block %}
 
               {%- when 'variant_picker' -%}
+                {% if template.suffix == 'autumn-dress' %}
+          {% render 'global-product-switcher', product: product %}
+        {% endif %}
                 <style>
                        .form__label-{{block.id}} {
                        font-weight: {{block.settings.font_style}};
