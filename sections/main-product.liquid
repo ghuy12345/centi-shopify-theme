@@ -1425,9 +1425,6 @@
                 {% render 'product-grouping-picker-custom', product: product, block: block %}
 
               {%- when 'variant_picker' -%}
-                {% if template.suffix == 'autumn-dress' %}
-          {% render 'global-product-switcher', product: product %}
-        {% endif %}
                 <style>
                        .form__label-{{block.id}} {
                        font-weight: {{block.settings.font_style}};
@@ -1460,17 +1457,8 @@
                       {% endif %}
                       {{ block.shopify_attributes }}
                     >
-                      
-                    {%- for option in product.options_with_values -%}
-                      {%- assign option_name = option.name | downcase | strip -%}
-
-                      <fieldset
-                        class="js product-form__input"
-                        {% if template.suffix == 'autumn-dress' and option_name == 'color' %}
-                          style="display: none !important;"
-                        {% endif %}
-                      >
-
+                      {%- for option in product.options_with_values -%}
+                        <fieldset class="js product-form__input">
                           {%- liquid
                             assign optionNames = block.settings.optionName | split: ','
                             assign useColor = false
