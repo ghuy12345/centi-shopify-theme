@@ -1461,7 +1461,13 @@
                       {{ block.shopify_attributes }}
                     >
                       {%- for option in product.options_with_values -%}
-                        <fieldset class="js product-form__input">
+
+                    <fieldset
+                      class="js product-form__input"
+                      {% if option.name == 'Color' and product.metafields.custom.linked_color_products.value != blank %}
+                        style="display: none;"
+                      {% endif %}
+                    >
                           {%- liquid
                             assign optionNames = block.settings.optionName | split: ','
                             assign useColor = false
