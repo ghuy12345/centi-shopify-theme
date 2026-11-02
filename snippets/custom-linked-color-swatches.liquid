@@ -345,6 +345,64 @@
     letter-spacing: 0.14em;
   }
 }
+
+@media screen and (min-width: 750px) {
+
+  /* Align product options to the left */
+  .product__info-container variant-radios,
+  .product__info-container variant-selects {
+    display: block !important;
+    width: 100%;
+    text-align: left !important;
+  }
+
+  /* Size and Length fieldsets */
+  .product__info-container fieldset.product-form__input {
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: flex-start !important;
+    align-items: center;
+    gap: 8px;
+    text-align: left !important;
+    padding: 0;
+    margin-bottom: 20px !important;
+  }
+
+  /* Option labels */
+  .product__info-container fieldset.product-form__input legend {
+    width: 100%;
+    text-align: left !important;
+    margin-bottom: 10px;
+  }
+
+  /* Variant buttons */
+  .product__info-container fieldset.product-form__input label {
+    margin: 0 !important;
+    min-width: 44px;
+    height: 44px;
+    padding: 0 13px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Color swatches */
+  .custom-linked-colors {
+    text-align: left !important;
+    margin-bottom: 26px;
+  }
+
+  .custom-linked-colors__items {
+    justify-content: flex-start !important;
+  }
+
+  /* Add to Cart */
+  .product__info-container .product-form__buttons {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
 .custom-linked-colors__item {
     width: 70px;
     height: 70px;
