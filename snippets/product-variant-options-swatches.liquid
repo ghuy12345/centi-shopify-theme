@@ -40,10 +40,12 @@
       left: 50%;
       transform: translate(-50%, -50%);
   }
-        .product-form__input .color-swatch{
-          width: {{ settings.swatch_size}}px;
-          height: {{ settings.swatch_size}}px;
+        .product-form__input .color-swatch {
+          width: {{ settings.swatch_size_w | default: 85 }}px !important;
+          height: {{ settings.swatch_size_w | default: 85 }}px !important;
+          border-radius: 50% !important;
           padding: 0 !important;
+          overflow: hidden !important;
         }
              .product-form__input input[type=radio]:hover+ .color-swatch {
       border: 1px solid var(--swatch-color) !important;
