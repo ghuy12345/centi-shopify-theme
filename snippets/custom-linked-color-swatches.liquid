@@ -95,51 +95,72 @@
 {% endif %}
 
 <style>
-.custom-linked-colors {
-  margin: 20px 0 28px;
-  width: 100%;
+/* =========================
+   PRODUCT INFO WRAPPER
+========================= */
+#MainProduct-{{ section.id }} .product__info-container {
+  max-width: 52rem;
 }
 
-.custom-linked-colors__heading {
-  font-size: 20px;
+#MainProduct-{{ section.id }} .product__title h1,
+#MainProduct-{{ section.id }} .product__title .h1 {
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+
+#MainProduct-{{ section.id }} .lumin-price,
+#MainProduct-{{ section.id }} .price {
+  margin-bottom: 10px;
+}
+
+/* =========================
+   COLOR SWATCH BLOCK
+========================= */
+#MainProduct-{{ section.id }} .custom-linked-colors {
+  margin: 26px 0 28px;
+}
+
+#MainProduct-{{ section.id }} .custom-linked-colors__heading {
+  font-size: 16px;
+  line-height: 1.4;
   font-weight: 400;
-  margin-bottom: 16px;
-  color: #242424;
+  color: #1f1f1f;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-.custom-linked-colors__heading span {
+#MainProduct-{{ section.id }} .custom-linked-colors__heading span {
   font-weight: 500;
-  margin-left: 6px;
 }
 
-.custom-linked-colors__items {
+#MainProduct-{{ section.id }} .custom-linked-colors__items {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 16px;
 }
 
-.custom-linked-colors__item {
-  width: 90px;
-  height: 90px;
+#MainProduct-{{ section.id }} .custom-linked-colors__item {
+  width: 86px;
+  height: 86px;
+  min-width: 86px;
+  border-radius: 50%;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  padding: 3px;
-  border: 2px solid transparent;
-  box-shadow: 0 2px 6px rgba(0,0,0,.12);
+  padding: 4px;
   text-decoration: none;
-  overflow: hidden;
-  transition: border-color .2s ease;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  box-shadow: none;
+  transition: all 0.25s ease;
 }
 
-.custom-linked-colors__item.is-active,
-.custom-linked-colors__item:hover {
-  border-color: #798b9e;
-}
-
-.custom-linked-colors__image {
+#MainProduct-{{ section.id }} .custom-linked-colors__item img,
+#MainProduct-{{ section.id }} .custom-linked-colors__image {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -147,24 +168,181 @@
   display: block;
 }
 
-.custom-linked-colors__fallback {
-  font-size: 11px;
-  text-align: center;
-  color: #333;
+#MainProduct-{{ section.id }} .custom-linked-colors__item:hover {
+  border-color: #9aa3ad;
 }
 
+#MainProduct-{{ section.id }} .custom-linked-colors__item.is-active {
+  border-color: #8b97a5;
+  box-shadow: 0 0 0 2px #d8dde3;
+}
+
+#MainProduct-{{ section.id }} .custom-linked-colors__fallback {
+  font-size: 11px;
+  color: #333;
+  text-align: center;
+  padding: 6px;
+}
+
+/* =========================
+   VARIANT BLOCK SPACING
+========================= */
+#MainProduct-{{ section.id }} .product-form__input {
+  margin: 0 0 22px !important;
+}
+
+#MainProduct-{{ section.id }} .product-form__input .form__label,
+#MainProduct-{{ section.id }} .product-form__input legend.form__label {
+  margin-bottom: 10px;
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 400;
+  color: #2a2a2a;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+#MainProduct-{{ section.id }} .product-form__input .form__label span,
+#MainProduct-{{ section.id }} .product-form__input legend.form__label span {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+/* =========================
+   SIZE / LENGTH BUTTONS
+========================= */
+#MainProduct-{{ section.id }} fieldset.product-form__input,
+#MainProduct-{{ section.id }} .product-form__input fieldset,
+#MainProduct-{{ section.id }} variant-radios fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0 0 22px;
+}
+
+#MainProduct-{{ section.id }} variant-radios {
+  display: block;
+}
+
+#MainProduct-{{ section.id }} variant-radios fieldset .form__label {
+  display: block;
+  width: 100%;
+}
+
+#MainProduct-{{ section.id }} variant-radios fieldset input[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#MainProduct-{{ section.id }} variant-radios fieldset label {
+  min-width: 42px;
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid #d8d8d8;
+  background: #fff;
+  color: #222;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 8px 8px 0 !important;
+  border-radius: 0;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: none !important;
+}
+
+#MainProduct-{{ section.id }} variant-radios fieldset label:hover {
+  border-color: #111;
+}
+
+#MainProduct-{{ section.id }} variant-radios fieldset input[type='radio']:checked + label {
+  border-color: #111 !important;
+  background: #fff;
+  color: #111;
+}
+
+#MainProduct-{{ section.id }} variant-radios fieldset input[type='radio'].disabled + label,
+#MainProduct-{{ section.id }} variant-radios fieldset input[type='radio']:disabled + label,
+#MainProduct-{{ section.id }} variant-radios fieldset label.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* =========================
+   LENGTH BUTTONS MORE COMPACT
+========================= */
+#MainProduct-{{ section.id }} variant-radios fieldset label[for*='Length'],
+#MainProduct-{{ section.id }} variant-radios fieldset label {
+  letter-spacing: 0.01em;
+}
+
+/* =========================
+   ADD TO CART BUTTON
+========================= */
+#MainProduct-{{ section.id }} .product-form__buttons,
+#MainProduct-{{ section.id }} .product-form__submit {
+  width: 100%;
+}
+
+#MainProduct-{{ section.id }} .product-form__submit {
+  min-height: 54px;
+  border-radius: 0;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: none;
+}
+
+/* =========================
+   SHOP PAY TEXT SPACING
+========================= */
+#MainProduct-{{ section.id }} .installment {
+  margin-top: 8px;
+  margin-bottom: 18px;
+  font-size: 13px;
+}
+
+/* =========================
+   MOBILE
+========================= */
 @media (max-width: 749px) {
-  .custom-linked-colors__heading {
-    font-size: 18px;
+  #MainProduct-{{ section.id }} .custom-linked-colors {
+    margin: 20px 0 24px;
   }
 
-  .custom-linked-colors__items {
+  #MainProduct-{{ section.id }} .custom-linked-colors__heading {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+
+  #MainProduct-{{ section.id }} .custom-linked-colors__items {
     gap: 12px;
   }
 
-  .custom-linked-colors__item {
-    width: 70px;
-    height: 70px;
+  #MainProduct-{{ section.id }} .custom-linked-colors__item {
+    width: 68px;
+    height: 68px;
+    min-width: 68px;
+    padding: 3px;
+  }
+
+  #MainProduct-{{ section.id }} variant-radios fieldset label {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    margin: 0 6px 6px 0 !important;
+    font-size: 12px;
+  }
+
+  #MainProduct-{{ section.id }} .product-form__submit {
+    min-height: 50px;
+    font-size: 12px;
+    letter-spacing: 0.14em;
   }
 }
 </style>
