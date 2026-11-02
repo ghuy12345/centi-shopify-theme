@@ -557,37 +557,15 @@ body { padding-bottom: 70px; }
     }
 
     function setOptionValue(optionName, value) {
-  const input = document.querySelector(
-    `variant-radios input[name="${CSS.escape(optionName)}"][value="${CSS.escape(value)}"]`
-  );
+      const input = document.querySelector(
+        `variant-radios input[name="${CSS.escape(optionName)}"][value="${CSS.escape(value)}"]`
+      );
 
-  if (!input || input.checked) return;
+      if (!input) return;
 
-  // Save current scroll position
-  const savedScrollY = window.scrollY;
-
-  // Update selected variant
-  input.checked = true;
-  input.dispatchEvent(new Event('change', { bubbles: true }));
-
-  // Update sticky button active states
-  const group = [...document.querySelectorAll('.sticky-option-group')]
-    .find(el => el.dataset.optionName === optionName);
-
-  if (group) {
-    group.querySelectorAll('.sticky-option-value').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.value === value);
-    });
-  }
-
-  // Prevent unwanted jump to the main variant picker
-  requestAnimationFrame(() => {
-    window.scrollTo({
-      top: savedScrollY,
-      behavior: 'instant'
-    });
-  });
-}
+      input.checked = true;
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
 
     document.addEventListener('click', (e) => {
       const btn = e.target.closest('.sticky-option-value');
