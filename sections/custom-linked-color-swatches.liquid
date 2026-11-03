@@ -1,0 +1,427 @@
+
+{% comment %}
+  Custom Product Color Swatches
+  Default:
+    custom.default_swatch_name
+    custom.default_swatch_product
+
+  Linked:
+    custom.swatch_name1
+    custom.linked_color_products
+{% endcomment %}
+
+{% liquid
+  assign default_name = product.metafields.custom.default_swatch_name.value
+  assign default_product = product.metafields.custom.default_swatch_product.value
+
+  assign swatch_names = product.metafields.custom.swatch_name1.value
+  assign linked_products = product.metafields.custom.linked_color_products.value
+
+  if default_product == blank
+    assign default_product = product
+  endif
+
+  if default_name == blank
+    assign default_name = 'Default'
+  endif
+%}
+
+{% if default_product != blank %}
+
+<div class="custom-linked-colors">
+
+  <div class="custom-linked-colors__heading">
+    Color: <span>{{ default_name | escape }}</span>
+  </div>
+
+  <div class="custom-linked-colors__items">
+
+    {% comment %} Default selected swatch {% endcomment %}
+    <span
+      class="custom-linked-colors__item is-active"
+      title="{{ default_name | escape }}"
+      aria-label="{{ default_name | escape }} - Selected"
+    >
+      {% if default_product.featured_image != blank %}
+        {{
+          default_product.featured_image
+          | image_url: width: 180
+          | image_tag:
+            loading: 'lazy',
+            class: 'custom-linked-colors__image',
+            alt: default_name
+        }}
+      {% else %}
+        <span class="custom-linked-colors__fallback">
+          {{ default_name | escape }}
+        </span>
+      {% endif %}
+    </span>
+
+    {% comment %} Other linked color swatches {% endcomment %}
+    {% for linked_product in linked_products %}
+
+      {% assign swatch_name = swatch_names[forloop.index0] %}
+
+      {% unless linked_product.id == default_product.id %}
+        <a
+          href="{{ linked_product.url }}"
+          class="custom-linked-colors__item"
+          title="{{ swatch_name | escape }}"
+          aria-label="{{ swatch_name | escape }}"
+        >
+          {% if linked_product.featured_image != blank %}
+            {{
+              linked_product.featured_image
+              | image_url: width: 180
+              | image_tag:
+                loading: 'lazy',
+                class: 'custom-linked-colors__image',
+                alt: swatch_name
+            }}
+          {% else %}
+            <span class="custom-linked-colors__fallback">
+              {{ swatch_name | escape }}
+            </span>
+          {% endif %}
+        </a>
+      {% endunless %}
+
+    {% endfor %}
+
+  </div>
+</div>
+
+{% endif %}
+
+<style>
+/* =========================
+   PRODUCT INFO WRAPPER
+========================= */
+#MainProduct-{{ section.id }} .product__info-container {
+  max-width: 52rem;
+}
+
+#MainProduct-{{ section.id }} .product__title h1,
+#MainProduct-{{ section.id }} .product__title .h1 {
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+
+#MainProduct-{{ section.id }} .lumin-price,
+#MainProduct-{{ section.id }} .price {
+  margin-bottom: 10px;
+}
+
+/* =========================
+   COLOR SWATCH BLOCK
+========================= */
+#MainProduct-{{ section.id }} .custom-linked-colors {
+  margin: 26px 0 28px;
+}
+
+#MainProduct-{{ section.id }} .custom-linked-colors__heading {
+  font-size: 16px;
+  line-height: 1.4;
+  font-weight: 400;
+  color: #1f1f1f;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#MainProduct-{{ section.id }} .custom-linked-colors__heading span {
+  font-weight: 500;
+}
+
+#MainProduct-{{ section.id }} .custom-linked-colors__items {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content:center !important;
+  gap: 16px;
+}
+
+legend.form__label.form__label-variant_picker {
+  text-align:center !important;
+}
+
+#MainProduct-{{ section.id }} .custom-linked-colors__heading {
+    justify-content: center;
+}
+
+#MainProduct-{{ section.id }} .custom-linked-colors__item {
+  width: 86px;
+  height: 86px;
+  min-width: 86px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  text-decoration: none;
+  border: 1px solid #e5e5e5;
+  background: #fff;
+  box-shadow: none;
+  transition: all 0.25s ease;
+}
+
+#MainProduct-{{ section.id }} .custom-linked-colors__item img,
+#MainProduct-{{ section.id }} .custom-linked-colors__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+#MainProduct-{{ section.id }} .custom-linked-colors__item:hover {
+  border-color: #9aa3ad;
+}
+
+#MainProduct-{{ section.id }} .custom-linked-colors__item.is-active {
+  border-color: #8b97a5;
+  box-shadow: 0 0 0 2px #d8dde3;
+}
+
+#MainProduct-{{ section.id }} .custom-linked-colors__fallback {
+  font-size: 11px;
+  color: #333;
+  text-align: center;
+  padding: 6px;
+}
+
+/* =========================
+   VARIANT BLOCK SPACING
+========================= */
+#MainProduct-{{ section.id }} .product-form__input {
+  margin: 0 0 22px !important;
+}
+
+#MainProduct-{{ section.id }} .product-form__input .form__label,
+#MainProduct-{{ section.id }} .product-form__input legend.form__label {
+  margin-bottom: 10px;
+  font-size: 13px;
+  line-height: 1.4;
+  font-weight: 400;
+  color: #2a2a2a;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+#MainProduct-{{ section.id }} .product-form__input .form__label span,
+#MainProduct-{{ section.id }} .product-form__input legend.form__label span {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 500;
+  margin-left: 6px;
+}
+
+/* =========================
+   SIZE / LENGTH BUTTONS
+========================= */
+#MainProduct-{{ section.id }} fieldset.product-form__input,
+#MainProduct-{{ section.id }} .product-form__input fieldset,
+#MainProduct-{{ section.id }} variant-radios fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0 0 22px;
+}
+
+#MainProduct-{{ section.id }} variant-radios {
+  display: block;
+}
+
+#MainProduct-{{ section.id }} variant-radios fieldset .form__label {
+  display: block;
+  width: 100%;
+}
+
+#MainProduct-{{ section.id }} variant-radios fieldset input[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#MainProduct-{{ section.id }} variant-radios fieldset label {
+  min-width: 42px;
+  height: 42px;
+  padding: 0 14px;
+  border: 1px solid #d8d8d8;
+  background: #fff;
+  color: #222;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 8px 8px 0 !important;
+  border-radius: 0;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: none !important;
+}
+
+#MainProduct-{{ section.id }} variant-radios fieldset label:hover {
+  border-color: #111;
+}
+
+#MainProduct-{{ section.id }} variant-radios fieldset input[type='radio']:checked + label {
+  border-color: #111 !important;
+  background: #fff;
+  color: #111;
+}
+
+#MainProduct-{{ section.id }} variant-radios fieldset input[type='radio'].disabled + label,
+#MainProduct-{{ section.id }} variant-radios fieldset input[type='radio']:disabled + label,
+#MainProduct-{{ section.id }} variant-radios fieldset label.disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* =========================
+   LENGTH BUTTONS MORE COMPACT
+========================= */
+#MainProduct-{{ section.id }} variant-radios fieldset label[for*='Length'],
+#MainProduct-{{ section.id }} variant-radios fieldset label {
+  letter-spacing: 0.01em;
+}
+
+/* =========================
+   ADD TO CART BUTTON
+========================= */
+#MainProduct-{{ section.id }} .product-form__buttons,
+#MainProduct-{{ section.id }} .product-form__submit {
+  width: 100%;
+}
+
+#MainProduct-{{ section.id }} .product-form__submit {
+  min-height: 54px;
+  border-radius: 0;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: none;
+}
+
+/* =========================
+   SHOP PAY TEXT SPACING
+========================= */
+#MainProduct-{{ section.id }} .installment {
+  margin-top: 8px;
+  margin-bottom: 18px;
+  font-size: 13px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 749px) {
+  #MainProduct-{{ section.id }} .custom-linked-colors {
+    margin: 20px 0 24px;
+  }
+
+  #MainProduct-{{ section.id }} .custom-linked-colors__heading {
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+
+  #MainProduct-{{ section.id }} .custom-linked-colors__items {
+    gap: 12px;
+  }
+
+  #MainProduct-{{ section.id }} .custom-linked-colors__item {
+    width: 68px;
+    height: 68px;
+    min-width: 68px;
+    padding: 3px;
+  }
+
+  #MainProduct-{{ section.id }} variant-radios fieldset label {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+    margin: 0 6px 6px 0 !important;
+    font-size: 12px;
+  }
+
+  #MainProduct-{{ section.id }} .product-form__submit {
+    min-height: 50px;
+    font-size: 12px;
+    letter-spacing: 0.14em;
+  }
+}
+
+#MainProduct-{{ section.id }} fieldset.js.product-form__input {
+    display: flex !important;
+    justify-content: center !important;
+    margin: auto;
+    align-items: center;
+}
+
+@media screen and (min-width: 750px) {
+
+  /* Align product options to the left */
+  .product__info-container variant-radios,
+  .product__info-container variant-selects {
+    display: block !important;
+    width: 100%;
+    text-align: left !important;
+  }
+
+  /* Size and Length fieldsets */
+  .product__info-container fieldset.product-form__input {
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: flex-start !important;
+    align-items: center;
+    gap: 8px;
+    text-align: left !important;
+    padding: 0;
+    margin-bottom: 20px !important;
+  }
+
+  /* Option labels */
+  .product__info-container fieldset.product-form__input legend {
+    width: 100%;
+    {% comment %} text-align: left !important; {% endcomment %}
+    margin-bottom: 10px;
+  }
+
+  /* Variant buttons */
+  .product__info-container fieldset.product-form__input label {
+    margin: 0 !important;
+    min-width: 44px;
+    height: 44px;
+    padding: 0 13px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* Color swatches */
+  .custom-linked-colors {
+    text-align: left !important;
+    margin-bottom: 26px;
+  }
+
+  .custom-linked-colors__items {
+    justify-content: flex-start !important;
+  }
+
+  /* Add to Cart */
+  .product__info-container .product-form__buttons {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+
+.custom-linked-colors__item {
+    width: 70px !important;
+    height: 70px !important;
+    min-width: 70px !important;
+}
+</style>
