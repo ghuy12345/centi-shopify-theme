@@ -429,6 +429,31 @@ body { padding-bottom: 70px; }
             {% endif %}
 
         
+    .custom-sticky-bar-main {
+      padding: 8px 14px calc(10px + env(safe-area-inset-bottom));
+    }
+    .custom-sticky-bar-main .custom-stikcy-bar-inner-flex { min-height: 28px; }
+    .custom-sticky-bar-main .sticky-variants { flex-wrap: wrap; gap: 8px 18px; }
+    .custom-sticky-bar-main .sticky-picker-link {
+      appearance: none;
+      border: 0;
+      border-bottom: 1px solid currentColor;
+      padding: 6px 4px 3px;
+      background: transparent;
+      color: {{ section.settings.text_color }};
+      font: inherit;
+      font-size: 12px;
+      line-height: 1.5;
+      cursor: pointer;
+    }
+    .custom-sticky-bar-main .sticky-picker-link[hidden] { display: none; }
+    .custom-sticky-bar-main .sticky-picker-link:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+    .custom-sticky-bar-main .sticky-size-chart { flex: 0 0 auto; margin-left: auto; }
+    .custom-sticky-bar-main .sticky-size-chart .chart-link { font-size: 12px; padding: 6px 0; white-space: nowrap; }
+    .custom-sticky-bar-main .sticky-product-form .product-form__submit { margin-bottom: 0; min-height: 54px; }
+    @media screen and (max-width: 767px) {
+      body.sticky-active { padding-bottom: var(--custom-sticky-bar-height, 110px); }
+    }
     {%- endstyle -%}
 
     {%- assign product_form_id = 'sticky-product-form-' | append: section.id -%}
@@ -444,67 +469,17 @@ body { padding-bottom: 70px; }
           <div class="sticky-variants" id="stickyVariants">
             {%- for option in product.options_with_values -%}
               {%- assign option_name_downcase = option.name | downcase -%}
-              <div class="variant-row" data-option-position="{{ option.position }}">
-                {% comment %} <span class="variant-label">{{ option.name }}</span> {% endcomment %}
-
-                {%- if option_name_downcase contains 'color' or option_name_downcase contains 'colour' -%}
-                  {% comment %}
-                    <div class="color-swatch-group sticky-option-group"
-                         data-option-name="{{ option.name | escape }}"
-                         data-option-position="{{ option.position }}">
-                      {%- for value in option.values -%}
-                        <button
-                          type="button"
-                          class="color-swatch sticky-option-value{% unless value.available %} out-of-stock{% endunless %}"
-                          style="background-color: {{ value | downcase
-                            | replace: 'red', '#ef4444'
-                            | replace: 'blue', '#3b82f6'
-                            | replace: 'green', '#22c55e'
-                            | replace: 'black', '#1e293b'
-                            | replace: 'white', '#f8fafc'
-                            | replace: 'yellow', '#eab308'
-                            | replace: 'purple', '#a855f7'
-                            | replace: 'pink', '#ec4899'
-                            | replace: 'orange', '#f97316'
-                            | replace: 'gray', '#6b7280'
-                            | replace: 'grey', '#6b7280'
-                            | replace: 'brown', '#92400e' }};"
-                          data-value="{{ value | escape }}"
-                          aria-label="{{ option.name }}: {{ value }}"
-                          title="{{ value }}"
-                          {% unless value.available %}disabled{% endunless %}>
-                        </button>
-                      {%- endfor -%}
-                    </div>
-                  {% endcomment %}
-                {%- else -%}
-                  <div
-                    class="size-btn-group sticky-option-group"
-                    data-option-name="{{ option.name | escape }}"
-                    data-option-position="{{ option.position }}"
-                  >
-                    {%- for value in option.values -%}
-                      <button
-                        type="button"
-                        class="size-btn sticky-option-value{% unless value.available %} out-of-stock{% endunless %}"
-                        data-value="{{ value | escape }}"
-                        {% unless value.available %}
-                          disabled
-                        {% endunless %}
-                      >
-                        {{ value }}
-                      </button>
-                    {%- endfor -%}
-                  </div>
-                {%- endif -%}
-              </div>
+              {%- unless option_name_downcase contains 'color' or option_name_downcase contains 'colour' or product.has_only_default_variant -%}
+                <button type="button" class="sticky-picker-link" data-option-name="{{ option.name | escape }}" data-option-position="{{ option.position }}">
+                  {% if option_name_downcase contains 'size' %}{{ option.name | escape }}: {% endif %}<span data-selected-value>{{ option.selected_value | escape }}</span>
+                </button>
+              {%- endunless -%}
             {%- endfor -%}
-
-            {% comment %}
-              <div class="sticky-variant-status">
-                <span class="selected-text" id="stickySelectedText">Select options</span>
-              </div>
-            {% endcomment %}
+            {% if product.metafields.custom.fit_group.value.products_count > 1 %}
+              <button type="button" class="sticky-picker-link" data-linked-fit>
+                {{ product.metafields.custom.fit_label.value | default: product.title | escape }}
+              </button>
+            {% endif %}
           </div>
 
           
@@ -541,121 +516,96 @@ body { padding-bottom: 70px; }
   {%- endif -%}
 {%- endif -%}
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const stickyBar = document.querySelector('.custom-sticky-bar-main');
-    const stickyBtn = document.getElementById('stickyAddToCart');
-    const stickyText = document.getElementById('stickySelectedText');
-    const sizeChartBtn = document.getElementById('sizeChartLink');
+  (() => {
+    function initStickyBar() {
+      const section = document.getElementById('shopify-section-{{ section.id }}');
+      const stickyBar = section?.querySelector('.custom-sticky-bar-main');
+      if (!stickyBar || stickyBar.dataset.initialized) return;
+      stickyBar.dataset.initialized = 'true';
+      const stickyBtn = stickyBar.querySelector('#stickyAddToCart');
+      const getVariantRoot = () => document.querySelector('main variant-radios, main variant-selects');
+      const getProductInfo = () => getVariantRoot()?.closest('product-info, .product__info-container') || document.querySelector('main .product__info-container');
 
-    const variantRoot = document.querySelector('variant-radios');
+      function getOptionTarget(button) {
+        const root = getVariantRoot();
+        if (!root) return null;
+        const controls = [...root.querySelectorAll('input[type="radio"], select')];
+        const control = controls.find(input => input.name === button.dataset.optionName || input.name === `options[${button.dataset.optionName}]`);
+        return control?.closest('fieldset, .product-form__input') || null;
+      }
 
-    let syncTimer;
-
-    function debounceSync(fn) {
-      clearTimeout(syncTimer);
-      syncTimer = setTimeout(fn, 50);
-    }
-
-    function setOptionValue(optionName, value) {
-      const input = document.querySelector(
-        `variant-radios input[name="${CSS.escape(optionName)}"][value="${CSS.escape(value)}"]`
-      );
-
-      if (!input) return;
-
-      input.checked = true;
-      input.dispatchEvent(new Event('change', { bubbles: true }));
-    }
-
-    document.addEventListener('click', (e) => {
-      const btn = e.target.closest('.sticky-option-value');
-      if (!btn) return;
-
-      const group = btn.closest('.sticky-option-group');
-      if (!group) return;
-
-      setOptionValue(group.dataset.optionName, btn.dataset.value);
-    });
-
-    function syncStickyUI() {
-      if (!variantRoot) return;
-
-      const checkedInputs = variantRoot.querySelectorAll('input:checked');
-
-      const selectedValues = [];
-
-      checkedInputs.forEach((input) => {
-        selectedValues.push(input.value);
-
-        const optionName = input.name;
-
-        const group = document.querySelector(`.sticky-option-group[data-option-name="${optionName}"]`);
-
-        if (!group) return;
-
-        group.querySelectorAll('.sticky-option-value').forEach((btn) => {
-          btn.classList.toggle('active', btn.dataset.value === input.value);
+      function syncStickyUI() {
+        stickyBar.querySelectorAll('[data-option-name]').forEach(button => {
+          const target = getOptionTarget(button);
+          const selected = target?.querySelector('input:checked, select');
+          if (selected) button.querySelector('[data-selected-value]').textContent = selected.value;
+          button.hidden = !target || target.hidden;
         });
+        const linkedFit = stickyBar.querySelector('[data-linked-fit]');
+        const activeFit = getProductInfo()?.querySelector('.linked-products__link--fit[aria-current="page"]');
+        if (linkedFit) {
+          linkedFit.hidden = !activeFit;
+          if (activeFit) linkedFit.textContent = activeFit.textContent.trim();
+        }
+        const mainBtn = getProductInfo()?.querySelector('product-form button[type="submit"]');
+        if (mainBtn) stickyBtn.disabled = mainBtn.disabled;
+      }
+
+      stickyBar.addEventListener('click', event => {
+        const button = event.target.closest('.sticky-picker-link');
+        if (!button) return;
+        const target = button.hasAttribute('data-linked-fit')
+          ? getProductInfo()?.querySelector('.linked-products__link--fit')?.closest('.linked-products')
+          : getOptionTarget(button);
+        if (!target) return;
+        const header = document.querySelector('.shopify-section-header, sticky-header');
+        const offset = (header?.getBoundingClientRect().height || 0) + 24;
+        window.scrollTo({
+          top: Math.max(0, window.scrollY + target.getBoundingClientRect().top - offset),
+          behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'
+        });
+        const focusTarget = target.querySelector('input:checked, select, a[aria-current="page"], input, button, a');
+        focusTarget?.focus({ preventScroll: true });
       });
 
-      if (stickyText) {
-        stickyText.textContent = selectedValues.length ? selectedValues.join(' / ') : 'Select options';
+      const info = getProductInfo();
+      if (info) {
+        info.addEventListener('change', () => requestAnimationFrame(syncStickyUI));
+        const observer = new MutationObserver(syncStickyUI);
+        observer.observe(info, { childList: true, subtree: true, attributes: true, attributeFilter: ['disabled', 'checked', 'aria-current'] });
+        document.addEventListener('shopify:section:unload', event => {
+          if (event.target === section) observer.disconnect();
+        });
       }
+
+      stickyBtn?.addEventListener('click', () => {
+        const mainBtn = getProductInfo()?.querySelector('product-form button[type="submit"]');
+        if (!mainBtn || mainBtn.disabled) return;
+        stickyBtn.classList.add('loading');
+        mainBtn.click();
+        setTimeout(() => stickyBtn.classList.remove('loading'), 1200);
+      });
+
+      stickyBar.querySelector('#sizeChartLink')?.addEventListener('click', event => {
+        event.preventDefault();
+        const trigger = document.querySelector('.ks-chart-modal-link') || getProductInfo()?.querySelector('modal-opener .product-popup-modal__button');
+        trigger?.click();
+      });
+
+      function updateStickyState() {
+        const visible = window.innerWidth <= 767 && window.getComputedStyle(stickyBar).display !== 'none';
+        document.body.classList.toggle('sticky-active', visible);
+        document.documentElement.style.setProperty('--custom-sticky-bar-height', `${visible ? stickyBar.offsetHeight : 0}px`);
+      }
+      new ResizeObserver(updateStickyState).observe(stickyBar);
+      window.addEventListener('resize', updateStickyState);
+      syncStickyUI();
+      updateStickyState();
     }
-
-    document.addEventListener('change', (e) => {
-      if (e.target.closest('variant-radios')) {
-        debounceSync(syncStickyUI);
-      }
-    });
-
-    stickyBtn?.addEventListener('click', () => {
-      const mainBtn =
-        document.querySelector('variant-radios form button[type="submit"]') ||
-        document.querySelector('product-form form button[type="submit"]') ||
-        document.querySelector('form[action*="/cart/add"] button[type="submit"]');
-
-      if (!mainBtn) return;
-
-      stickyBtn.classList.add('loading');
-
-      mainBtn.click();
-
-      setTimeout(() => {
-        stickyBtn.classList.remove('loading');
-      }, 1200);
-    });
-
-    sizeChartBtn?.addEventListener('click', (e) => {
-      e.preventDefault();
-
-      const tryOpen = () => {
-        const appTrigger = document.querySelector('.ks-chart-modal-link');
-        if (appTrigger) appTrigger.click();
-      };
-
-      tryOpen();
-      setTimeout(tryOpen, 300);
-    });
-
-    function updateStickyState() {
-      if (!stickyBar) return;
-
-      const isVisible = window.getComputedStyle(stickyBar).display !== 'none';
-
-      if (window.innerWidth <= 767 && isVisible) {
-        document.body.classList.add('sticky-active');
-      } else {
-        document.body.classList.remove('sticky-active');
-      }
-    }
-
-    updateStickyState();
-    window.addEventListener('scroll', updateStickyState, { passive: true });
-    window.addEventListener('resize', updateStickyState);
-
-    syncStickyUI();
-  });
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initStickyBar, { once: true });
+    else initStickyBar();
+    document.addEventListener('shopify:section:load', initStickyBar);
+  })();
 </script>
 {% schema %}
 {
